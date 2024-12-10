@@ -4,6 +4,7 @@ import { authOptions } from "../auth/[...nextauth]/route"
 
 export async function GET(req) {
   const session = await getUserSession()
+  console.log('session:', session)
 
   if (!session?.accessToken) {
     return new Response(JSON.stringify({ error: 'Not authenticated' }), {
