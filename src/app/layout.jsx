@@ -1,21 +1,33 @@
 import { SessionProvider } from 'next-auth/react'
 import './globals.css'
-import { Inter } from '@next/font/google'
+import { Montserrat, Poppins, Roboto } from '@next/font/google'
+import { AppHeader } from './components/AppHeader'
+import { ReduxProvider } from '@/components/ReduxProvider'
 
 export const metadata = {
-  title: 'planwise',
+  title: 'Planwise AI',
   description: 'Enhance your productivity with AI integrated to Google Calendar!',
+  icons: {
+    icon: 'https://res.cloudinary.com/di6tqrg5y/image/upload/v1733918185/icon_1_ylom72.png',
+  },
 }
 
-const inter = Inter({
+const poppins = Poppins({
   subsets: ['latin'], // Loads characters for most Western languages
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'], // Includes all weights
+  weight: ['100','200', '300', '400', '500', '600','700', '800', '900'], // Includes all weights
 })
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={inter.className}>
-      <body className={`font-[inter]`}>{children}</body>
+    <html lang="en" className={poppins.className}>
+      <body className={`h-screen w-screen  bg-mainLight font-[poppins]`}>
+        <main className="px-6 pt-10 w-full h-full">
+          <ReduxProvider>
+            <AppHeader />
+            {children}
+          </ReduxProvider>
+        </main>
+      </body>
     </html>
   )
 }
