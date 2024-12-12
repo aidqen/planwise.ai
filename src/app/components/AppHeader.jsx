@@ -14,11 +14,11 @@ export function AppHeader() {
   // }
   return (
     <header className="flex flex-row items-center justify-between">
-      <div className="flex justify-center items-center p-2 rounded-full bg-secondaryLight shadow-sm">
+      <div className="flex justify-center items-center p-2 rounded-full bg-secondaryLight shadow-md">
         <Component className="text-black" />
       </div>
       <div className="flex flex-row items-center gap-8">
-        <div className="flex justify-center items-center p-2 rounded-full bg-secondaryLight shadow-sm">
+        <div className="flex justify-center items-center p-2 rounded-full bg-secondaryLight shadow-md">
           <Search className="text-black" />
         </div>
         <Image

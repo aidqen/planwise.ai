@@ -4,25 +4,29 @@ import { ChevronRight } from 'lucide-react'
 import { useState } from 'react'
 
 export default function ScheduleNew() {
-  const [step, setStep] = useState([0])
+  const [currentStep, setCurrentStep] = useState([0])
+  const [formData, setFormData] = useState({});
+  
+  function nextStep() {
+    if (currentStep < totalSteps) setCurrentStep(currentStep + 1);
+  }
 
-  function pushStep(idx) {
-    setStep([...step, idx])
+  function prevStep() {
+    if (currentStep > 1) setCurrentStep(currentStep - 1);
+  }
+
+  function handleSubmit() {
+    console.log("Form submitted:", formData);
+  }
+
+  function handleChange(e) {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
   const steps = ['Preferences', 'Goals', 'Routines']
   return (
-    <div className="flex flex-col items-center justify-start mt-5 w-full h-[calc(100%-5em)] text-black bg-white shadow-sm rounded-lg">
-      <ul className="flex flex-row items-center justify-between w-full gap-0 p-4">
-        {steps.map((stepp, idx) => (
-          <>
-            <li onClick={() => pushStep(idx)} className={`${step[idx] ? 'text-blue-500' : ''}flex flex-row items-center text-sm gap-4`}>
-              <span>{stepp}</span>
-            </li>
-              {idx !== 2 && <ChevronRight size={18}/>}
-          </>
-        ))}
-      </ul>
+    <div className="flex flex-col w-full h-full items-start justify-start">
+      <ProgressBar currentStep={step.length} totalSteps={steps} />
     </div>
   )
 }
