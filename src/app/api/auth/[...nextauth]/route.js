@@ -23,7 +23,6 @@ export const authOptions = {
   ],
   callbacks: {
     async signIn({ account, profile }) {
-      console.log('profile:', profile);
       if (!profile?.email) {
         throw new Error('No profile email found');
       }
@@ -41,19 +40,15 @@ export const authOptions = {
             name: profile.name,
           },
         });
-        console.log('Upsert result:', result);
       } catch (error) {
-        console.error('Error writing to database:', error);
         throw new Error('Database error');
       }
 
       return true;
     },
     async jwt({ token, user, account }) {
-      console.log('JWT Callback - token:', token);
-      console.log('JWT Callback - account:', account);
-
-      if (account) {
+    
+    if (account) {
         token.accessToken = account.access_token;
       }
 
@@ -66,7 +61,6 @@ export const authOptions = {
       return token;
     },
     async session({ session, token }) {
-      console.log('Session Callback - token:', token);
 
       session.user = {
         ...session.user,

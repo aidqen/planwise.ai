@@ -3,8 +3,8 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "../auth/[...nextauth]/route"
 
 export async function GET(req) {
-  const session = await getUserSession()
-  console.log('session:', session)
+  const session = await getServerSession(authOptions)
+  
 
   if (!session?.accessToken) {
     return new Response(JSON.stringify({ error: 'Not authenticated' }), {
@@ -14,7 +14,7 @@ export async function GET(req) {
 
   try {
     const events = await getCalendarEvents(session.accessToken)
-    console.log('session.accessToken:', session.accessToken)
+    
     return new Response(JSON.stringify(events), { status: 200 })
   } catch (error) {
     console.error('Failed to fetch calendar events:', error)
