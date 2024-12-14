@@ -49,7 +49,7 @@ export function AddGoals() {
                             size="icon"
                             className="bg-blue-500 hover:bg-blue-600 text-white rounded-[10px] w-10 h-10 flex items-center justify-center"
                         >
-                            <Plus className="h-6 w-6" />
+                            <Plus className="h-8 w-8" />
                         </Button>
                     </div>
 

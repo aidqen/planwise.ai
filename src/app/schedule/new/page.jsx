@@ -1,12 +1,9 @@
 'use client'
 
-import TimePicker from '@/components/TimePicker'
-import { ChevronRight, Clock } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Preferences } from './components/Preferences'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
-import { Goals } from './components/Goals'
 import { AddGoals } from './components/AddGoals'
 
 export default function ScheduleNew() {
