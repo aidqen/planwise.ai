@@ -1,6 +1,5 @@
 'use client'
 
-import { ProgressBar } from '@/components/ProgressBar'
 import TimePicker from '@/components/TimePicker'
 import { ChevronRight, Clock } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
