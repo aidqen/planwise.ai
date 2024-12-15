@@ -1,26 +1,32 @@
 'use client'
 import { getUserSession } from '@/lib/session'
+import { getUser } from '@/store/actions/user.actions'
 import { Component, Search } from 'lucide-react'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
 export function AppHeader() {
   const user = useSelector(state => state.userModule.user)
+
+  useEffect(() => {
+    getUser()
+  }, [])
+  
 
   // async function fetchCalendar() {
   //   const response = await fetch("/api/calendar-events");
   //   const data = await response.json()
   // }
   return (
-    <header className="flex flex-row items-center justify-between">
-      <div className="flex justify-center items-center p-2 rounded-full bg-secondaryLight shadow-md">
+    <header className="flex flex-row w-full items-center justify-between">
+      <button className="flex justify-center items-center p-2 rounded-full bg-secondaryLight shadow-md">
         <Component className="text-black" />
-      </div>
+      </button>
       <div className="flex flex-row items-center gap-8">
-        <div className="flex justify-center items-center p-2 rounded-full bg-secondaryLight shadow-md">
+        <button className="flex justify-center items-center p-2 rounded-full bg-secondaryLight border shadow-md">
           <Search className="text-black" />
-        </div>
+        </button>
         <Image
           src={
             user?.image ||

@@ -8,7 +8,7 @@ export const SET_SCORE = 'SET_SCORE'
 
 const initialState = {
     count: 10,
-    user: getUser(),
+    user: null,
     users: [],
     watchedUser : null
 }
