@@ -4,9 +4,14 @@ import React, { useState } from 'react';
 import * as Popover from '@radix-ui/react-popover';
 import { Clock } from 'lucide-react';
 
-export default function TimePicker({ timeType }) {
-    const [time, setTime] = useState(timeType === 'Wake Up' ? '7:00 AM' : '7:00 PM');
+export default function TimePicker({ timeType, wakeup, sleep, setPreferences }) {
+    // const [time, setTime] = useState(timeType === 'Wake Up' ? '7:00 AM' : '7:00 PM');
+    const time = timeType === 'Wake Up' ? wakeup : sleep
 
+    function handleTimeChange({target}) {
+        const timeTypeKey = timeType === 'Wake Up' ? 'wakeup' : 'sleep';
+        setPreferences(state => ({...state, [timeTypeKey]: target.value}));
+    }
 
     function generateTimeSlots(startHour, endHour) {
         const slots = [];
@@ -33,30 +38,30 @@ export default function TimePicker({ timeType }) {
 
     return (
         <Popover.Root>
-            <Popover.Trigger className="inline-flex items-center justify-start w-full py-3 px-7 me-2 text-sm font-medium text-black/70 border-gray-200 border focus:outline-none bg-white rounded-lg  hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 shadow-md">
+            <Popover.Trigger className="inline-flex items-center justify-start w-full py-3 px-6 me-2 text-sm font-medium text-black/70 border-gray-200 border focus:outline-none bg-white text-black rounded-lg  hover:bg-gray-100 hover:text-third focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 shadow-md transition-colors">
                 <Clock className="w-6 h-6 mr-2" />
                 {time}
             </Popover.Trigger>
             <Popover.Content
-                className="p-4 bg-white border rounded-md shadow-lg"
+                className=" bg-white border rounded-md shadow-lg"
                 sideOffset={4}
                 style={{ zIndex: 1050 }} // Set a high z-index to ensure it renders on top
             >
-                <ul className="grid p-2 grid-cols-2 gap-4 my-5 h-[20em] overflow-auto z-[100] bg-white">
+                <ul className="grid p-3 grid-cols-2 gap-4 my-5 h-[20em] overflow-auto z-[100] bg-white">
                     {timeSlotView.map((slot) => (
                         <li key={slot.id}>
                             <input
                                 type="radio"
                                 id={slot.id}
-                                value={slot.id}
+                                value={slot.label}
                                 name="timetable"
                                 checked={time === slot.id}
-                                onChange={() => setTime(slot.id)}
+                                onChange={handleTimeChange}
                                 className="hidden peer"
                             />
                             <label
                                 htmlFor={slot.id}
-                                className="inline-flex items-center justify-center w-max p-2 text-base font-medium text-center bg-white border rounded-lg cursor-pointer text-blue-600 border-blue-600 dark:hover:text-white dark:border-blue-500 dark:peer-checked:border-blue-500 peer-checked:border-blue-600 peer-checked:bg-blue-600 hover:text-white peer-checked:text-white hover:bg-blue-500 dark:text-blue-500 dark:bg-gray-900 dark:hover:bg-blue-600 dark:hover:border-blue-600 dark:peer-checked:bg-blue-500 uppercase"
+                                className="inline-flex items-center justify-center w-[5.5em] py-[0.35em] px-2 text-base font-medium text-center bg-third border rounded-lg cursor-pointer text-white bg-secondary border-blue-600 dark:hover:text-white dark:border-blue-500 dark:peer-checked:border-blue-500 peer-checked:border-blue-600 peer-checked:bg-blue-600 hover:text-white peer-checked:text-white hover:bg-third/90 dark:text-blue-500 dark:bg-gray-900 dark:hover:bg-blue-600 dark:hover:border-blue-600 dark:peer-checked:bg-blue-500 uppercase"
                             >
                                 {slot.label}
                             </label>

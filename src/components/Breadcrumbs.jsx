@@ -15,12 +15,11 @@ export function Breadcrumbs({ currentIdx, setStep }) {
         { label: "Preferences"},
         { label: "Goals"},
         { label: "Routines"},
-        { label: "Reviews"},
     ];
 
     return (
-        <Breadcrumb className="mb-12">
-            <BreadcrumbList>
+        <Breadcrumb className="mb-4">
+            <BreadcrumbList className="flex w-[30em]">
                 {breadcrumbItems.map((item, index) => (
                     <React.Fragment key={index}>
                     {/* <div key={index} className="flex flex-row items-center"> */}
@@ -30,7 +29,7 @@ export function Breadcrumbs({ currentIdx, setStep }) {
                                     className={`${currentIdx >= index
                                         ? "text-green-600 font-semibold"
                                         : "text-black/70"
-                                        } text-base`}
+                                        } max-sm:text-sm text-lg`}
                                 >
                                     {item.label}
                                 </BreadcrumbLink>
