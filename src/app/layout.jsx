@@ -14,14 +14,14 @@ export const metadata = {
 
 const poppins = Poppins({
   subsets: ['latin'], // Loads characters for most Western languages
-  weight: ['100','200', '300', '400', '500', '600','700', '800', '900'], // Includes all weights
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'], // Includes all weights
 })
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={poppins.className}>
-      <body className={`h-screen w-screen  bg-mainLight font-[poppins]`}>
-        <main className="px-6 pt-10 w-full h-full">
+      <body className={`h-screen w-screen bg-mainLight font-[poppins]`}>
+        <main className="pt-10 p-6 w-full h-full flex flex-col items-center">
           <ReduxProvider>
             <AppHeader />
             {children}
