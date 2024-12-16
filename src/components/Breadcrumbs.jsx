@@ -34,7 +34,9 @@ export function Breadcrumbs({ currentIdx, setStep }) {
                                     {item.label}
                                 </BreadcrumbLink>
                             </BreadcrumbItem>
-                            {index < breadcrumbItems.length - 1 && <BreadcrumbSeparator />}
+                            {index < breadcrumbItems.length - 1 && <BreadcrumbSeparator className={`${currentIdx >= index
+                                        ? "text-green-600 font-semibold"
+                                        : "text-black/70"}`} />}
                      {/* </div> */}
                     </React.Fragment>
 
