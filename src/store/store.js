@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { carReducer } from './reducers/car.reducer';
+import { scheduleReducer } from './reducers/schedule.reducer';
 import { userReducer } from './reducers/user.reducer';
 import { systemReducer } from './reducers/system.reducer';
 
 export const store = configureStore({
     reducer: {
-        carModule: carReducer,
+        scheduleModule: scheduleReducer,
         userModule: userReducer,
         systemModule: systemReducer,
     },

@@ -7,9 +7,13 @@ import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { AddGoals } from './components/AddGoals'
 import { Routines } from './components/Routines'
 import { ConfettiButton } from '@/components/ui/confetti-button'
+import { useSelector } from 'react-redux'
 
 export default function ScheduleNew() {
   const [step, setStep] = useState(0)
+  const multiStepForm = useSelector(state => state.scheduleModule.multiStepForm)
+  console.log('multiStepForm:', multiStepForm)
+
   const router = useRouter()
   const searchParams = useSearchParams()
   const totalSteps = 3
@@ -31,7 +35,7 @@ export default function ScheduleNew() {
   function renderStepContent() {
     switch (step) {
       case 0:
-        return <Preferences />
+        return <Preferences/>
       case 1:
         return <AddGoals />
       case 2:

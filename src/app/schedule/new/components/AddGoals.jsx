@@ -1,18 +1,28 @@
 'use client'
 
-import React, { useState } from 'react'
-import { Grip, GripVertical, Plus, PlusCircle, X } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
+import { GripVertical, Plus, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Card, CardContent } from '@/components/ui/card'
 import { motion, AnimatePresence, Reorder } from 'framer-motion'
 import { makeId } from '@/services/util.service'
 import { Section } from '@/components/ui/section'
+import { useDispatch } from 'react-redux'
+import { SAVE_GOALS } from '@/store/reducers/schedule.reducer'
 
-export function AddGoals() {
+export function AddGoals({}) {
   const [goals, setGoals] = useState([])
   const [currentGoal, setCurrentGoal] = useState('')
   //   const [nextId, setNextId] = useState(1)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    saveGoals()
+  }, [goals])
+  
+  function saveGoals() {
+    dispatch({ type: SAVE_GOALS, goals })
+  }
 
   function addGoal() {
     if (currentGoal.trim()) {
@@ -51,9 +61,9 @@ export function AddGoals() {
             <Button
               type="submit"
               size="icon"
-              className="bg-third shadow-sm border-gray-300 border hover:bg-blue-600 text-blacks rounded-[10px] w-12 h-10 flex items-center justify-center"
+              className="bg-third shadow-sm border-gray-300 border bg-secondary hover:bg-blue-600 text-blacks rounded-[10px] w-12 h-10 flex items-center justify-center"
             >
-              <Plus className="h-8 w-8" />
+              <Plus className="h-8 w-8 text-white" />
             </Button>
           </div>
           <Reorder.Group
@@ -74,7 +84,10 @@ export function AddGoals() {
                 >
                   <motion.div className="flex flex-row items-center justify-between bg-gray-50 p-2 rounded-lg">
                     <span className="flex flex-row items-center gap-3 text-gray-800">
-                      <GripVertical className='text-gray-800 cursor-grab h-5 w-5 rounded-full ' size={19}/>
+                      <GripVertical
+                        className="text-gray-800 cursor-grab h-5 w-5 rounded-full "
+                        size={19}
+                      />
                       {goal.text}
                     </span>
                     <Button

@@ -2,6 +2,7 @@ import { GoogleSvg } from '@/svgs/GoogleSvg'
 import { AuthInputs } from './components/AuthInputs'
 import { getUserSession } from '@/lib/session'
 import { LogInWithGoogle } from './components/LogInWithGoogle'
+import Image from 'next/image'
 
 export default async function AuthPage() {
 
@@ -25,10 +26,11 @@ export default async function AuthPage() {
         </div>
       </div>
 
-      <div className="flex justify-center items-center max-sm:hidden w-full h-full">
-        <img
+      <div className="relative flex justify-center items-center max-sm:hidden w-full h-full">
+        <Image
           className="h-full w-full xl:h-[calc(100%-1rem)] xl:w-[calc(100%-1rem)] col-start-2 object-cover rounded-[50px]"
           src="https://res.cloudinary.com/di6tqrg5y/image/upload/v1733784472/ai-generated-8814121_1280_nbzs68.webp"
+          fill
           alt="rice-fields-background"
         />
       </div>

@@ -3,11 +3,27 @@ import { getUserSession } from '@/lib/session'
 import { getUser } from '@/store/actions/user.actions'
 import { Component, Search } from 'lucide-react'
 import Image from 'next/image'
-import { useEffect } from 'react'
+import { usePathname, useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 export function AppHeader() {
   const user = useSelector(state => state.userModule.user)
+  const pathname = usePathname()
+  console.log('searchParams:', pathname.includes('auth'))
+  const [isVisible, setIsVisible] = useState(false);
+  
+
+  useEffect(() => {
+    console.log('isVisible' , isVisible);
+    
+    if (pathname.includes('auth')) {
+      setIsVisible(false)
+    } else {
+      setIsVisible(true)
+    }
+  }, [pathname, isVisible])
+  
 
   useEffect(() => {
     getUser()
@@ -19,7 +35,7 @@ export function AppHeader() {
   //   const data = await response.json()
   // }
   return (
-    <header className="flex flex-row w-full items-center justify-between">
+    <header className={`${isVisible ? '' : 'hidden'} flex flex-row w-full items-center justify-between`}>
       <button className="flex justify-center items-center p-2 rounded-full bg-secondaryLight shadow-md">
         <Component className="text-black" />
       </button>

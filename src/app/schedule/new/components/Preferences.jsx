@@ -2,15 +2,24 @@
 import { ScheduleIntensity } from '@/components/ScheduleIntensity'
 import TimePicker from '@/components/TimePicker'
 import { Section } from '@/components/ui/section'
-import { useState } from 'react'
+import { SAVE_PREFERENCES } from '@/store/reducers/schedule.reducer'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 export function Preferences({}) {
+  const dispatch = useDispatch()
+  const preferenceso = useSelector(state => state.scheduleModule.multiStepForm)
   const [preferences, setPreferences] = useState({
     wakeup: '7:00 AM',
     sleep: '10:00 PM',
     intensity: 'relaxed',
   })
   console.log('preferences:', preferences)
+
+  useEffect(() => {
+    dispatch({type: SAVE_PREFERENCES, preferences})
+  }, [preferences])
+  
 
   const timeTypes = ['Wake Up', 'Sleep']
 

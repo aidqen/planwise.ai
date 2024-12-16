@@ -1,17 +1,15 @@
 'use client'
 
-import { useState } from 'react'
-import { Plus, X, Clock, Edit2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { AnimatePresence } from 'framer-motion'
 import { Section } from '@/components/ui/section'
 import { Routine } from './Routine'
 import { AddRoutine } from './AddRoutine'
+import { useDispatch } from 'react-redux'
+import { SAVE_ROUTINES } from '@/store/reducers/schedule.reducer'
 
-export function Routines() {
+export function Routines({ }) {
+  const dispatch = useDispatch()
   const [routines, setRoutines] = useState([])
   const [newRoutine, setNewRoutine] = useState({
     name: '',
@@ -19,8 +17,16 @@ export function Routines() {
     endTime: '',
   })
 
-  function addRoutine(e) {
-    e.preventDefault()
+  useEffect(() => {
+    saveRoutines()
+  }, [routines])
+  
+  function saveRoutines() {
+    dispatch({ type: SAVE_ROUTINES, routines })
+
+  }
+
+  function addRoutine() {
     if (newRoutine.name && newRoutine.startTime && newRoutine.endTime) {
       setRoutines([...routines, { ...newRoutine, id: Date.now(), isEditing: false }])
       setNewRoutine({ name: '', startTime: '', endTime: '' })
@@ -63,7 +69,11 @@ export function Routines() {
         <h1 className="text-xl text-black dark:text-gray-300 my-7">
           Organize your day, boost your productivity
         </h1>
-        <AddRoutine newRoutine={newRoutine} setNewRoutine={setNewRoutine} addRoutine={addRoutine}/>
+        <AddRoutine
+          newRoutine={newRoutine}
+          setNewRoutine={setNewRoutine}
+          addRoutine={addRoutine}
+        />
         <AnimatePresence>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 h-[11em]">
             {routines.map(routine => (

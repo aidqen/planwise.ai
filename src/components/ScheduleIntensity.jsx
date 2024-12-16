@@ -11,9 +11,9 @@ export function ScheduleIntensity({ intensity, handleChange }) {
       title: 'Relaxed Schedule',
       description: 'More breaks, spread out tasks',
       icon: <Leaf size={24} />,
-      borderColor: 'border-green-200',
-      bgColor: 'bg-gradient-to-br from-green-50 to-green-100/50',
-      textColor: 'text-green-500',
+      borderColor: 'border-[#B3E5FC]',
+      bgColor: 'bg-[#E6F7FF]',
+      textColor: 'text-[#29B6F6]',
     },
     {
       id: 'moderate',
@@ -31,16 +31,16 @@ export function ScheduleIntensity({ intensity, handleChange }) {
       title: 'Intense Schedule',
       description: 'Packed schedule, minimal breaks',
       icon: <Zap size={24} />,
-      borderColor: 'border-red-200',
-      bgColor: 'bg-gradient-to-br from-red-50 to-red-100/50',
-      textColor: 'text-red-500',
+      borderColor: 'border-[#FFCDD2]',
+      bgColor: 'bg-[#FFEBEE]',
+      textColor: 'text-[#E53935]',
     },
   ]
 
   return (
     <div className="w-full max-w-sm mx-auto pb-4 space-y-6 rounded-2xl">
       <h3 className="text-lg font-normal text-black/80 text-start">
-        How's your day looking?
+        How&apos;ss your day looking?
       </h3>
       {/* Attach onChange to the RadioGroup */}
       <RadioGroup

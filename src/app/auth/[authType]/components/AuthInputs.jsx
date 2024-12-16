@@ -36,7 +36,7 @@ export function AuthInputs() {
         Log in
       </button>
       <p className="text-black/50 text-xs">
-        Don't have an account?{' '}
+        Don&apos;t have an account?{' '}
         <span className="text-black font-semibold">Sign Up</span>
       </p>
     </>
