@@ -48,7 +48,7 @@ export default function ScheduleNew() {
         <div className="h-[1px] w-full bg-black/10"></div>
         {renderStepContent()}
       </div>
-      <div className=" max-sm:w-full w-[20em] flex flex-row items-center justify-between pt-7">
+      <div className="fixed bottom-0 left-0 py-10 px-5 max-sm:w-full w-[20em] flex flex-row items-center justify-between pt-7">
         <button
           onClick={goBackStep}
           className="px-10 py-2.5 rounded-lg font-medium transition-all duration-300 transform hover:scale-[1.02] bg-white hover:bg-gray-50 text-gray-700 shadow-md border border-gray-200"

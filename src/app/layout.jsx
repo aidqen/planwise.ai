@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={poppins.className}>
       <body className={`h-screen w-screen bg-mainLight font-[poppins]`}>
-        <main className="pt-10 p-6 w-full h-full flex flex-col items-center">
+        <main className="pt-10 px-6 w-full h-full flex flex-col items-center">
           <ReduxProvider>
             <AppHeader />
             {children}
