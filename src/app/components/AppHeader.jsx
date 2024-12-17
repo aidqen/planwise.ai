@@ -35,7 +35,7 @@ export function AppHeader() {
   //   const data = await response.json()
   // }
   return (
-    <header className={`${isVisible ? '' : 'hidden'} flex flex-row w-full items-center justify-between`}>
+    <header className={`${isVisible ? '' : 'hidden'} pb-3 flex flex-row w-full items-center justify-between`}>
       <button className="flex justify-center items-center p-2 rounded-full bg-secondaryLight shadow-md">
         <Component className="text-black" />
       </button>

@@ -5,8 +5,10 @@ import { HomepageActions } from './components/HomepageActions'
 
 export default function Home() {
   const user = useSelector(state => state.userModule.user)
+
   console.log('user:', user)
   return (
+
       <div className="flex flex-col overflow-y-auto h-full w-full items-center justify-start sm:p-20 pb-10">
         <p className="mt-12 xl:mt-5 mb-4 text-[#B6BBC3] max-sm:text-base text-xl w-max capitalize">
           Hello {user?.name?.split(' ').slice(0, 1)} 👋
