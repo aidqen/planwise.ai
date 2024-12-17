@@ -1,9 +1,14 @@
-import React, { useState } from 'react'
+'use client'
+import React from 'react'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import { Leaf, Clock, Zap } from 'lucide-react'
+import { useDispatch, useSelector } from 'react-redux'
+import { SET_INTENSITY } from '@/store/reducers/schedule.reducer'
 
-export function ScheduleIntensity({ intensity, handleChange }) {
+export function ScheduleIntensity({}) {
+  const intensity = useSelector(state => state.scheduleModule.multiStepForm.preferences.intensity)
+  const dispatch = useDispatch()
   const scheduleOptions = [
     {
       id: 'relaxed',
@@ -37,15 +42,18 @@ export function ScheduleIntensity({ intensity, handleChange }) {
     },
   ]
 
+  function handleIntensityChange(target) {
+    dispatch({ type: SET_INTENSITY, intensity: target })
+  }
+
   return (
     <div className="w-full max-w-sm mx-auto pb-4 space-y-6 rounded-2xl">
       <h3 className="text-lg font-normal text-black/80 text-start">
         How&apos;s your day looking?
       </h3>
-      {/* Attach onChange to the RadioGroup */}
       <RadioGroup
         value={intensity}
-        onValueChange={handleChange}
+        onValueChange={handleIntensityChange}
         name="intensity"
         className="grid gap-4 z-0"
       >

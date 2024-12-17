@@ -3,14 +3,20 @@
 import React, { useState } from 'react';
 import * as Popover from '@radix-ui/react-popover';
 import { Clock } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { SET_SLEEP, SET_WAKEUP } from '@/store/reducers/schedule.reducer';
 
-export default function TimePicker({ timeType, wakeup, sleep, setPreferences }) {
+export default function TimePicker({ timeType }) {
     // const [time, setTime] = useState(timeType === 'Wake Up' ? '7:00 AM' : '7:00 PM');
+    const preferences = useSelector(state => state.scheduleModule.multiStepForm.preferences)
+    const dispatch = useDispatch()
+    const { wakeup, sleep } = preferences
     const time = timeType === 'Wake Up' ? wakeup : sleep
 
     function handleTimeChange({target}) {
         const timeTypeKey = timeType === 'Wake Up' ? 'wakeup' : 'sleep';
-        setPreferences(state => ({...state, [timeTypeKey]: target.value}));
+        if (timeTypeKey === 'wakeup') dispatch({type: SET_WAKEUP, wakeup: target.value})
+        else dispatch({type: SET_SLEEP, sleep: target.value})
     }
 
     function generateTimeSlots(startHour, endHour) {
