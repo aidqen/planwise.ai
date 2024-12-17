@@ -22,7 +22,7 @@ export function Routines({ }) {
   }, [routines])
   
   function saveRoutines() {
-    dispatch({ type: SAVE_ROUTINES, routines })
+    dispatch({ type: SAVE_ROUTINES, routines: [...routines] })
 
   }
 

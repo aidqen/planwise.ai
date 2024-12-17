@@ -1,10 +1,13 @@
 export const SAVE_PREFERENCES = 'SAVE_MULTI_STEP_FORM'
 export const SAVE_GOALS = 'SAVE_GOALS'
 export const SAVE_ROUTINES = 'SAVE_ROUTINES'
+export const SET_WAKEUP = 'SET_WAKEUP'
+export const SET_SLEEP = 'SET_SLEEP'
+export const SET_INTENSITY = 'SET_INTENSITY'
 
 
 const initialState = {
-    multiStepForm: { preferences: {}, goals: [], routines: [] },
+    multiStepForm: { preferences: {wakeup: '7:00 AM', sleep: '10:00 PM', intensity: 'moderate'}, goals: [], routines: [] },
 }
 
 export function scheduleReducer(state = initialState, action) {
@@ -13,11 +16,20 @@ export function scheduleReducer(state = initialState, action) {
         case SAVE_PREFERENCES:
             newState = { ...state, multiStepForm: {...state.multiStepForm, preferences: {...action.preferences}} }
             break
+        case SET_WAKEUP:
+            newState = { ...state, multiStepForm: {...state.multiStepForm, preferences: {...state.multiStepForm.preferences, wakeup: action.wakeup}} }
+            break
+        case SET_SLEEP:
+            newState = { ...state, multiStepForm: {...state.multiStepForm, preferences: {...state.multiStepForm.preferences, sleep: action.sleep}} }
+            break
+        case SET_INTENSITY:
+            newState = { ...state, multiStepForm: {...state.multiStepForm, preferences: {...state.multiStepForm.preferences, intensity: action.intensity}} }
+            break
         case SAVE_GOALS:
-            newState = { ...state, multiStepForm: {...state.multiStepForm, goals: {...action.goals}} }
+            newState = { ...state, multiStepForm: {...state.multiStepForm, goals: [...action.goals]} }
             break
         case SAVE_ROUTINES:
-            newState = { ...state, multiStepForm: {...state.multiStepForm, routines: {...action.routines}} }
+            newState = { ...state, multiStepForm: {...state.multiStepForm, routines: [...action.routines]} }
             break
 
         // case SET_CARS:

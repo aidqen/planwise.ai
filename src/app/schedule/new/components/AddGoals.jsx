@@ -7,32 +7,34 @@ import { Input } from '@/components/ui/input'
 import { motion, AnimatePresence, Reorder } from 'framer-motion'
 import { makeId } from '@/services/util.service'
 import { Section } from '@/components/ui/section'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { SAVE_GOALS } from '@/store/reducers/schedule.reducer'
 
-export function AddGoals({}) {
-  const [goals, setGoals] = useState([])
+export function AddGoals({ }) {
   const [currentGoal, setCurrentGoal] = useState('')
-  //   const [nextId, setNextId] = useState(1)
+  const goals = useSelector(state => state.scheduleModule.multiStepForm.goals)
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    saveGoals()
-  }, [goals])
-  
-  function saveGoals() {
-    dispatch({ type: SAVE_GOALS, goals })
-  }
+  // useEffect(() => {
+  //   saveGoals()
+  // }, [goals])
+
+  // function saveGoals() {
+  //   dispatch({ type: SAVE_GOALS, goals: [...goals] })
+  // }
 
   function addGoal() {
     if (currentGoal.trim()) {
-      setGoals([{ id: makeId(8), text: currentGoal.trim() }, ...goals])
+      dispatch({
+        type: SAVE_GOALS, goals: [{ id: makeId(8), name: currentGoal.trim() },
+        ...goals]
+      })
       setCurrentGoal('')
     }
   }
 
   function removeGoal(id) {
-    setGoals(goals.filter(goal => goal.id !== id))
+    dispatch({ type: SAVE_GOALS, goals: goals.filter(goal => goal.id !== id) })
   }
 
   function handleSubmit(e) {
@@ -69,7 +71,7 @@ export function AddGoals({}) {
           <Reorder.Group
             axis="y"
             values={goals}
-            onReorder={setGoals}
+            onReorder={(newGoals) => dispatch({ type: SAVE_GOALS, goals: newGoals })}
             className="max-h-[20em] overflow-auto"
           >
             <AnimatePresence>
@@ -88,7 +90,7 @@ export function AddGoals({}) {
                         className="text-gray-800 cursor-grab h-5 w-5 rounded-full "
                         size={19}
                       />
-                      {goal.text}
+                      {goal.name}
                     </span>
                     <Button
                       type="button"
