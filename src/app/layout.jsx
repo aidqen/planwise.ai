@@ -1,8 +1,7 @@
-import { SessionProvider } from 'next-auth/react'
 import './globals.css'
-import { Montserrat, Poppins, Roboto } from '@next/font/google'
 import { AppHeader } from './components/AppHeader'
 import { ReduxProvider } from '@/components/ReduxProvider'
+import { Poppins } from '@next/font/google'
 
 export const metadata = {
   title: 'Planwise AI',
