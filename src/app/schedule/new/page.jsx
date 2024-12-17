@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { Preferences } from './components/Preferences'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { AddGoals } from './components/AddGoals'
@@ -9,7 +9,16 @@ import { Routines } from './components/Routines'
 import { ConfettiButton } from '@/components/ui/confetti-button'
 import { useSelector } from 'react-redux'
 
-export default function ScheduleNew() {
+export default function SuspenseContainer() {
+
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ScheduleNew />
+    </Suspense>
+  )
+}
+
+export function ScheduleNew() {
   const [step, setStep] = useState(0)
   const multiStepForm = useSelector(state => state.scheduleModule.multiStepForm)
   console.log('multiStepForm:', multiStepForm)
@@ -35,7 +44,7 @@ export default function ScheduleNew() {
   function renderStepContent() {
     switch (step) {
       case 0:
-        return <Preferences/>
+        return <Preferences />
       case 1:
         return <AddGoals />
       case 2:
