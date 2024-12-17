@@ -40,7 +40,7 @@ export function ScheduleIntensity({ intensity, handleChange }) {
   return (
     <div className="w-full max-w-sm mx-auto pb-4 space-y-6 rounded-2xl">
       <h3 className="text-lg font-normal text-black/80 text-start">
-        How&apos;ss your day looking?
+        How&apos;s your day looking?
       </h3>
       {/* Attach onChange to the RadioGroup */}
       <RadioGroup

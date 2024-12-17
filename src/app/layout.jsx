@@ -1,7 +1,7 @@
 import './globals.css'
 import { AppHeader } from './components/AppHeader'
 import { ReduxProvider } from '@/components/ReduxProvider'
-import { Poppins } from '@next/font/google'
+import { Poppins } from 'next/font/google';
 
 export const metadata = {
   title: 'Planwise AI',
@@ -30,3 +30,4 @@ export default function RootLayout({ children }) {
     </html>
   )
 }
+ 
