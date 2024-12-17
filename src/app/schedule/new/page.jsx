@@ -29,6 +29,7 @@ function ScheduleNewContent() {
   }
 
   function goForwardStep() {
+    if (step === 2) return router.push('/schedule/new/final')
     setStep(prev => prev + 1)
   }
 
@@ -40,44 +41,44 @@ function ScheduleNewContent() {
         return <AddGoals />
       case 2:
         return <Routines />
-      default:
-        router.push('/schedule/new/final')
+      // default:
+      //   router.push('/schedule/new/final')
     }
   }
 
   return (
-    <div className="relative flex flex-col items-center justify-between max-sm:mt-5 mt-2 max-sm:w-full w-[40%] h-[calc(100%-5em)] text-black pt-10 rounded-xl">
-      <div className="w-full max-sm:block flex flex-col items-center">
-        <Breadcrumbs currentIdx={step} setStep={setStep} />
-        <div className="h-[1px] w-full bg-black/10"></div>
-        {renderStepContent()}
-      </div>
-      <div className="fixed bottom-0 left-0 py-10 px-5 max-sm:w-full w-[20em] flex flex-row items-center justify-between pt-7">
-        <button
-          onClick={goBackStep}
-          className="px-10 py-2.5 rounded-lg font-medium transition-all duration-300 transform hover:scale-[1.02] bg-white hover:bg-gray-50 text-gray-700 shadow-md border border-gray-200"
-        >
-          Back
-        </button>
-        {step === 2 ? (
-          <ConfettiButton>
+      <div className="relative flex flex-col items-center justify-between max-sm:w-full w-[40%] h-[calc(100%-5em)] text-black pt-7 rounded-xl">
+        <div className="w-full max-sm:block flex flex-col items-center">
+          <Breadcrumbs currentIdx={step} setStep={setStep} />
+          <div className="h-[1px] w-full bg-black/10"></div>
+          {renderStepContent()}
+        </div>
+        <div className="fixed bottom-0 left-0 py-10 w-full flex flex-row items-center max-sm:justify-center max-sm:gap-5 justify-center gap-20 pt-7">
+          <button
+            onClick={goBackStep}
+            className="px-10 py-2.5 rounded-lg font-medium transition-all duration-300 transform hover:scale-[1.02] bg-white hover:bg-gray-50 text-gray-700 shadow-md border border-gray-200"
+          >
+            Back
+          </button>
+          {step === 2 ? (
+            <ConfettiButton>
+              <button
+                onClick={goForwardStep}
+                className="px-8 py-2.5 rounded-lg font-medium transition-all duration-300 transform hover:scale-[1.02] bg-secondary hover:bg-secondary/80 text-white shadow-md border border-secondary whitespace-nowrap"
+              >
+                Complete
+              </button>
+            </ConfettiButton>
+          ) : (
             <button
               onClick={goForwardStep}
-              className="px-8 py-2.5 rounded-lg font-medium transition-all duration-300 transform hover:scale-[1.02] bg-secondary hover:bg-secondary/80 text-white shadow-md border border-secondary whitespace-nowrap"
+              className="px-8 py-2.5 rounded-lg font-medium transition-all duration-300 transform hover:scale-[1.02] bg-green-400 hover:bg-green-500 text-white shadow-md border border-green-300 whitespace-nowrap"
             >
-              Complete
+              Save and Next
             </button>
-          </ConfettiButton>
-        ) : (
-          <button
-            onClick={goForwardStep}
-            className="px-8 py-2.5 rounded-lg font-medium transition-all duration-300 transform hover:scale-[1.02] bg-green-400 hover:bg-green-500 text-white shadow-md border border-green-300 whitespace-nowrap"
-          >
-            Save and Next
-          </button>
-        )}
+          )}
+        </div>
       </div>
-    </div>
   )
 }
 
