@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Suspense, useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { Preferences } from './components/Preferences'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { AddGoals } from './components/AddGoals'
@@ -9,16 +9,7 @@ import { Routines } from './components/Routines'
 import { ConfettiButton } from '@/components/ui/confetti-button'
 import { useSelector } from 'react-redux'
 
-export default function SuspenseContainer() {
-
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <ScheduleNew />
-    </Suspense>
-  )
-}
-
-export function ScheduleNew() {
+function ScheduleNewContent() {
   const [step, setStep] = useState(0)
   const multiStepForm = useSelector(state => state.scheduleModule.multiStepForm)
   console.log('multiStepForm:', multiStepForm)
@@ -55,7 +46,7 @@ export function ScheduleNew() {
   }
 
   return (
-    <div className="relative flex flex-col items-center justify-between max-sm:mt-5 mt-2 max-sm:w-full w-[40%]  h-[calc(100%-5em)] text-black pt-10 rounded-xl ">
+    <div className="relative flex flex-col items-center justify-between max-sm:mt-5 mt-2 max-sm:w-full w-[40%] h-[calc(100%-5em)] text-black pt-10 rounded-xl">
       <div className="w-full max-sm:block flex flex-col items-center">
         <Breadcrumbs currentIdx={step} setStep={setStep} />
         <div className="h-[1px] w-full bg-black/10"></div>
@@ -87,5 +78,13 @@ export function ScheduleNew() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function ScheduleNew() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ScheduleNewContent />
+    </Suspense>
   )
 }
