@@ -10,13 +10,25 @@ import { ConfettiButton } from '@/components/ui/confetti-button'
 import { useSelector } from 'react-redux'
 
 function ScheduleNewContent() {
-  const [step, setStep] = useState(0)
+  const [step, setStep] = useState(0) // Default value, will update below
+
   const multiStepForm = useSelector(state => state.scheduleModule.multiStepForm)
   console.log('multiStepForm:', multiStepForm)
-
+  
   const router = useRouter()
   const searchParams = useSearchParams()
   const totalSteps = 3
+  
+  useEffect(() => {
+    // Parse the step value from the query params
+    const stepFromQuery = parseInt(searchParams.get('step'), 10)
+    console.log('searchParams.get(step):', searchParams.get('step'))
+    
+    // Update step state only if stepFromQuery is valid
+    if (!isNaN(stepFromQuery) && stepFromQuery >= 0 && stepFromQuery < totalSteps) {
+      setStep(stepFromQuery)
+    }
+  }, [searchParams])
 
   useEffect(() => {
     const currentSearchParams = new URLSearchParams(searchParams.toString())
@@ -47,7 +59,7 @@ function ScheduleNewContent() {
   }
 
   return (
-      <div className="relative flex flex-col items-center justify-between max-sm:w-full w-[40%] h-[calc(100%-5em)] text-black pt-7 rounded-xl">
+      <div className="relative flex flex-col items-center justify-between max-sm:w-full w-[40%] h-[calc(100%-5em)] overflow-y-auto overflow-x-hidden text-black pt-5 rounded-xl pb-20">
         <div className="w-full max-sm:block flex flex-col items-center">
           <Breadcrumbs currentIdx={step} setStep={setStep} />
           <div className="h-[1px] w-full bg-black/10"></div>

@@ -34,7 +34,7 @@ export function ScheduleIntensity({}) {
       id: 'intense',
       value: 'intense',
       title: 'Intense Schedule',
-      description: 'Packed schedule, minimal breaks',
+      description: 'Busy schedule, minimal breaks',
       icon: <Zap size={24} />,
       borderColor: 'border-[#FFCDD2]',
       bgColor: 'bg-[#FFEBEE]',
@@ -55,12 +55,12 @@ export function ScheduleIntensity({}) {
         value={intensity}
         onValueChange={handleIntensityChange}
         name="intensity"
-        className="grid gap-4 z-0"
+        className="flex flex-col items-center gap-4 z-0 w-full"
       >
         {scheduleOptions.map(option => (
           <div
             key={option.id}
-            className={`group relative flex items-center space-x-4 p-2 max-sm:p-2 rounded-xl border-2 ${
+            className={`group relative w-[calc(100%-10px)] flex items-center space-x-4 p-2 max-sm:p-1 rounded-xl border-2 ${
               option.borderColor
             } ${option.bgColor} gap-3 ${
               intensity === option.value ? 'scale-[1.02]' : ''

@@ -16,7 +16,7 @@ export function Preferences({ }) {
 
   return (
     <Section>
-      <div className="flex flex-col max-sm:items-start items-center gap-5 w-full mt-7">
+      <div className="flex flex-col max-sm:items-start items-center gap-3 w-full h-full mt-7">
         <h1 className="text-xl mb-2">Add your preferences!</h1>
         <div className="flex flex-row justify-between items-center max-sm:w-full w-[30em] mb-3">
           {timeTypes.map(timeType => (
