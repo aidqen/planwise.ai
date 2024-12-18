@@ -7,13 +7,13 @@ import Image from 'next/image'
 export default async function AuthPage() {
 
   return (
-    <div className="grid grid-cols-[57%_43%] max-sm:grid-cols-1 p-[0.35em] h-screen w-screen bg-white">
+    <div className="fixed left-0 top-0 grid grid-cols-[57%_43%] max-sm:grid-cols-1 p-[0.35em] max-sm:p-[0.2em] h-screen w-screen bg-white">
       <div className="flex flex-col items-center justify-center col-start-1">
-        <h1 className="font-bold text-black/80 text-6xl max-sm:text-4xl mb-20 text-center">
+        <h1 className="font-bold text-black/80 text-6xl max-sm:text-4xl mb-20 max-sm:mb-10 text-center">
           Welcome back to <br /> Planwise AI 🍀
         </h1>
-        <div className="flex flex-col w-[23rem] max-sm:w-[70%] justify-center items-center">
-          <p className="text-black text-[0.9em] font-semibold mb-8">
+        <div className="flex flex-col w-[23rem] max-sm:w-[80%] justify-center items-center">
+          <p className="text-black text-[0.9em] mb-8">
             Please enter your details.
           </p>
           <LogInWithGoogle />

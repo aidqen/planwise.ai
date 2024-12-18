@@ -23,12 +23,12 @@ export function AuthInputs() {
           <input type="checkbox" name="remember" id="remember" className="" />
           <label
             htmlFor="remember"
-            className="text-black/80 font-semibold text-xs max-sm:text-[0.7em]"
+            className="text-black/80 font-semibold text-xxs max-sm:text-[0.7em] whitespace-nowrap"
           >
             Remember for 30 days
           </label>
         </div>
-        <p className="text-black/50 font-semibold text-xs max-sm:text-[0.7em]">
+        <p className="text-black/50 font-semibold text-xs max-sm:text-[0.7em] whitespace-nowrap">
           Forgot password?
         </p>
       </div>
