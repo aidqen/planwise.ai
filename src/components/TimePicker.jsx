@@ -39,7 +39,9 @@ export default function TimePicker({ timeType }) {
     }
 
     const wakeupTimeSlots = generateTimeSlots(4, 13)
+    console.log('wakeupTimeSlots:', wakeupTimeSlots)
     const sleepTimeSlots = generateTimeSlots(19, 4)
+    console.log('sleepTimeSlots:', sleepTimeSlots)
     const timeSlotView = timeType === 'Wake Up' ? wakeupTimeSlots : sleepTimeSlots
 
     return (

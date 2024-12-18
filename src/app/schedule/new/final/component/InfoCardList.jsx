@@ -17,7 +17,7 @@ export function InfoCardList() {
     ];
 
     return (
-        <div className="grid gap-6">
+        <div className="grid gap-4">
             {scheduleCardList.map((item, index) => (
                 <InfoCard key={index} item={item} />
             ))}
