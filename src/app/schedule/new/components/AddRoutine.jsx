@@ -40,13 +40,13 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine }) {
   }
 
   return (
-    <Card className="mb-8 p-4 bg-transparent shadow-none border-transparent hover:shadow-xl transition-shadow duration-300">
+    <Card className="mb-8 p-5 bg-white/50 backdrop-blur-sm border border-gray-200/50 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
       <CardContent className="p-0">
-        <form onSubmit={handleSubmit} className="space-y-3 relative">
-          <div className="flex flex-col gap-1">
+        <form onSubmit={handleSubmit} className="space-y-4 relative">
+          <div className="flex flex-col gap-2">
             <Label
               htmlFor="routineName"
-              className="text-sm font-medium text-gray-700 dark:text-gray-300"
+              className="text-sm font-semibold text-gray-700 dark:text-gray-300"
             >
               Routine Name
             </Label>
@@ -56,18 +56,19 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine }) {
               value={newRoutine.name}
               onChange={e => setNewRoutine({ ...newRoutine, name: e.target.value })}
               required
-              className="h-10 px-3 py-2 border rounded-lg shadow-sm 
-    focus-visible:ring-2 focus-visible:ring-blue-500 
-    focus-visible:ring-offset-2 focus-visible:border-blue-500
-    ring-2 ring-blue-200 truncate"
+              className="h-11 px-4 py-2 border border-gray-200 rounded-lg shadow-sm
+                focus-visible:ring-2 focus-visible:ring-blue-500/50
+                focus-visible:border-blue-500 
+                placeholder:text-gray-400
+                transition-all duration-200"
             />
           </div>
 
-          <div className="flex space-x-4 items-start">
-            <div className="flex-1 relative">
+          <div className="grid grid-cols-2 gap-6">
+            <div className="flex flex-col gap-2">
               <Label
                 htmlFor="startTime"
-                className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="text-sm font-semibold text-gray-700 dark:text-gray-300"
               >
                 Start Time
               </Label>
@@ -79,14 +80,17 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine }) {
                   setNewRoutine({ ...newRoutine, startTime: e.target.value })
                 }
                 required
-                className="mt-1"
+                className="h-11 px-4 py-2 border border-gray-200 rounded-lg shadow-sm
+                  focus-visible:ring-2 focus-visible:ring-blue-500/50
+                  focus-visible:border-blue-500
+                  transition-all duration-200"
               />
             </div>
 
-            <div className="flex-1 relative">
+            <div className="flex flex-col gap-2">
               <Label
                 htmlFor="endTime"
-                className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="text-sm font-semibold text-gray-700 dark:text-gray-300"
               >
                 End Time
               </Label>
@@ -99,7 +103,11 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine }) {
                     setNewRoutine({ ...newRoutine, endTime: e.target.value })
                   }
                   required
-                  className={`mt-1 ${endTimeError ? 'border-red-500 focus-within:ring-red-500' : ''}`}
+                  className={`h-11 px-4 py-2 border rounded-lg shadow-sm
+                    focus-visible:ring-2 focus-visible:ring-blue-500/50
+                    focus-visible:border-blue-500
+                    transition-all duration-200
+                    ${endTimeError ? 'border-red-500 focus-within:ring-red-500' : 'border-gray-200'}`}
                 />
 
                 <AnimatePresence>
@@ -109,7 +117,7 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine }) {
                       animate={{ opacity: 1, y: -10 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.3 }}
-                      className="absolute bottom-[100%] left-0 w-full bg-white text-red-500 text-sm rounded-md shadow-md px-2 py-1"
+                      className="absolute bottom-[120%] left-0 w-full bg-red-50 text-red-600 text-sm rounded-lg shadow-lg px-3 py-2 border border-red-200"
                     >
                       {errorMessage}
                     </motion.div>
@@ -121,9 +129,9 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine }) {
 
           <Button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white transition-colors duration-300"
+            className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
           >
-            <Plus className="mr-2 h-4 w-4" /> Add Routine
+            <Plus className="mr-2 h-5 w-5" /> Add Routine
           </Button>
         </form>
       </CardContent>
