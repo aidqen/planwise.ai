@@ -29,14 +29,14 @@ export function Breadcrumbs({ currentIdx, setStep }) {
                                     className={`${currentIdx >= index
                                         ? "text-green-600 font-semibold"
                                         : "text-black/70"
-                                        } max-sm:text-sm text-lg`}
+                                        } max-sm:text-base text-lg`}
                                 >
                                     {item.label}
                                 </BreadcrumbLink>
                             </BreadcrumbItem>
                             {index < breadcrumbItems.length - 1 && <BreadcrumbSeparator className={`${currentIdx >= index
-                                        ? "text-green-600 font-semibold"
-                                        : "text-black/70"}`} />}
+                                        ? "text-green-600"
+                                        : "text-black/70"} text-lg`} />}
                      {/* </div> */}
                     </React.Fragment>
 
