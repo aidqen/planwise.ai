@@ -1,12 +1,19 @@
+
+
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { useRouter } from "next/navigation";
 
 export function InfoCard({ item }) {
   const { icon: Icon, title, content, isList, color } = item;
 
+  function navigateToHref() {
+  //   router.push(`/schedule/new/${title}`)
+  }
+
   return (
-    <Card className="grid grid-cols-[65px_1fr] grid-rows-[auto_1fr] shadow-md p-4 ps-0 hover:border-neutral cursor-pointer hover:bg-gray-400/10 transition-colors">
+    <Card onClick={navigateToHref} className="grid grid-cols-[65px_1fr] grid-rows-[auto_1fr] shadow-md p-4 ps-0 hover:border-neutral cursor-pointer hover:bg-gray-400/10 transition-colors">
       {/* Icon in Row 1, Column 1 */}
       <div className="flex justify-center items-center">
         <div
@@ -53,7 +60,7 @@ export function InfoCard({ item }) {
               {content}
             </p>
           ) : (
-            <p className="text-muted-foreground font-medium text-sm text-black/70">None</p>
+            <p className="text-muted-foreground font-medium text-sm text-black/70 italic">None</p>
           )
         )}
       </div>
