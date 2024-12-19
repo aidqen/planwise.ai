@@ -4,10 +4,11 @@ export const SAVE_ROUTINES = 'SAVE_ROUTINES'
 export const SET_WAKEUP = 'SET_WAKEUP'
 export const SET_SLEEP = 'SET_SLEEP'
 export const SET_INTENSITY = 'SET_INTENSITY'
-
+export const SET_AI_SCHEDULE = 'SET_AI_SCHEDULE'
 
 const initialState = {
     multiStepForm: { preferences: {wakeup: '7:00 AM', sleep: '10:00 PM', intensity: 'moderate'}, goals: [], routines: [] },
+    aiSchedule: []
 }
 
 export function scheduleReducer(state = initialState, action) {
@@ -30,6 +31,9 @@ export function scheduleReducer(state = initialState, action) {
             break
         case SAVE_ROUTINES:
             newState = { ...state, multiStepForm: {...state.multiStepForm, routines: [...action.routines]} }
+            break
+        case SET_AI_SCHEDULE:
+            newState = { ...state, aiSchedule: action.aiSchedule }
             break
 
         // case SET_CARS:

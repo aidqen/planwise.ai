@@ -1,5 +1,23 @@
-import { carService } from '../../services/car'
+import { scheduleService } from '@/services/scheduleService'
+import { SET_AI_SCHEDULE } from '../reducers/schedule.reducer'
 import { store } from '../store'
+
+export async function generateAiSchedule(parameters) {
+   try {
+    const aiSchedule = await scheduleService.fetchAiSchedule(parameters)
+    store.dispatch(getCmdAiSchedule(aiSchedule))
+   } catch (err) {
+    console.log('Cannot fetch ai schedule', err)
+    throw err
+   }
+}
+
+function getCmdAiSchedule(aiSchedule) {
+    return {
+        type: SET_AI_SCHEDULE,
+        aiSchedule
+    }
+}
 
 // export async function loadCars(filterBy) {
 //     try {
