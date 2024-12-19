@@ -13,20 +13,35 @@ export default function Home() {
   }, [])
   
 
-  const handleGetRequest = async () => {
-    try {
-      const res = await fetch('/api/test-gpt', { method: 'POST' });
-      const data = await res.json();
-
-      if (res.ok) {
-        console.log('GET Response:', data);
-      } else {
-        console.error('GET Error:', data.error);
-      }
-    } catch (error) {
-      console.error('GET Request Failed:', error);
-    }
-  };
+  // const handleGetRequest = async () => {
+  //   try {
+  //     const res = await fetch('/api/test-gpt', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({
+  //         preferences: { wakeTime: '07:00', sleepTime: '22:00', intensity: 'moderate' },
+  //         routines: [
+  //           { id: 1, title: 'Work', start: '9:00', end: '17:00' },
+  //         ],
+  //         goals: [
+  //           { id: 1, title: 'Learn about indie hacking' },
+  //           { id: 2, title: 'Look better' },
+  //           { id: 3, title: 'Keep in touch with family or friends' },
+  //         ],
+  //       }),
+  //     });
+  
+  //     const data = await res.json();
+  
+  //     if (res.ok) {
+  //       console.log('Response:', data);
+  //     } else {
+  //       console.error('Error:', data.error);
+  //     }
+  //   } catch (error) {
+  //     console.error('Request Failed:', error);
+  //   }
+  // };
 
 
   console.log('user:', user)
