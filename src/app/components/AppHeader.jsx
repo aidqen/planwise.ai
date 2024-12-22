@@ -18,11 +18,11 @@ import { useSelector } from 'react-redux'
 export function AppHeader() {
   const user = useSelector(state => state.userModule.user)
   const pathname = usePathname()
-  console.log('searchParams:', pathname.includes('auth'))
+  
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    console.log('isVisible', isVisible)
+    
 
     if (pathname.includes('auth')) {
       setIsVisible(false)

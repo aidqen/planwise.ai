@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Clock, Edit2, X } from "lucide-react";
 
-export function RoutinePreview({ routine, deleteRoutine, startEditing }) {
+export function RoutinePreview({ routine, deleteRoutine, toggleEditing }) {
      
     return <>
     <CardHeader className="flex px-6 py-1 flex-row items-center justify-between">
@@ -29,7 +29,7 @@ export function RoutinePreview({ routine, deleteRoutine, startEditing }) {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => startEditing(routine.id)}
+          onClick={() => toggleEditing(routine.id, true)}
           className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900 transition-colors duration-300"
         >
           <Edit2 className="h-4 w-4 mr-2" /> Edit

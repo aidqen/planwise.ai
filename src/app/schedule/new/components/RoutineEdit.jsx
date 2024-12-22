@@ -3,7 +3,7 @@ import { CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@radix-ui/react-label'
 
-export function RoutineEdit({ routine, cancelEditing, saveEdit }) {
+export function RoutineEdit({ routine, toggleEditing, saveEdit }) {
   return (
     <CardContent className="p-4">
       <form
@@ -70,7 +70,7 @@ export function RoutineEdit({ routine, cancelEditing, saveEdit }) {
           <Button
             type="button"
             variant="outline"
-            onClick={() => cancelEditing(routine.id)}
+            onClick={() => toggleEditing(routine.id, false)}
           >
             Cancel
           </Button>

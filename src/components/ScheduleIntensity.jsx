@@ -66,24 +66,24 @@ export function ScheduleIntensity({}) {
             style={{
               '--ring-color': option.ringColor
             }}
-            className={`relative flex items-center p-4 rounded-xl border-2 w-[calc(100%-10px)] ${
+            className={`relative flex items-center p-4 rounded-xl border-2 w-[calc(100%-10px)] ${option.borderColor} ${
               intensity === option.value
                 ? `${option.bgColor} ${option.borderColor} ${option.textColor} ring-2 ring-offset-2 ring-[--ring-color]`
-                : `${option.bgColor} border-gray-300 text-neutral hover:border-gray-400`
-            } transition-all duration-200`}
+                : `${option.bgColor} text-gray-300`
+            } transition-all duration-200 `}
           >
             <div
-              className={`flex items-center justify-center w-12 h-12 rounded-full ${option.bgColor} `}
+              className={`flex items-center justify-center w-12 h-12 rounded-full ${option.textColor} `}
             >
               {option.icon}
             </div>
 
             <div className="ml-4 flex-grow">
               <Label htmlFor={option.id} className="flex flex-col cursor-pointer">
-                <span className="font-medium text-lg text-gray-900">
+                <span className=" text-base text-gray-900">
                   {option.title}
                 </span>
-                <span className="text-sm text-gray-500 mt-1">
+                <span className="text-xs text-black/50 mt-1">
                   {option.description}
                 </span>
               </Label>

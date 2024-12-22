@@ -53,8 +53,6 @@ function ScheduleNewContent() {
         return <AddGoals />
       case 2:
         return <Routines />
-      // default:
-      //   router.push('/schedule/new/final')
     }
   }
 

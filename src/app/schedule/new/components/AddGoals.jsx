@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { GripVertical, Plus, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -13,42 +13,38 @@ import {
 } from '@/components/ui/select'
 import { motion, AnimatePresence, Reorder } from 'framer-motion'
 import { makeId } from '@/services/util.service'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { SAVE_GOALS } from '@/store/reducers/schedule.reducer'
 import { Card, CardContent } from '@/components/ui/card'
 import { Section } from '@/components/ui/section'
 
 export function AddGoals() {
-  const [goals, setGoals] = useState([])
+  const goals = useSelector(state => state.scheduleModule.multiStepForm.goals)
   const [currentGoal, setCurrentGoal] = useState('')
   const [currentImportance, setCurrentImportance] = useState('medium')
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    saveGoals()
-  }, [goals])
 
   function saveGoals() {
-    dispatch({ type: SAVE_GOALS, goals })
+    dispatch({ type: SAVE_GOALS, goals:[...goals, {id:makeId(8), text:currentGoal, importance: currentImportance}] })
   }
 
   function addGoal() {
     if (currentGoal.trim()) {
-      setGoals([
-        { id: makeId(8), text: currentGoal.trim(), importance: currentImportance },
-        ...goals,
-      ])
+      saveGoals()
       setCurrentGoal('')
       setCurrentImportance('medium')
     }
   }
 
   function removeGoal(id) {
-    setGoals(goals.filter(goal => goal.id !== id))
+    const editedGoals = goals.filter(goal => goal.id !== id)
+    dispatch({ type: SAVE_GOALS, goals: editedGoals })
   }
 
   function updateGoalImportance(id, importance) {
-    setGoals(goals.map(goal => (goal.id === id ? { ...goal, importance } : goal)))
+    const editedGoals = goals.map(goal => (goal.id === id ? { ...goal, importance } : goal))
+    dispatch({ type: SAVE_GOALS, goals: [...editedGoals] })
   }
 
   function handleSubmit(e) {
@@ -109,7 +105,7 @@ export function AddGoals() {
           <Reorder.Group
             axis="y"
             values={goals}
-            onReorder={setGoals}
+            onReorder={saveGoals}
             className=" space-y-3 max-h-[50%] overflow-auto"
           >
             <AnimatePresence>

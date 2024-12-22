@@ -6,7 +6,8 @@ import { useRouter } from 'next/navigation'
 import { useSelector } from 'react-redux'
 
 export function GenerateScheduleBtn() {
-  const multistepForm = useSelector(state => state.scheduleModule.multistepForm)
+  const multistepForm = useSelector(state => state.scheduleModule.multiStepForm)
+  console.log('multistepForm:', multistepForm)
   const router = useRouter()
 
   async function onGenerateAiSchedule() {

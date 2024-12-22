@@ -3,16 +3,24 @@ import { SET_AI_SCHEDULE } from '../reducers/schedule.reducer'
 import { store } from '../store'
 
 export async function generateAiSchedule(parameters) {
+    const {preferences, routines, goals} = parameters
    try {
-    const aiSchedule = await scheduleService.fetchAiSchedule(parameters)
-    store.dispatch(getCmdAiSchedule(aiSchedule))
+    const timezone = await scheduleService.fetchUserTimezone()
+    console.log('timezone:', timezone)
+    const aiSchedule = await scheduleService.fetchAiSchedule({preferences, routines, goals,timezone})
+    store.dispatch(getCmdAiSchedule(aiSchedule.schedule))
    } catch (err) {
     console.log('Cannot fetch ai schedule', err)
     throw err
-   }
+}
+}
+
+function saveAiSchedule(aiSchedule) {
+
 }
 
 function getCmdAiSchedule(aiSchedule) {
+    console.log('aiSchedule:', aiSchedule)
     return {
         type: SET_AI_SCHEDULE,
         aiSchedule

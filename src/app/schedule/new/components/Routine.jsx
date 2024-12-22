@@ -10,8 +10,7 @@ import { RoutinePreview } from './RoutinePreview'
 export function Routine({
   routine,
   deleteRoutine,
-  startEditing,
-  cancelEditing,
+  toggleEditing,
   saveEdit,
 }) {
   return (
@@ -24,9 +23,9 @@ export function Routine({
     >
       <Card className="h-max shadow-md hover:shadow-lg transition-shadow duration-300 relative">
         {routine.isEditing ? (
-          <RoutineEdit routine={routine} cancelEditing={cancelEditing} saveEdit={saveEdit} />
+          <RoutineEdit routine={routine} toggleEditing={toggleEditing} saveEdit={saveEdit} />
         ) : (
-          <RoutinePreview routine={routine} deleteRoutine={deleteRoutine} startEditing={startEditing} />
+          <RoutinePreview routine={routine} deleteRoutine={deleteRoutine} toggleEditing={toggleEditing} />
         )}
       </Card>
     </motion.div>
