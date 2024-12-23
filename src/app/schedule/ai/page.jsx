@@ -6,11 +6,6 @@ import { CalendarIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
-// import {
-//   Popover,
-//   PopoverContent,
-//   PopoverTrigger,
-// } from "@/components/ui/popover"
 import {
   Card,
   CardContent,
@@ -24,95 +19,111 @@ import { TaskCard } from './components/TaskCard'
 import { TaskDialog } from './components/TaskDialog'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { AddScheduleDialog } from './components/AddScheduleDialog'
 
-export default function DailySchedule({ }) {
+export default function DailySchedule({}) {
+  const [calendarDialogOpen, setCalendarDialogOpen] = useState(false)
   const [selectedTask, setSelectedTask] = useState(null)
-  const [taskSelected, setTaskSelected] = useState(null)
   const [isVisible, setIsVisible] = useState(true)
   const [lastMouseMove, setLastMouseMove] = useState(Date.now())
-  console.log('taskSelected:', taskSelected)
 
   // const aiSchedule = useSelector(state => state.scheduleModule.aiSchedule);
   const aiSchedule = [
     {
-      "id": "routine_01",
+      "id": "task1",
       "summary": "Morning Routine",
-      "description": "Prepare for the day",
-      "timeZone": "Asia/Jerusalem",
+      "description": "Hygiene and getting dressed for the day",
       "start": "07:00",
-      "end": "07:30"
+      "end": "07:30",
+      "timeZone": "Asia/Jerusalem"
     },
     {
-      "id": "meal_01",
+      "id": "task2",
       "summary": "Breakfast",
-      "description": "Enjoy a healthy breakfast",
-      "timeZone": "Asia/Jerusalem",
+      "description": "Enjoy a nutritious breakfast",
+      "start": "07:30",
+      "end": "08:00",
+      "timeZone": "Asia/Jerusalem"
+    },
+    {
+      "id": "task3",
+      "summary": "Learn about indie hacking",
+      "description": "Online research about methodologies to start with indie hacking",
       "start": "08:00",
-      "end": "08:30"
+      "end": "10:00",
+      "timeZone": "Asia/Jerusalem"
     },
     {
-      "id": "goal_01",
-      "summary": "Read a book",
-      "description": "Morning reading session",
-      "timeZone": "Asia/Jerusalem",
-      "start": "08:30",
-      "end": "09:00"
+      "id": "break1",
+      "summary": "Short Break",
+      "description": "Take a short break to recharge",
+      "start": "10:00",
+      "end": "10:15",
+      "timeZone": "Asia/Jerusalem"
     },
     {
-      "id": "routine_02",
-      "summary": "Work",
-      "description": "Scheduled work hours",
-      "timeZone": "Asia/Jerusalem",
-      "start": "09:00",
-      "end": "17:00"
+      "id": "task4",
+      "summary": "Develop my app",
+      "description": "Work on developing essential features",
+      "start": "10:15",
+      "end": "12:00",
+      "timeZone": "Asia/Jerusalem"
     },
     {
-      "id": "meal_02",
+      "id": "task5",
       "summary": "Lunch",
-      "description": "Enjoy a quick lunch break during work",
-      "timeZone": "Asia/Jerusalem",
+      "description": "Enjoy a balanced lunch",
       "start": "12:00",
-      "end": "13:00"
+      "end": "12:30",
+      "timeZone": "Asia/Jerusalem"
     },
     {
-      "id": "goal_02",
-      "summary": "Read a book",
-      "description": "Afternoon reading session",
-      "timeZone": "Asia/Jerusalem",
-      "start": "17:30",
-      "end": "18:00"
+      "id": "task6",
+      "summary": "Workout",
+      "description": "Fit in a quick workout session",
+      "start": "12:30",
+      "end": "13:30",
+      "timeZone": "Asia/Jerusalem"
     },
     {
-      "id": "routine_03",
-      "summary": "Gym",
-      "description": "Workout session",
-      "timeZone": "Asia/Jerusalem",
-      "start": "19:00",
-      "end": "20:00"
+      "id": "task7",
+      "summary": "Develop my app",
+      "description": "Work on finalizing user interface",
+      "start": "13:30",
+      "end": "18:00",
+      "timeZone": "Asia/Jerusalem"
     },
     {
-      "id": "meal_03",
+      "id": "task8",
       "summary": "Dinner",
-      "description": "Have a balanced dinner",
-      "timeZone": "Asia/Jerusalem",
-      "start": "20:30",
-      "end": "21:30"
+      "description": "Have a healthy dinner",
+      "start": "18:00",
+      "end": "18:30",
+      "timeZone": "Asia/Jerusalem"
     },
     {
-      "id": "goal_03",
-      "summary": "Learn Spanish",
-      "description": "Evening Spanish learning session",
-      "timeZone": "Asia/Jerusalem",
-      "start": "21:30",
-      "end": "22:00"
+      "id": "task9",
+      "summary": "Read a book",
+      "description": "Read for leisure or personal development",
+      "start": "18:30",
+      "end": "21:00",
+      "timeZone": "Asia/Jerusalem"
     },
     {
-      "id": "routine_04",
-      "summary": "Night Routine",
-      "description": "Prepare for sleep",
-      "timeZone": "Asia/Jerusalem",
-      "start": "22:00",
-      "end": "22:30"
+      "id": "break2",
+      "summary": "Short Break",
+      "description": "Take a short break to relax",
+      "start": "21:00",
+      "end": "21:15",
+      "timeZone": "Asia/Jerusalem"
+    },
+    {
+      "id": "task10",
+      "summary": "Evening Routine",
+      "description": "Relax and prepare for bed",
+      "start": "21:15",
+      "end": "22:00",
+      "timeZone": "Asia/Jerusalem"
     }
   ]
 
@@ -129,7 +140,7 @@ export default function DailySchedule({ }) {
     }
 
     const checkMouseInactivity = () => {
-      if (Date.now() - lastMouseMove > 3000) {
+      if (Date.now() - lastMouseMove > 1000) {
         setIsVisible(false)
       }
     }
@@ -143,15 +154,19 @@ export default function DailySchedule({ }) {
     }
   }, [lastMouseMove])
 
+  function toggleCalendarDialog() {
+    setCalendarDialogOpen(state => !state)
+  }
+
   function handleTaskClick(task) {
     console.log('task:', task)
     setSelectedTask({ ...task }); // Set the selected task to display in the modal
-    setTaskSelected(task)
   }
 
   function handleCloseModal() {
     setSelectedTask(null); // Close the modal by clearing the selected task
   }
+
 
   const wakeupMinutes = getMinutesFromMidnight(wakeupTime); // Convert wake-up time to minutes from midnight
 
@@ -159,8 +174,8 @@ export default function DailySchedule({ }) {
   if (!aiSchedule?.length) return <div>Loading...</div>;
 
   return (
-    <Card className="w-full max-w-4xl ps-10 mx-auto overflow-y-auto bg-transparent border-none">
-      <CardHeader className="flex flex-col items-start justify-between pb-6 gap-1">
+    <Card className="overflow-y-auto mx-auto w-full max-w-4xl bg-transparent border-none ps-10">
+      <CardHeader className="flex flex-col gap-1 justify-between items-start pb-6">
         <CardTitle className="text-xl font-medium">Daily Schedule</CardTitle>
         <CardDescription className="text-base max-sm:text-sm text-black/60">
           Here&apos;s your AI generated schedule for today
@@ -188,18 +203,44 @@ export default function DailySchedule({ }) {
           ))}
         </div>
       </CardContent>
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }} // Starting animation state
-        animate={isVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }} // Animation on visibility change
-        exit={{ opacity: 0, scale: 0.95 }} // Exit animation
-        transition={{ duration: 0.3 }} // Adjust duration as needed
-        className="fixed bottom-6 right-[50%] -translate-x-1/2"
-      >
-
-        <Button className={cn('fixed bottom-6 right-[50%] -translate-x-1/2 bg-yellow-500 hover:bg-yellow-600', isVisible ? 'opacity-100' : 'opacity-0')}>
-          Add To Google Calendar
+      {/* Mobile: Always visible */}
+      <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 md:hidden">
+        <Button 
+          onClick={toggleCalendarDialog}
+          className="text-gray-100 bg-green-500 shadow-xl transition-all hover:scale-[1.02] duration-100 hover:shadow-xl"
+        >
+          <CalendarIcon />
+          Add To Calendar
         </Button>
-      </motion.div>
+      </div>
+
+      {/* Desktop: Animated */}
+      <div className="hidden md:block">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={isVisible ? 
+            { opacity: 1, y: 0, scale: 1 } : 
+            { opacity: 0, y: 50, scale: 0.95 }
+          }
+          exit={{ opacity: 0, y: 20, scale: 0.95 }}
+          transition={{ 
+            type: "spring",
+            stiffness: 400,
+            damping: 30,
+            mass: 1
+          }}
+          className="fixed bottom-6 left-1/2 transform -translate-x-1/2"
+        >
+          <Button 
+            onClick={toggleCalendarDialog}
+            className="text-gray-100 bg-green-500 shadow-md transition-all hover:scale-[1.02] duration-100 hover:shadow-xl"
+          >
+            <CalendarIcon />
+            Add To Calendar
+          </Button>
+        </motion.div>
+      </div>
+      <AddScheduleDialog open={calendarDialogOpen} setOpen={setCalendarDialogOpen} />
       <TaskDialog selectedTask={selectedTask} handleCloseModal={handleCloseModal} />
     </Card>
   );
