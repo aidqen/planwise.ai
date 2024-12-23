@@ -28,7 +28,7 @@ export const authOptions = {
       }
 
       try {
-        const result = await prisma.user.upsert({
+         await prisma.user.upsert({
           where: {
             email: profile.email,
           },
