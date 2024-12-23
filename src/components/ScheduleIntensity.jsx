@@ -52,13 +52,13 @@ export function ScheduleIntensity({}) {
   }
 
   return (
-    <div className="w-full max-w-md mx-auto pb-6 space-y-6">
+    <div className="pb-6 mx-auto space-y-6 w-full max-w-md">
       
       <RadioGroup
         value={intensity}
         onValueChange={handleIntensityChange}
         name="intensity"
-        className="grid grid-cols-1 place-items-center gap-4 w-full"
+        className="grid grid-cols-1 gap-4 place-items-center w-full"
       >
         {scheduleOptions.map(option => (
           <div
@@ -78,12 +78,12 @@ export function ScheduleIntensity({}) {
               {option.icon}
             </div>
 
-            <div className="ml-4 flex-grow">
+            <div className="flex-grow ml-4">
               <Label htmlFor={option.id} className="flex flex-col cursor-pointer">
-                <span className=" text-base text-gray-900">
+                <span className="text-base text-gray-900">
                   {option.title}
                 </span>
-                <span className="text-xs text-black/50 mt-1">
+                <span className="mt-1 text-xs text-black/50">
                   {option.description}
                 </span>
               </Label>
