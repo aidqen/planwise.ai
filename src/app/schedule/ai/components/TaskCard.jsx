@@ -25,22 +25,32 @@ export function TaskCard({ task, wakeupMinutes, handleTaskClick }) {
   const top = ((startTotalMinutes - wakeupMinutes) / (24 * 60)) * 100;
   const height = (duration / (24 * 60)) * 100;
 
-  let rowOrColumn =
-    height < 3 ? "flex-row justify-between" : "flex-col items-start justify-between";
+  function assignClasses() {
+    let classes
+    if (height < 3.3) {
+      classes = "flex-row justify-between z-[100] ";
+      if (height < 1.5) {
+        classes += "py-0";
+      } else classes += "py-1";
+    } else classes = "flex-col gap-0.5 py-2"
+    return classes
+  }
+
+  let rowOrColumn = assignClasses()
 
   return (
     <Card
       onClick={(e) => handleTaskClick(task)}
-      className="absolute left-4 px-3 py-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md hover:scale-[1.02] bg-secondary cursor-pointer text-white w-[100%]"
+      className="absolute left-4 px-3 py-0 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md hover:scale-[1.01] bg-secondary hover:bg-blue-600 cursor-pointer text-white w-[100%]"
       style={{
         top: `${top}%`,
         height: `${height}%`,
         minHeight: "40px",
       }}
     >
-      <CardHeader className={`p-0 space-y-0 flex ${rowOrColumn} gap-1`}>
+      <CardHeader className={`flex p-0 space-y-0 ${rowOrColumn}`}>
         <CardTitle className="text-xs font-semibold truncate">{task?.summary}</CardTitle>
-        <CardDescription className="text-xs mt-0 truncate">
+        <CardDescription className="mt-0 text-xs truncate">
           {task.start} - {task.end}
         </CardDescription>
       </CardHeader>
