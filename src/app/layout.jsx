@@ -21,10 +21,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={poppins.className}>
       <body className={`h-screen w-screen bg-mainLight font-[poppins]`}>
-        <div className="grid grid-cols-[auto_1fr]  w-full h-full  overflow-y-auto">
+        <div className="grid grid-cols-[auto_1fr] max-sm:flex flex-col w-full h-full  overflow-y-auto">
           <ReduxProvider>
             <SidebarDemo />
-            <main className="pt-10  flex flex-col items-center w-full col-start-2">
+            <main className="pt-10 flex flex-col items-center col-start-2">
               <AppHeader />
               {children}
             </main>
