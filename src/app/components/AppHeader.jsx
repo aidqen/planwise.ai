@@ -7,9 +7,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { cn } from '@/lib/utils'
 import { getUser } from '@/store/actions/user.actions'
 import { TOGGLE_SIDEBAR } from '@/store/reducers/system.reducer'
-import { CalendarDays, Component, LogOut, Search } from 'lucide-react'
+import { Component, LogOut, Search } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -49,16 +50,17 @@ export function AppHeader() {
   // }
   return (
     <header
-      className={`${
-        isVisible ? '' : 'hidden'
-      } pb-3 flex flex-row w-full items-center justify-between px-6`}
+      className={cn(
+        isVisible ? '':'hidden', 'flex flex-row justify-end items-center px-6 pb-3 w-full max-sm:justify-between'
+        )
+        }
     >
-      <button className="flex justify-center items-center p-2 rounded-full bg-secondaryLight shadow-md">
+      <button className="hidden justify-center items-center p-2 rounded-full shadow-md max-sm:flex bg-secondaryLight">
         <Component className="text-black" onClick={onToggleSidebar}/>
         {/* <Menu className="text-black"/> */}
       </button>
-      <div className="flex flex-row items-center gap-8">
-        <button className="flex justify-center items-center p-2 rounded-full bg-secondaryLight border shadow-md">
+      <div className="flex flex-row gap-8 items-center">
+        <button className="flex justify-center items-center p-2 rounded-full border shadow-md bg-secondaryLight">
           <Search className="text-black" />
         </button>
         <DropdownMenu>
@@ -76,14 +78,9 @@ export function AppHeader() {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-50">
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={onLogout}>
+              <DropdownMenuItem onClick={onLogout} className="cursor-pointer hover:text-black/60">
                 <LogOut />
                 <span>Log out</span>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <CalendarDays />
-                <span className="whitespace-nowrap">Previous Schedules</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
