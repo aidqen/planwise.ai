@@ -15,9 +15,7 @@ import { Label } from '@/components/ui/label'
 import { useEffect, useState } from 'react'
 
 export function TaskDialog({ selectedTask, handleCloseModal}) {
-  console.log('selectedTask:', selectedTask)
   const [task, setTask] = useState(selectedTask)
-  console.log('task:', task)
 
   useEffect(() => {
     setTask(selectedTask);
@@ -67,8 +65,8 @@ export function TaskDialog({ selectedTask, handleCloseModal}) {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="startTime" className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-blue-500" />
+              <Label htmlFor="startTime" className="flex gap-2 items-center">
+                <Clock className="w-4 h-4 text-blue-500" />
                 Start Time
               </Label>
               <Input
@@ -79,8 +77,8 @@ export function TaskDialog({ selectedTask, handleCloseModal}) {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="endTime" className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-blue-500" />
+              <Label htmlFor="endTime" className="flex gap-2 items-center">
+                <Clock className="w-4 h-4 text-blue-500" />
                 End Time
               </Label>
               <Input
@@ -96,7 +94,7 @@ export function TaskDialog({ selectedTask, handleCloseModal}) {
           <Button className="shadow-md" variant="outline" onClick={handleCloseModal}>
             Cancel
           </Button>
-          <Button onClick={handleSave} className="bg-secondary text-white shadow-md">Save changes</Button>
+          <Button onClick={handleSave} className="text-white shadow-md bg-secondary">Save changes</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

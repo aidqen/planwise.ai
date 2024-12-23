@@ -30,7 +30,7 @@ export function InfoCard({ item }) {
       </div>
 
       {/* Content in Row 2, Spanning Both Columns */}
-      <div className="col-start-2 flex flex-col  ">
+      <div className="flex flex-col col-start-2">
         {isList && content.length ? (
           <>
             <Separator />
@@ -43,7 +43,7 @@ export function InfoCard({ item }) {
                       index !== content.length - 1 ? "border-b" : ""
                     }`}
                   >
-                    <span className="font-medium truncate max-w-[12em] text-sm text-black/70">{item.name}</span>
+                    <span className="font-medium truncate max-w-[90%] text-sm text-black/70">{item.name}</span>
                     {item?.startTime && item?.endTime && (
                       <span className="text-sm text-muted-foreground text-black/60">
                         {item.startTime} - {item.endTime}
@@ -56,11 +56,11 @@ export function InfoCard({ item }) {
           </>
         ) : (
           content.length ? (
-            <p className="text-muted-foreground capitalize font-medium text-sm text-black/60">
+            <p className="text-sm font-medium capitalize text-muted-foreground text-black/60">
               {content}
             </p>
           ) : (
-            <p className="text-muted-foreground font-medium text-sm text-black/70 italic">None</p>
+            <p className="text-sm italic font-medium text-muted-foreground text-black/70">None</p>
           )
         )}
       </div>
