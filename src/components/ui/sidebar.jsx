@@ -62,7 +62,7 @@ export const DesktopSidebar = ({
   return (<>
     <motion.div
       className={cn(
-        "h-full px-4 py-4 hidden  md:flex md:flex-col bg-neutral-100 dark:bg-neutral-800 w-[300px] flex-shrink-0",
+        "hidden flex-shrink-0 px-4 py-4 h-full md:flex md:flex-col bg-neutral-100 dark:bg-neutral-800 w-[300px]",
         className
       )}
       animate={{
@@ -85,15 +85,15 @@ export const MobileSidebar = ({
   return (<>
     <div
       className={cn(
-        "h-10 px-4 py-4 flex flex-row md:hidden items-center justify-between bg-neutral-100 dark:bg-neutral-800 w-full",
+        "flex flex-row justify-between items-center px-4 py-4 w-full h-10 md:hidden bg-neutral-100 dark:bg-neutral-800",
         open ? 'flex' : 'hidden' 
       )}
       {...props}>
-      <div className="flex justify-end z-20 w-full">
+      {/* <div className="flex z-20 justify-end w-full">
         <IconMenu2
           className="text-neutral-800 dark:text-neutral-200"
           onClick={() => setOpen(!open)} />
-      </div>
+      </div> */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -105,11 +105,11 @@ export const MobileSidebar = ({
               ease: "easeInOut",
             }}
             className={cn(
-              "fixed h-full w-full inset-0 bg-white dark:bg-neutral-900 p-10 z-[100] flex flex-col justify-between",
+              "flex fixed inset-0 flex-col justify-between p-10 w-full h-full bg-white dark:bg-neutral-900 z-[100]",
               className
             )}>
             <div
-              className="absolute right-10 top-10 z-50 text-neutral-800 dark:text-neutral-200"
+              className="absolute top-10 right-10 z-50 text-neutral-800 dark:text-neutral-200"
               onClick={() => setOpen(!open)}>
               <IconX />
             </div>
@@ -130,7 +130,7 @@ export const SidebarLink = ({
   return (
     (<Link
       href={link.href}
-      className={cn("flex items-center justify-start gap-2  group/sidebar py-2", className)}
+      className={cn("flex gap-2 justify-start items-center py-2 group/sidebar", className)}
       {...props}>
       {link.icon}
       <motion.span

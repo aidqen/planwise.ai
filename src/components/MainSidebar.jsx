@@ -23,28 +23,28 @@ export function SidebarDemo() {
             label: "Dashboard",
             href: "#",
             icon: (
-                <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+                <IconBrandTabler className="flex-shrink-0 w-5 h-5 text-neutral-700 dark:text-neutral-200" />
             ),
         },
         {
             label: "Profile",
             href: "#",
             icon: (
-                <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+                <IconUserBolt className="flex-shrink-0 w-5 h-5 text-neutral-700 dark:text-neutral-200" />
             ),
         },
         {
             label: "Settings",
             href: "#",
             icon: (
-                <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+                <IconSettings className="flex-shrink-0 w-5 h-5 text-neutral-700 dark:text-neutral-200" />
             ),
         },
         {
             label: "Logout",
             href: "#",
             icon: (
-                <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+                <IconArrowLeft className="flex-shrink-0 w-5 h-5 text-neutral-700 dark:text-neutral-200" />
             ),
         },
     ];
@@ -55,16 +55,14 @@ export function SidebarDemo() {
     return (
         (<div
             className={cn(
-                "rounded-md  bg-mainLight dark:bg-neutral-800 flex-1 border border-neutral-200 dark:border-neutral-700 max-w-max overflow-hidden",
-                // for your use case, use `h-screen` instead of `h-[60vh]`
-                
-                "h-screen"
+                "overflow-hidden flex-1 max-w-max h-screen bg-white rounded-md border max-sm:fixed z-[10] dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700",
+                open ? 'max-sm:block' : 'max-sm:hidden' 
             )}>
             <Sidebar open={open} setOpen={() => dispatch(toggleSidebar())}>
-                <SidebarBody className="justify-between gap-10">
-                    <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+                <SidebarBody className="gap-10 justify-between">
+                    <div className="flex overflow-y-auto overflow-x-hidden flex-col flex-1">
                         {/* {open ? <Logo /> : <LogoIcon />} */}
-                        <div className="mt-8 flex flex-col gap-2">
+                        <div className="flex flex-col gap-2 mt-8">
                             {links.map((link, idx) => (
                                 <SidebarLink key={idx} link={link} />
                             ))}
@@ -78,7 +76,7 @@ export function SidebarDemo() {
                                 // icon: (
                                 //   <Image
                                 //     src="https://assets.aceternity.com/manu.png"
-                                //     className="h-7 w-7 flex-shrink-0 rounded-full"
+                                //     className="flex-shrink-0 w-7 h-7 rounded-full"
                                 //     width={50}
                                 //     height={50}
                                 //     alt="Avatar" />
@@ -94,13 +92,13 @@ export const Logo = () => {
     return (
         (<Link
             href="#"
-            className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">
+            className="flex relative z-20 items-center py-1 space-x-2 text-sm font-normal text-black">
             <div
-                className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
+                className="flex-shrink-0 w-6 h-5 bg-black rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm dark:bg-white" />
             <motion.span
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="font-medium text-black dark:text-white whitespace-pre">
+                className="font-medium text-black whitespace-pre dark:text-white">
                 Acet Labs
             </motion.span>
         </Link>)
@@ -110,9 +108,9 @@ export const LogoIcon = () => {
     return (
         (<Link
             href="#"
-            className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">
+            className="flex relative z-20 items-center py-1 space-x-2 text-sm font-normal text-black">
             <div
-                className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
+                className="flex-shrink-0 w-6 h-5 bg-black rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm dark:bg-white" />
         </Link>)
     );
 };
