@@ -8,10 +8,6 @@ const openai = new OpenAI({
 export async function POST(request) {
   try {
     const { preferences, routines, goals, timezone } = await request.json()
-    console.log('timezone:', timezone)
-    console.log('preferences:', preferences)
-    console.log('routines:', routines)
-    console.log('goals:', goals)
 
     if (!preferences || !routines || !goals) {
       return new Response(JSON.stringify({ error: 'Missing required fields' }), {
@@ -19,19 +15,7 @@ export async function POST(request) {
       })
     }
 
-    // **Scheduling Rules**:
-    //   - Do not overlap tasks or place two tasks at the same time.
-    //   - Add morning routine between when you wake up and 30 minutes afterwards.
-    //   - The schedule should be optimized based on the intensity:
-    //       - For moderate intensity: Include some breaks but not too many.
-    //       - For high intensity: Include more tasks and fewer breaks.
-    //       - For relaxed intensity: include more breaks and fewer tasks.
-    //   - Routines must stay between the start time and end time.
-    //   - Try to include all of the goals within the day without exceeding sleep time.
-    //   - Add night routine 30 minutes before sleep time.
-    //   - For goals, you want to generate tasks to help you achieve them.
-    const prompt = `
-You are an AI assistant that generates optimized daily schedules based on the user's preferences, routines, and goals. Your task is to create a daily schedule that strictly respects routines, includes meals and morning/night routines, and effectively allocates time to goals based on their importance.
+    const prompt = `You are an AI assistant that generates optimized daily schedules based on the user's preferences, routines, and goals. Your task is to create a daily schedule that strictly respects routines, includes meals and morning/night routines, and effectively allocates time to goals based on their importance. Every hour of the day must be accounted for, with no gaps left unscheduled.
 
 **Instructions**:
 - Always return a valid JSON array of objects.
@@ -40,81 +24,55 @@ You are an AI assistant that generates optimized daily schedules based on the us
   - "summary" (string): The task name.
   - "description" (string): A brief description of the task.
   - "timeZone" (string): Use this time zone: "${timezone}".
-  - "start" (string): Start time in ISO 8601 timestamp.
-  - "end" (string): End time in ISO 8601 timestamp.
+  - "start" (string): Start time in "hh:mm" format (24-hour).
+  - "end" (string): End time in "hh:mm" format (24-hour).
 - Do not include additional text, explanations, or comments outside the JSON.
 
-**Rules for Including Routines**:
-- Routines are fixed tasks and must be included as provided.
-- Do not modify the "start" and "end" times of routines.
-- Example Routine:
-  Input: "Work: 09:00 - 17:00"
-  Output:
-  {
-    "id": "routine1",
-    "summary": "Work",
-    "description": "Scheduled work hours",
-    "start": "2024-12-18T09:00:00+02:00",
-    "end": "2024-12-18T17:00:00+02:00",
-    "timeZone": "${timezone}"
-  }
+---
 
-**Rules for Meals**:
-- Include 3 meals in the schedule:
-  - **Breakfast**: 30 minutes within 1 hour of wake-up time.
-  - **Lunch**: 1 hour between 12:00 PM and 2:00 PM, which can overlap with work or other activities.
-  - **Dinner**: 1 hour between 6:00 PM and 8:00 PM.
-- Meals can overlap with other tasks (e.g., lunch can occur during work).
-- Example:
-  {
-    "id": "meal1",
-    "summary": "Lunch",
-    "description": "Enjoy a quick lunch break during work",
-    "start": "2024-12-18T12:00:00+02:00",
-    "end": "2024-12-18T13:00:00+02:00",
-    "timeZone": "${timezone}"
-  }
+**Rules**:
 
-**Rules for Morning and Night Routines**:
-- Morning routine starts **30 minutes after wake-up time** and lasts 30 minutes.
-- Night routine starts **30 minutes before sleep time** and lasts 30 minutes.
-- These routines must be included in the schedule.
-- Example:
-  {
-    "id": "routine2",
-    "summary": "Morning Routine",
-    "description": "Prepare for the day",
-    "start": "2024-12-18T07:00:00+02:00",
-    "end": "2024-12-18T07:30:00+02:00",
-    "timeZone": "${timezone}"
-  }
+1. **Routines and Meals**:
+   - Morning and night routines must always be included.
+   - Include three meals (breakfast, lunch, dinner):
+     - Breakfast: Within 1 hour of wake-up time.
+     - Lunch: Between 12:00 and 14:00.
+     - Dinner: Between 18:00 and 20:00.
+   - Meals may overlap with flexible tasks.
 
-**Rules for Allocating Goals**:
-- Goals should be scheduled **around routines and meals** and must not overlap with fixed routines like morning or night routines.
-- Allocate more time to high-importance goals.
-- If a goal has "medium" or "low" importance, allocate shorter tasks.
-- Break goals into smaller tasks if needed.
-- Example:
-  Input: "Develop my app: high importance"
-  Output:
-  [
-    {
-      "id": "goal1",
-      "summary": "Develop my app",
-      "description": "Morning app development session",
-      "start": "2024-12-18T08:00:00+02:00",
-      "end": "2024-12-18T09:00:00+02:00",
-      "timeZone": "${timezone}"
-    },
-    {
-      "id": "goal2",
-      "summary": "Develop my app",
-      "description": "Afternoon app development session",
-      "start": "2024-12-18T17:30:00+02:00",
-      "end": "2024-12-18T19:00:00+02:00",
-      "timeZone": "${timezone}"
-    }
-  ]
+2. **Intensity-Based Scheduling**:
+   - For **intense**, the entire day must be filled with tasks, leaving minimal room for breaks, but still accounting for short recovery breaks.
+   - For **medium**, mix tasks and breaks evenly, allowing time for both work and relaxation.
+   - For **relaxed**, prioritize frequent and longer breaks, with fewer tasks spread across the day.
+
+3. **Breaks**:
+   - Breaks should always be explicitly included in the schedule to cover any gaps between tasks.
+   - Examples of breaks include:
+     - "Short Break" (15-30 minutes).
+     - "Relaxation Time" (30 minutes to 1 hour).
+     - "Outdoor Walk" (specific to evenings or afternoons).
+
+4. **Goals**:
+   - Allocate more time to high-importance goals.
+   - Break medium- and low-importance goals into smaller tasks with clear descriptions.
+   - Schedule tasks around routines, meals, and breaks, ensuring proper time allocation.
+
+5. **Ensure No Gaps**:
+   - **Every hour of the day must be filled** with either a task, break, or meal.
+   - Gaps between tasks must be explicitly scheduled as breaks or additional tasks.
+   - Example:
+     
+     {
+       "id": "break1",
+       "summary": "Short Break",
+       "description": "Take a short break to recharge",
+       "start": "16:30",
+       "end": "17:00",
+       "timeZone": "${timezone}"
+     }
+     
+
+---
 
 **Preferences**:
 - Wake: ${preferences.wakeup}
@@ -125,37 +83,47 @@ You are an AI assistant that generates optimized daily schedules based on the us
 ${routines?.map(r => `Routine: ${r.name}: Start: ${r.startTime}, End: ${r.endTime}`).join('\n')}
 
 **Goals**:
-${goals?.map(g => `Goal: ${g.text}, Importance: ${g.importance}`).join('\n')}
+${goals?.map(g => `Goal: ${g.name}, Importance: ${g.importance}`).join('\n')}
+
+---
 
 **Output Example**:
 [
   {
-    "id": "routine1",
-    "summary": "Work",
-    "description": "Scheduled work hours",
-    "start": "2024-12-18T09:00:00+02:00",
-    "end": "2024-12-18T17:00:00+02:00",
-    "timeZone": "${timezone}"
-  },
-  {
-    "id": "meal1",
-    "summary": "Lunch",
-    "description": "Enjoy a quick lunch break during work",
-    "start": "2024-12-18T12:00:00+02:00",
-    "end": "2024-12-18T13:00:00+02:00",
-    "timeZone": "${timezone}"
-  },
-  {
-    "id": "routine2",
+    "id": "t1",
     "summary": "Morning Routine",
-    "description": "Prepare for the day",
-    "start": "2024-12-18T07:00:00+02:00",
-    "end": "2024-12-18T07:30:00+02:00",
+    "description": "Hygiene and getting dressed for the day",
+    "start": "07:00",
+    "end": "07:30",
+    "timeZone": "${timezone}"
+  },
+  {
+    "id": "t2",
+    "summary": "Breakfast",
+    "description": "Enjoy a nutritious breakfast",
+    "start": "07:30",
+    "end": "08:00",
+    "timeZone": "${timezone}"
+  },
+  {
+    "id": "break1",
+    "summary": "Short Break",
+    "description": "Take a short break to relax",
+    "start": "16:30",
+    "end": "17:00",
+    "timeZone": "${timezone}"
+  },
+  {
+    "id": "t10",
+    "summary": "Evening Routine",
+    "description": "Relax and prepare for bed",
+    "start": "22:00",
+    "end": "22:30",
     "timeZone": "${timezone}"
   }
 ]
-`;
 
+`;
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-4',

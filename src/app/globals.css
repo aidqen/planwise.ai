@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* @import "react-day-picker/dist/style.css"; */
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -28,3 +29,4 @@ body {
     --radius: 0.5rem;
   }
 }
+

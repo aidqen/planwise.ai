@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 
 export function middleware(request) {
   const { nextUrl, cookies } = request;
-    console.log('hi');
     
   // Example: Check for an auth token in cookies
   const authToken = cookies.get("next-auth.session-token");
