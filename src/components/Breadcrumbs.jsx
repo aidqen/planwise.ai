@@ -27,16 +27,16 @@ export function Breadcrumbs({ currentIdx, setStep }) {
                             <BreadcrumbItem onClick={() => setStep(index)}>
                                 <BreadcrumbLink
                                     className={`${currentIdx >= index
-                                        ? "text-green-600 font-semibold"
-                                        : "text-black/70"
+                                        ? "text-black "
+                                        : "text-black/50"
                                         } max-sm:text-base text-lg`}
                                 >
                                     {item.label}
                                 </BreadcrumbLink>
                             </BreadcrumbItem>
                             {index < breadcrumbItems.length - 1 && <BreadcrumbSeparator className={`${currentIdx >= index
-                                        ? "text-green-600"
-                                        : "text-black/70"} text-lg`} />}
+                                        ? "text-black"
+                                        : "text-black/50"} text-lg`} />}
                      {/* </div> */}
                     </React.Fragment>
 

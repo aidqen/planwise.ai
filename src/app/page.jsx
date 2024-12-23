@@ -8,9 +8,9 @@ import { useEffect } from 'react';
 export default function Home() {
   const user = useSelector(state => state.userModule.user)
 
-  useEffect(() => {
-    handleGetRequest()
-  }, [])
+  // useEffect(() => {
+  //   handleGetRequest()
+  // }, [])
   
 
   // const handleGetRequest = async () => {

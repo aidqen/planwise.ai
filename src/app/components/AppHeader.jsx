@@ -8,22 +8,22 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { getUser } from '@/store/actions/user.actions'
+import { TOGGLE_SIDEBAR } from '@/store/reducers/system.reducer'
 import { CalendarDays, Component, LogOut, Search } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 export function AppHeader() {
   const user = useSelector(state => state.userModule.user)
   const pathname = usePathname()
+  const dispatch = useDispatch()
   
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    
-
     if (pathname.includes('auth')) {
       setIsVisible(false)
     } else {
@@ -39,6 +39,10 @@ export function AppHeader() {
     signOut({ callbackUrl: '/auth/login'})
   }
 
+  function onToggleSidebar() {
+    dispatch({ type: TOGGLE_SIDEBAR })
+  }
+
   // async function fetchCalendar() {
   //   const response = await fetch("/api/calendar-events");
   //   const data = await response.json()
@@ -47,10 +51,11 @@ export function AppHeader() {
     <header
       className={`${
         isVisible ? '' : 'hidden'
-      } pb-3 flex flex-row w-full items-center justify-between`}
+      } pb-3 flex flex-row w-full items-center justify-between px-6`}
     >
       <button className="flex justify-center items-center p-2 rounded-full bg-secondaryLight shadow-md">
-        <Component className="text-black" />
+        <Component className="text-black" onClick={onToggleSidebar}/>
+        {/* <Menu className="text-black"/> */}
       </button>
       <div className="flex flex-row items-center gap-8">
         <button className="flex justify-center items-center p-2 rounded-full bg-secondaryLight border shadow-md">

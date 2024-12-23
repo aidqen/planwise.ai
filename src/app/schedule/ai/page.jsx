@@ -22,13 +22,16 @@ import {
 import { useSelector } from 'react-redux'
 import { TaskCard } from './components/TaskCard'
 import { TaskDialog } from './components/TaskDialog'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 
-export default function DailySchedule({}) {
-  const [taskToEdit, setTaskToEdit] = useState(null);
-  
-  // console.log('selectedTask:', selectedTask)
-  
+export default function DailySchedule({ }) {
+  const [selectedTask, setSelectedTask] = useState(null)
+  const [taskSelected, setTaskSelected] = useState(null)
+  const [isVisible, setIsVisible] = useState(true)
+  const [lastMouseMove, setLastMouseMove] = useState(Date.now())
+  console.log('taskSelected:', taskSelected)
+
   // const aiSchedule = useSelector(state => state.scheduleModule.aiSchedule);
   const aiSchedule = [
     {
@@ -36,95 +39,118 @@ export default function DailySchedule({}) {
       "summary": "Morning Routine",
       "description": "Prepare for the day",
       "timeZone": "Asia/Jerusalem",
-      "start": "2024-12-18T07:00:00+02:00",
-      "end": "2024-12-18T07:30:00+02:00"
+      "start": "07:00",
+      "end": "07:30"
     },
     {
       "id": "meal_01",
       "summary": "Breakfast",
       "description": "Enjoy a healthy breakfast",
       "timeZone": "Asia/Jerusalem",
-      "start": "2024-12-18T08:00:00+02:00",
-      "end": "2024-12-18T08:30:00+02:00"
+      "start": "08:00",
+      "end": "08:30"
     },
     {
       "id": "goal_01",
       "summary": "Read a book",
       "description": "Morning reading session",
       "timeZone": "Asia/Jerusalem",
-      "start": "2024-12-18T08:30:00+02:00",
-      "end": "2024-12-18T09:00:00+02:00"
+      "start": "08:30",
+      "end": "09:00"
     },
     {
       "id": "routine_02",
       "summary": "Work",
       "description": "Scheduled work hours",
       "timeZone": "Asia/Jerusalem",
-      "start": "2024-12-18T09:00:00+02:00",
-      "end": "2024-12-18T17:00:00+02:00"
+      "start": "09:00",
+      "end": "17:00"
     },
     {
       "id": "meal_02",
       "summary": "Lunch",
       "description": "Enjoy a quick lunch break during work",
       "timeZone": "Asia/Jerusalem",
-      "start": "2024-12-18T12:00:00+02:00",
-      "end": "2024-12-18T13:00:00+02:00"
+      "start": "12:00",
+      "end": "13:00"
     },
     {
       "id": "goal_02",
       "summary": "Read a book",
       "description": "Afternoon reading session",
       "timeZone": "Asia/Jerusalem",
-      "start": "2024-12-18T17:30:00+02:00",
-      "end": "2024-12-18T18:00:00+02:00"
+      "start": "17:30",
+      "end": "18:00"
     },
     {
       "id": "routine_03",
       "summary": "Gym",
       "description": "Workout session",
       "timeZone": "Asia/Jerusalem",
-      "start": "2024-12-18T19:00:00+02:00",
-      "end": "2024-12-18T20:00:00+02:00"
+      "start": "19:00",
+      "end": "20:00"
     },
     {
       "id": "meal_03",
       "summary": "Dinner",
       "description": "Have a balanced dinner",
       "timeZone": "Asia/Jerusalem",
-      "start": "2024-12-18T20:30:00+02:00",
-      "end": "2024-12-18T21:30:00+02:00"
+      "start": "20:30",
+      "end": "21:30"
     },
     {
       "id": "goal_03",
       "summary": "Learn Spanish",
       "description": "Evening Spanish learning session",
       "timeZone": "Asia/Jerusalem",
-      "start": "2024-12-18T21:30:00+02:00",
-      "end": "2024-12-18T22:00:00+02:00"
+      "start": "21:30",
+      "end": "22:00"
     },
     {
       "id": "routine_04",
       "summary": "Night Routine",
       "description": "Prepare for sleep",
       "timeZone": "Asia/Jerusalem",
-      "start": "2024-12-18T22:00:00+02:00",
-      "end": "2024-12-18T22:30:00+02:00"
+      "start": "22:00",
+      "end": "22:30"
     }
   ]
+
   const multiStepForm = useSelector(state => state.scheduleModule.multiStepForm);
   const wakeupTime = multiStepForm?.preferences?.wakeup || '04:00'; // Default to 4:00 AM if wakeup time is not set
   // const wakeupTime = '07:00';
 
+  useEffect(() => {
+    let timeoutId
+
+    const handleMouseMove = () => {
+      setIsVisible(true)
+      setLastMouseMove(Date.now())
+    }
+
+    const checkMouseInactivity = () => {
+      if (Date.now() - lastMouseMove > 3000) {
+        setIsVisible(false)
+      }
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    timeoutId = setInterval(checkMouseInactivity, 1000)
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      clearInterval(timeoutId)
+    }
+  }, [lastMouseMove])
+
   function handleTaskClick(task) {
-    console.log('hiiiiiiiiii');
-    
     console.log('task:', task)
-    setTaskToEdit(task); // Set the selected task to display in the modal
+    setSelectedTask({ ...task }); // Set the selected task to display in the modal
+    setTaskSelected(task)
   }
 
   function handleCloseModal() {
-    setTaskToEdit(null); // Close the modal by clearing the selected task
+    setSelectedTask(null); // Close the modal by clearing the selected task
   }
 
   const wakeupMinutes = getMinutesFromMidnight(wakeupTime); // Convert wake-up time to minutes from midnight
@@ -158,11 +184,23 @@ export default function DailySchedule({}) {
             );
           })}
           {sortedTasks?.map(task => (
-            <TaskCard key={task.id} task={task} wakeupMinutes={wakeupMinutes} handleTaskClick={handleTaskClick}/>
+            <TaskCard key={task.id} task={task} wakeupMinutes={wakeupMinutes} handleTaskClick={handleTaskClick} />
           ))}
         </div>
       </CardContent>
-      <TaskDialog selectedTask={taskToEdit} handleCloseModal={handleCloseModal} />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }} // Starting animation state
+        animate={isVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }} // Animation on visibility change
+        exit={{ opacity: 0, scale: 0.95 }} // Exit animation
+        transition={{ duration: 0.3 }} // Adjust duration as needed
+        className="fixed bottom-6 right-[50%] -translate-x-1/2"
+      >
+
+        <Button className={cn('fixed bottom-6 right-[50%] -translate-x-1/2 bg-yellow-500 hover:bg-yellow-600', isVisible ? 'opacity-100' : 'opacity-0')}>
+          Add To Google Calendar
+        </Button>
+      </motion.div>
+      <TaskDialog selectedTask={selectedTask} handleCloseModal={handleCloseModal} />
     </Card>
   );
 }

@@ -61,7 +61,7 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
   }
 
   return (
-    <Card className="mb-8 p-5 bg-white/50 backdrop-blur-sm border border-gray-200/50 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+    <Card className="mb-8 p-5 bg-white/50 w-full backdrop-blur-sm border border-gray-200/50 rounded-xl hover:shadow-xl transition-all duration-300">
       <CardContent className="p-0">
         <form onSubmit={handleSubmit} className="space-y-4 relative">
           <div className="flex flex-col gap-2">

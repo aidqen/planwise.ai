@@ -1,9 +1,6 @@
 import { ScheduleIntensity } from '@/components/ScheduleIntensity'
 import TimePicker from '@/components/TimePicker'
 import { Section } from '@/components/ui/section'
-import { SAVE_PREFERENCES } from '@/store/reducers/schedule.reducer'
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 
 export function Preferences({ }) {
   // const [preferences, setPreferences] = useState({
@@ -16,7 +13,7 @@ export function Preferences({ }) {
 
   return (
     <Section>
-      <div className="flex flex-col max-sm:items-start items-center gap-7 w-full h-full mt-7">
+      <div className="flex flex-col max-sm:items-start items-center gap-9 w-full h-full mt-10">
       <h3 className="text-xl font-medium text-gray-900 text-center w-full">
         How's your day looking?
       </h3>

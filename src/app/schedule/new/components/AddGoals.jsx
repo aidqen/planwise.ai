@@ -26,7 +26,7 @@ export function AddGoals() {
 
 
   function saveGoals() {
-    dispatch({ type: SAVE_GOALS, goals:[...goals, {id:makeId(8), text:currentGoal, importance: currentImportance}] })
+    dispatch({ type: SAVE_GOALS, goals:[...goals, {id:makeId(8), name:currentGoal, importance: currentImportance}] })
   }
 
   function addGoal() {
@@ -60,7 +60,7 @@ export function AddGoals() {
 
   return (
     <Section>
-      <Card className="w-full max-w-2xl mx-auto border-0 shadow-none bg-transparent">
+      <Card className="w-full max-w-2xl mx-auto border-0 shadow-none bg-transparent overflow-y-auto">
         <CardContent className="p-6 flex flex-col gap-7">
           <h3 className="text-xl font-medium text-gray-900 text-center w-full">
             What would you like to accomplish today?
@@ -106,7 +106,7 @@ export function AddGoals() {
             axis="y"
             values={goals}
             onReorder={saveGoals}
-            className=" space-y-3 max-h-[50%] overflow-auto"
+            className=" space-y-3 max-h-[40%] h-[40%] overflow-y-auto"
           >
             <AnimatePresence>
               {goals.map(goal => (
@@ -116,7 +116,7 @@ export function AddGoals() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ duration: 0.15 }}
                 >
                   <motion.div
                     className={`grid grid-cols-[2.5em_1fr_2.5em] grid-rows-2 justify-between px-4 py-3 rounded-lg shadow-sm border ${
@@ -127,7 +127,7 @@ export function AddGoals() {
                       <GripVertical className="text-gray-400 cursor-grab h-5 w-5 hover:text-gray-600 active:cursor-grabbing active:text-gray-700 transition-colors duration-200" />
                     </div>
                     <span className="flex items-center text-gray-800 font-medium col-start-2 ps-2 text-base">
-                      {goal.text}
+                      {goal.name}
                     </span>
                     <div className="flex items-center space-x-2 col-start-2 row-start-2">
                       <Select

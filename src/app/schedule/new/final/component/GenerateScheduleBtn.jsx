@@ -11,7 +11,7 @@ export function GenerateScheduleBtn() {
   const router = useRouter()
 
   async function onGenerateAiSchedule() {
-    await generateAiSchedule(multistepForm)
+    generateAiSchedule(multistepForm)
     router.push('/schedule/ai')
   }
 

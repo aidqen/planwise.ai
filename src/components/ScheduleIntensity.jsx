@@ -66,7 +66,7 @@ export function ScheduleIntensity({}) {
             style={{
               '--ring-color': option.ringColor
             }}
-            className={`relative flex items-center p-4 rounded-xl border-2 w-[calc(100%-10px)] ${option.borderColor} ${
+            className={`relative flex items-center px-4 py-3 rounded-xl border-2 w-[calc(100%-10px)] ${option.borderColor} ${
               intensity === option.value
                 ? `${option.bgColor} ${option.borderColor} ${option.textColor} ring-2 ring-offset-2 ring-[--ring-color]`
                 : `${option.bgColor} text-gray-300`

@@ -57,13 +57,13 @@ function ScheduleNewContent() {
   }
 
   return (
-      <div className="relative flex flex-col items-center justify-between max-sm:w-full w-[40%] h-[calc(100%-5em)] overflow-y-auto overflow-x-hidden text-black pt-5 rounded-xl pb-20">
+      <div className="relative flex flex-col items-center justify-between max-sm:w-full px-6 w-full h-[calc(100%-5em)] overflow-x-hidden overflow-y-auto text-black pt-5 rounded-xl pb-20">
         <div className="w-full max-sm:block flex flex-col items-center">
           <Breadcrumbs currentIdx={step} setStep={setStep} />
-          <div className="h-[1px] w-full bg-black/10"></div>
+          {/* <div className="h-[1px] w-full bg-black/10"></div> */}
           {renderStepContent()}
         </div>
-        <div className="fixed bottom-0 left-0 py-10 w-full flex flex-row items-center max-sm:justify-center max-sm:gap-5 justify-center gap-20 pt-7">
+        <div className="btns fixed bottom-0 left-0 py-10 w-full flex flex-row items-center max-sm:justify-center max-sm:gap-5 justify-center gap-20 pt-7">
           <button
             onClick={goBackStep}
             className="px-10 py-2.5 rounded-lg font-medium transition-all duration-300 transform hover:scale-[1.02] bg-white hover:bg-gray-50 text-gray-700 shadow-md border border-gray-200"
@@ -74,7 +74,7 @@ function ScheduleNewContent() {
             <ConfettiButton>
               <button
                 onClick={goForwardStep}
-                className="px-8 py-2.5 rounded-lg font-medium transition-all duration-300 transform hover:scale-[1.02] bg-secondary hover:bg-secondary/80 text-white shadow-md border border-secondary whitespace-nowrap"
+                className="px-8 py-2.5 rounded-lg font-medium transition-all w-[11em] duration-300 transform hover:scale-[1.02] bg-secondary hover:bg-secondary/80 text-white shadow-md border border-secondary whitespace-nowrap"
               >
                 Complete
               </button>
@@ -82,7 +82,7 @@ function ScheduleNewContent() {
           ) : (
             <button
               onClick={goForwardStep}
-              className="px-8 py-2.5 rounded-lg font-medium transition-all duration-300 transform hover:scale-[1.02] bg-green-400 hover:bg-green-500 text-white shadow-md border border-green-300 whitespace-nowrap"
+              className="px-8 py-2.5 rounded-lg font-medium transition-all w-[11em] duration-300 transform hover:scale-[1.02] bg-green-400 hover:bg-green-500 text-white shadow-md border border-green-300 whitespace-nowrap"
             >
               Save and Next
             </button>

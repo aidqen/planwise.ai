@@ -2,6 +2,7 @@ import './globals.css'
 import { AppHeader } from './components/AppHeader'
 import { ReduxProvider } from '@/components/ReduxProvider'
 import { Poppins } from 'next/font/google';
+import { SidebarDemo } from '@/components/MainSidebar';
 
 export const metadata = {
   title: 'Planwise AI',
@@ -20,14 +21,16 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={poppins.className}>
       <body className={`h-screen w-screen bg-mainLight font-[poppins]`}>
-        <main className="pt-10 px-6 w-full h-full flex flex-col items-center">
+        <div className="grid grid-cols-[auto_1fr]  w-full h-full  overflow-y-auto">
           <ReduxProvider>
-            <AppHeader />
-            {children}
+            <SidebarDemo />
+            <main className="pt-10  flex flex-col items-center w-full col-start-2">
+              <AppHeader />
+              {children}
+            </main>
           </ReduxProvider>
-        </main>
+        </div>
       </body>
     </html>
   )
 }
- 

@@ -4,15 +4,15 @@ import { store } from '../store'
 
 export async function generateAiSchedule(parameters) {
     const {preferences, routines, goals} = parameters
-   try {
-    const timezone = await scheduleService.fetchUserTimezone()
-    console.log('timezone:', timezone)
-    const aiSchedule = await scheduleService.fetchAiSchedule({preferences, routines, goals,timezone})
-    store.dispatch(getCmdAiSchedule(aiSchedule.schedule))
-   } catch (err) {
-    console.log('Cannot fetch ai schedule', err)
-    throw err
-}
+//    try {
+//     const timezone = await scheduleService.fetchUserTimezone()
+//     console.log('timezone:', timezone)
+//     const aiSchedule = await scheduleService.fetchAiSchedule({preferences, routines, goals,timezone})
+//     store.dispatch(getCmdAiSchedule(aiSchedule.schedule))
+//    } catch (err) {
+//     console.log('Cannot fetch ai schedule', err)
+//     throw err
+// }
 }
 
 function saveAiSchedule(aiSchedule) {

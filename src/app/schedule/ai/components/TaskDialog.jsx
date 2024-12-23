@@ -12,11 +12,16 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export function TaskDialog({ selectedTask, handleCloseModal}) {
+  console.log('selectedTask:', selectedTask)
   const [task, setTask] = useState(selectedTask)
   console.log('task:', task)
+
+  useEffect(() => {
+    setTask(selectedTask);
+  }, [selectedTask]);
 
   const handleSave = () => {
     // onSave?.(task)

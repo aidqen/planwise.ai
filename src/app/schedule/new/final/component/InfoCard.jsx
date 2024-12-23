@@ -43,7 +43,7 @@ export function InfoCard({ item }) {
                       index !== content.length - 1 ? "border-b" : ""
                     }`}
                   >
-                    <span className="font-medium truncate text-sm text-black/70">{item.name}</span>
+                    <span className="font-medium truncate max-w-[12em] text-sm text-black/70">{item.name}</span>
                     {item?.startTime && item?.endTime && (
                       <span className="text-sm text-muted-foreground text-black/60">
                         {item.startTime} - {item.endTime}
