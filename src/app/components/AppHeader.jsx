@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 export function AppHeader() {
   const user = useSelector(state => state.userModule.user)
+  console.log("🚀 ~ file: AppHeader.jsx:22 ~ user:", user)
   const pathname = usePathname()
   const dispatch = useDispatch()
   

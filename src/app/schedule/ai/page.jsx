@@ -170,10 +170,10 @@ export default function DailySchedule({}) {
   if (!aiSchedule?.length) return <div>Loading...</div>;
 
   return (
-    <Card className="overflow-y-auto mx-auto w-full max-w-4xl bg-transparent border-none ps-10">
-      <CardHeader className="flex flex-col gap-0 justify-between items-start pb-6">
-        <CardTitle className="text-lg font-medium">Daily Schedule</CardTitle>
-        <CardDescription className="mt-0 text-base max-sm:text-sm text-black/60">
+    <Card className="overflow-y-auto mx-auto w-full max-w-4xl bg-transparent border-none ps-9">
+      <CardHeader className="flex flex-col gap-0 items-center py-5 ps-6 pe-10">
+        <CardTitle className="text-lg font-semibold text-center">Daily Schedule</CardTitle>
+        <CardDescription className="mt-0 text-base text-start max-sm:text-sm text-black/60">
           Here&apos;s your AI generated schedule for today.
         </CardDescription>
       </CardHeader>
@@ -186,7 +186,7 @@ export default function DailySchedule({}) {
         </div>
       </CardContent>
       <SaveToCalendarBtn toggleCalendarDialog={toggleCalendarDialog} isVisible={isVisible} />
-      <AddScheduleDialog open={calendarDialogOpen} setOpen={setCalendarDialogOpen} />
+      <AddScheduleDialog open={calendarDialogOpen} setOpen={setCalendarDialogOpen} aiSchedule={aiSchedule}/>
       <TaskDialog selectedTask={selectedTask} handleCloseModal={handleCloseModal} />
     </Card>
   );
