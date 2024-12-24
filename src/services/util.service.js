@@ -1,3 +1,7 @@
+
+import { formatISO } from "date-fns";
+import { toZonedTime } from "date-fns-tz";
+
 export function hexToRgba(hex, opacity) {
 
   hex = hex.replace('#', '');
@@ -17,4 +21,19 @@ export function makeId(length) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result;
+}
+
+
+export function convertToGoogleTimestamp(date, time, timeZone) {
+  // Combine date and time into a single string
+  const dateTimeString = `${date}T${time}:00`;
+
+  // Convert to a Date object
+  const utcDate = new Date(dateTimeString);
+
+  // Convert UTC date to the specified time zone
+  const zonedDate = toZonedTime(utcDate, timeZone);
+
+  // Format the zoned date to ISO 8601 string with time zone offset
+  return formatISO(zonedDate, { representation: "complete" });
 }
