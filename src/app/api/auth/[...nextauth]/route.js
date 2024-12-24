@@ -16,7 +16,7 @@ export const authOptions = {
       clientSecret: GOOGLE_CLIENT_SECRET,
       authorization: {
         params: {
-          scope: 'openid email profile https://www.googleapis.com/auth/calendar.readonly',
+          scope: 'openid email profile https://www.googleapis.com/auth/calendar.events',
         },
       },
     }),
@@ -28,7 +28,7 @@ export const authOptions = {
       }
 
       try {
-         await prisma.user.upsert({
+        await prisma.user.upsert({
           where: {
             email: profile.email,
           },
@@ -47,9 +47,9 @@ export const authOptions = {
       return true;
     },
     async jwt({ token, user, account }) {
-    
-    if (account) {
+      if (account) {
         token.accessToken = account.access_token;
+        token.refreshToken = account.refresh_token; // Add the refresh token for future use
       }
 
       if (user) {
@@ -61,7 +61,6 @@ export const authOptions = {
       return token;
     },
     async session({ session, token }) {
-
       session.user = {
         ...session.user,
         id: token.id,
