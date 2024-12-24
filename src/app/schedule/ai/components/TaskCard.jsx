@@ -1,11 +1,10 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { format } from "date-fns";
+import { useState, useEffect } from "react";
 
 export function TaskCard({ task, wakeupMinutes, handleTaskClick }) {
-  // Ensure task has valid start and end times
-  if (!task?.start || !task?.end) {
-    return null;
-  }
+  const [isDescVisible, setIsDescVisible] = useState(false);
+  const [rowOrColumn, setRowOrColumn] = useState("");
 
   // Convert "HH:mm" strings into total minutes since midnight
   const parseTimeToMinutes = (time) => {
@@ -13,8 +12,8 @@ export function TaskCard({ task, wakeupMinutes, handleTaskClick }) {
     return hours * 60 + minutes;
   };
 
-  const startTotalMinutes = parseTimeToMinutes(task.start);
-  const endTotalMinutes = parseTimeToMinutes(task.end);
+  const startTotalMinutes = parseTimeToMinutes(task?.start || "00:00");
+  const endTotalMinutes = parseTimeToMinutes(task?.end || "00:00");
 
   let duration = endTotalMinutes - startTotalMinutes;
   if (duration < 0) {
@@ -25,18 +24,25 @@ export function TaskCard({ task, wakeupMinutes, handleTaskClick }) {
   const top = ((startTotalMinutes - wakeupMinutes) / (24 * 60)) * 100;
   const height = (duration / (24 * 60)) * 100;
 
-  function assignClasses() {
-    let classes
-    if (height < 3.3) {
+  useEffect(() => {
+    let classes = "";
+    if (height > 4.5) {
+      setIsDescVisible(true);
+      classes = "flex-col gap-0.5 py-2";
+    } else if (height < 3.3) {
+      setIsDescVisible(false);
       classes = "flex-row justify-between z-[100] ";
-      if (height < 1.5) {
-        classes += "py-0";
-      } else classes += "py-1";
-    } else classes = "flex-col gap-0.5 py-2"
-    return classes
-  }
+      classes += height < 1.5 ? "py-0" : "py-1";
+    } else {
+      setIsDescVisible(false);
+      classes = "flex-col gap-0.5 py-2";
+    }
+    setRowOrColumn(classes);
+  }, [height]);
 
-  let rowOrColumn = assignClasses()
+  if (!task?.start || !task?.end) {
+    return null;
+  }
 
   return (
     <Card
@@ -50,7 +56,8 @@ export function TaskCard({ task, wakeupMinutes, handleTaskClick }) {
     >
       <CardHeader className={`flex p-0 space-y-0 ${rowOrColumn}`}>
         <CardTitle className="text-xs font-semibold truncate">{task?.summary}</CardTitle>
-        <CardDescription className="mt-0 text-xs truncate">
+        {isDescVisible && <CardDescription className="mt-0 text-xs truncate text-white/90">{task?.description}</CardDescription>}
+        <CardDescription className="mt-0 text-xs truncate text-white/90">
           {task.start} - {task.end}
         </CardDescription>
       </CardHeader>
