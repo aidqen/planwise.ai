@@ -1,34 +1,13 @@
-import { PrismaClient } from '@prisma/client';
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { google } from "googleapis";
+import { upsertUser } from '../../services/user.service';
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const prisma = new PrismaClient();
 
-// async function createCustomCalendar(accessToken, calendarName) {
-//   const oauth2Client = new google.auth.OAuth2();
-//   oauth2Client.setCredentials({ access_token: accessToken });
-
-//   const calendar = google.calendar({ version: "v3", auth: oauth2Client });
-
-//   const newCalendar = {
-//     summary: calendarName,
-//     timeZone: "Asia/Jerusalem",
-//   };
-
-//   try {
-//     const response = await calendar.calendars.insert({ resource: newCalendar });
-//     console.log("Custom Calendar Created:", response.data);
-//     return response.data.id;
-//   } catch (error) {
-//     console.error("Error creating custom calendar:", error);
-//     throw error;
-//   }
-// }
-
-async function refreshAccessToken(refreshToken) {
+// Helper function to refresh access token
+export async function refreshAccessToken(refreshToken) {
   const oauth2Client = new google.auth.OAuth2(
     GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET
@@ -40,26 +19,29 @@ async function refreshAccessToken(refreshToken) {
     const { credentials } = await oauth2Client.refreshAccessToken();
     return {
       accessToken: credentials.access_token,
-      refreshToken: credentials.refresh_token || refreshToken, // Keep the old refresh token if a new one isn't provided
-      expiresAt: credentials.expiry_date / 1000, // Convert milliseconds to seconds
+      refreshToken: credentials.refresh_token || refreshToken, // Keep old refresh token if a new one isn't provided
+      expiresAt: Math.floor(Date.now() / 1000) + credentials.expiry_date / 1000, // Expiry time in seconds
     };
   } catch (error) {
-    console.error("Error refreshing access token:", error);
+    console.error("Error refreshing access token:", error.message);
     return null;
   }
 }
 
 export const authOptions = {
+  debug: true,
   session: {
     strategy: 'jwt',
   },
   providers: [
     GoogleProvider({
-      clientId: GOOGLE_CLIENT_ID,
-      clientSecret: GOOGLE_CLIENT_SECRET,
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       authorization: {
         params: {
           scope: 'openid email profile https://www.googleapis.com/auth/calendar.events',
+          access_type: 'offline', // Ensure refresh_token is included
+          prompt: 'consent', // Force consent to ensure refresh_token is provided
         },
       },
     }),
@@ -71,57 +53,60 @@ export const authOptions = {
       }
 
       try {
-        await prisma.user.upsert({
-          where: {
-            email: profile.email,
-          },
-          create: {
-            email: profile.email,
-            name: profile.name,
-          },
-          update: {
-            name: profile.name,
-          },
-        });
+        // Upsert user in the database
+        const user = await upsertUser(profile)
+
+        // Attach the user ID to the token during sign-in
+        account.userId = user.id;
+
+        return true;
       } catch (error) {
-        console.error("Database error:", error);
+        console.error("Database error:", error.message);
         throw new Error('Database error');
       }
-
-      return true;
     },
-    async jwt({ token, account }) {
-      // During initial sign-in, save tokens
+    async jwt({ token, account, profile, user }) {
+      // Save tokens and user data during initial sign-in
       if (account) {
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
-        token.expiresAt = Math.floor(Date.now() / 1000) + account.expires_in; // Store token expiry time
+        token.expiresAt = Math.floor(Date.now() / 1000) + account.expires_in; // Store token expiration time
+        console.log("🚀 ~ file: route.js:85 ~ token:", token)
+
+        // Attach the MongoDB user ID from the database
+        if (account.userId) {
+          token.id = account.userId;
+        }
       }
 
-      // If the token is expired, refresh it
+      // Check if the token has expired and refresh it
       if (token.expiresAt && Date.now() / 1000 > token.expiresAt) {
         console.log("Access token expired, refreshing...");
         const refreshedTokens = await refreshAccessToken(token.refreshToken);
 
         if (refreshedTokens) {
           token.accessToken = refreshedTokens.accessToken;
-          token.refreshToken = refreshedTokens.refreshToken;
+          token.refreshToken = refreshedTokens.refreshToken; // Update refresh token if new one is provided
           token.expiresAt = refreshedTokens.expiresAt;
         } else {
           console.error("Failed to refresh access token");
+          throw new Error('Failed to refresh access token');
         }
       }
 
       return token;
     },
     async session({ session, token }) {
+      // Pass user data and tokens to the client
       session.user = {
         ...session.user,
-        id: token.id,
+        id: token.id, // Attach the MongoDB user ID
         name: token.name,
         email: token.email,
       };
-      session.accessToken = token.accessToken; // Expose accessToken in the session
+      session.accessToken = token.accessToken; // Expose access token
+      session.refreshToken = token.refreshToken; // Expose refresh token
+      session.expiresAt = token.expiresAt; // Expose token expiration time
 
       return session;
     },
