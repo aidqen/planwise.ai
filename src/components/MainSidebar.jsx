@@ -1,11 +1,5 @@
 "use client";
-import React, { useState } from "react";
-import {
-    IconArrowLeft,
-    IconBrandTabler,
-    IconSettings,
-    IconUserBolt,
-} from "@tabler/icons-react";
+
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -13,58 +7,69 @@ import { cn } from "@/lib/utils";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { TOGGLE_SIDEBAR } from "@/store/reducers/system.reducer";
+import { CalendarDays, Ellipsis, Repeat2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export function SidebarDemo() {
     const dispatch = useDispatch()
-    // const [open, setOpen] = useState(false);
     const open = useSelector(state => state.systemModule.isSidebarOpen)
+    const pathname = usePathname()
+    const [isVisible, setIsVisible] = useState(true)
+
+    useEffect(() => {
+        if (pathname.includes('auth')) {
+          setIsVisible(false)
+        } else {
+          setIsVisible(true)
+        }
+      }, [pathname, isVisible])
+    // const [open, setOpen] = useState(false);
     const links = [
         {
-            label: "Dashboard",
+            label: "Preferences",
             href: "#",
             icon: (
-                <IconBrandTabler className="flex-shrink-0 w-5 h-5 text-neutral-700 dark:text-neutral-200" />
+                <Repeat2 className="flex-shrink-0 w-5 h-5 text-neutral-700 dark:text-neutral-200" />
             ),
         },
         {
-            label: "Profile",
+            label: "Schedules",
             href: "#",
             icon: (
-                <IconUserBolt className="flex-shrink-0 w-5 h-5 text-neutral-700 dark:text-neutral-200" />
+                <CalendarDays className="flex-shrink-0 w-5 h-5 text-neutral-700 dark:text-neutral-200" />
             ),
         },
         {
-            label: "Settings",
+            label: "Coming Soon",
             href: "#",
             icon: (
-                <IconSettings className="flex-shrink-0 w-5 h-5 text-neutral-700 dark:text-neutral-200" />
-            ),
-        },
-        {
-            label: "Logout",
-            href: "#",
-            icon: (
-                <IconArrowLeft className="flex-shrink-0 w-5 h-5 text-neutral-700 dark:text-neutral-200" />
+                <Ellipsis  className="flex-shrink-0 w-5 h-5 text-neutral-700 dark:text-neutral-200" />
             ),
         },
     ];
 
     function toggleSidebar() {
-        return {type: TOGGLE_SIDEBAR}
+        return { type: TOGGLE_SIDEBAR }
     }
     return (
         (<div
             className={cn(
                 "overflow-hidden flex-1 max-w-max h-screen bg-white rounded-md border max-sm:fixed z-[10] dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700",
-                open ? 'max-sm:block' : 'max-sm:hidden' 
+                open ? 'max-sm:block' : 'max-sm:hidden',
+                isVisible ? 'opacity-100' : 'opacity-0'
             )}>
             <Sidebar open={open} setOpen={() => dispatch(toggleSidebar())}>
-                <SidebarBody className="gap-10 justify-between">
-                    <div className="flex overflow-y-auto overflow-x-hidden flex-col flex-1">
-                        {/* {open ? <Logo /> : <LogoIcon />} */}
-                        <div className="flex flex-col gap-2 mt-8">
+                <SidebarBody className="flex flex-col gap-10 justify-between p-2 pt-8">
+                    <div className="flex overflow-y-auto overflow-x-hidden flex-col">
+                        <div className="flex flex-row gap-3 items-center min-h-10">
+
+                            <Image src="https://res.cloudinary.com/di6tqrg5y/image/upload/v1733918185/icon_1_ylom72.png" width={43} height={43} alt="Logo" />
+                            <span className="min-w-max text-2xl font-medium capitalize">{open ? 'Planwise AI' : ''}</span>
+                        </div>
+                        <div className="flex flex-col gap-2 items-start p-3 mt-8 w-max">
                             {links.map((link, idx) => (
-                                <SidebarLink key={idx} link={link} />
+                                <SidebarLink key={idx} link={link} className={'max-h-8 min-h-8'} />
                             ))}
                         </div>
                     </div>

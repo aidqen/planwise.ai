@@ -86,7 +86,7 @@ export const MobileSidebar = ({
     <div
       className={cn(
         "flex flex-row justify-between items-center px-4 py-4 w-full h-10 md:hidden bg-neutral-100 dark:bg-neutral-800",
-        open ? 'flex' : 'hidden' 
+        open ? 'opacity-100' : 'opacity-0' 
       )}
       {...props}>
       {/* <div className="flex z-20 justify-end w-full">
