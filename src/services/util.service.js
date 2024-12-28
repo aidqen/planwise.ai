@@ -1,6 +1,4 @@
-
-import { formatISO } from "date-fns";
-import { toZonedTime } from "date-fns-tz";
+import { formatInTimeZone } from 'date-fns-tz';
 
 export function hexToRgba(hex, opacity) {
 
@@ -25,15 +23,28 @@ export function makeId(length) {
 
 
 export function convertToGoogleTimestamp(date, time, timeZone) {
-  // Combine date and time into a single string
-  const dateTimeString = `${date}T${time}:00`;
+  try {
+    // Extract the date part (YYYY-MM-DD) from the ISO date string
+    const isoDate = date.split('T')[0];
 
-  // Convert to a Date object
-  const utcDate = new Date(dateTimeString);
+    // Combine date and time into ISO-like format
+    const dateTimeString = `${isoDate}T${time}:00`;
 
-  // Convert UTC date to the specified time zone
-  const zonedDate = toZonedTime(utcDate, timeZone);
+    // Create a Date object from the combined string
+    const utcDate = new Date(`${dateTimeString}Z`); // Add 'Z' for UTC parsing
 
-  // Format the zoned date to ISO 8601 string with time zone offset
-  return formatISO(zonedDate, { representation: "complete" });
+    // Format the date in the specific time zone
+    const formattedDate = formatInTimeZone(utcDate, timeZone, "yyyy-MM-dd'T'HH:mm:ssXXX");
+
+    return formattedDate;
+  } catch (error) {
+    console.error('Error converting timestamp:', error);
+    return null;
+  }
+}
+
+export function isValidJSON(str) {
+  if (str.indexOf('{') !== -1 && str.indexOf('}') !== -1) return true;
+  else return true
+
 }
