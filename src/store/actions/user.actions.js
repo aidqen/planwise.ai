@@ -8,10 +8,17 @@
 import { getUserSession } from '@/lib/session';
 import { SET_USER } from './../reducers/user.reducer';
 import { store } from '../store';
+import { userService } from '@/services/user.service';
 
 export async function getUser() {
         const user = await getUserSession()
-        store.dispatch({type: SET_USER, user})
+        store.dispatch({ type: SET_USER, user })
+}
+
+export async function addScheduleToUser(schedule) {
+        const user = await getUserSession()
+        const userToSave = { ...user, schedules: user?.schedules ? [...user.schedules, schedule] : [schedule] }
+        await userService.updateUser(userToSave)
 }
 
 // export async function loadUsers() {
