@@ -7,13 +7,14 @@ const openai = new OpenAI({
 
 export async function POST(request) {
   try {
-    const { preferences, routines, goals, timezone } = await request.json()
+    const { preferences, routines, goals } = await request.json();
 
     if (!preferences || !routines || !goals) {
       return new Response(JSON.stringify({ error: 'Missing required fields' }), {
         status: 400,
-      })
+      });
     }
+
 
     const prompt = `You are an AI assistant that generates optimized daily schedules based on the user's preferences, routines, and goals. Your task is to create a daily schedule that strictly respects routines, includes meals and morning/night routines, and effectively allocates time to goals based on their importance. Every hour of the day must be accounted for, with no gaps left unscheduled.
 
@@ -23,10 +24,9 @@ export async function POST(request) {
   - "id" (string): A unique identifier for the task.
   - "summary" (string): The task name.
   - "description" (string): A brief description of the task.
-  - "timeZone" (string): Use this time zone: "${timezone}".
   - "start" (string): Start time in "hh:mm" format (24-hour).
   - "end" (string): End time in "hh:mm" format (24-hour).
-- Do not include additional text, explanations, or comments outside the JSON.
+- **Do not include any markdown formatting like \`\`\`json or any other text around the JSON.**
 
 ---
 
@@ -68,7 +68,6 @@ export async function POST(request) {
        "description": "Take a short break to recharge",
        "start": "16:30",
        "end": "17:00",
-       "timeZone": "${timezone}"
      }
      
 
@@ -95,7 +94,6 @@ ${goals?.map(g => `Goal: ${g.name}, Importance: ${g.importance}`).join('\n')}
     "description": "Hygiene and getting dressed for the day",
     "start": "07:00",
     "end": "07:30",
-    "timeZone": "${timezone}"
   },
   {
     "id": "t2",
@@ -103,7 +101,6 @@ ${goals?.map(g => `Goal: ${g.name}, Importance: ${g.importance}`).join('\n')}
     "description": "Enjoy a nutritious breakfast",
     "start": "07:30",
     "end": "08:00",
-    "timeZone": "${timezone}"
   },
   {
     "id": "break1",
@@ -111,7 +108,6 @@ ${goals?.map(g => `Goal: ${g.name}, Importance: ${g.importance}`).join('\n')}
     "description": "Take a short break to relax",
     "start": "16:30",
     "end": "17:00",
-    "timeZone": "${timezone}"
   },
   {
     "id": "t10",
@@ -119,14 +115,15 @@ ${goals?.map(g => `Goal: ${g.name}, Importance: ${g.importance}`).join('\n')}
     "description": "Relax and prepare for bed",
     "start": "22:00",
     "end": "22:30",
-    "timeZone": "${timezone}"
   }
 ]
 
 `;
 
+    console.log('sup');
+    
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4',
+      model: 'gpt-4o-2024-08-06',
       messages: [{ role: 'user', content: prompt }],
       max_tokens: 2000,
     })
