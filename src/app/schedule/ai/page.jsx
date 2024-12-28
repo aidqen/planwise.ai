@@ -23,105 +23,106 @@ export default function DailySchedule({}) {
   const [isVisible, setIsVisible] = useState(true)
   const [lastMouseMove, setLastMouseMove] = useState(Date.now())
 
-  // const aiSchedule = useSelector(state => state.scheduleModule.aiSchedule);
-  const aiSchedule = [
-    {
-      "id": "task1",
-      "summary": "Morning Routine",
-      "description": "Hygiene and getting dressed for the day",
-      "start": "07:00",
-      "end": "07:30",
-      "timeZone": "Asia/Jerusalem"
-    },
-    {
-      "id": "task2",
-      "summary": "Breakfast",
-      "description": "Enjoy a nutritious breakfast",
-      "start": "07:30",
-      "end": "08:00",
-      "timeZone": "Asia/Jerusalem"
-    },
-    {
-      "id": "task3",
-      "summary": "Learn about indie hacking",
-      "description": "Online research about methodologies to start with indie hacking",
-      "start": "08:00",
-      "end": "10:00",
-      "timeZone": "Asia/Jerusalem"
-    },
-    {
-      "id": "break1",
-      "summary": "Short Break",
-      "description": "Take a short break to recharge",
-      "start": "10:00",
-      "end": "10:15",
-      "timeZone": "Asia/Jerusalem"
-    },
-    {
-      "id": "task4",
-      "summary": "Develop my app",
-      "description": "Work on developing essential features",
-      "start": "10:15",
-      "end": "12:00",
-      "timeZone": "Asia/Jerusalem"
-    },
-    {
-      "id": "task5",
-      "summary": "Lunch",
-      "description": "Enjoy a balanced lunch",
-      "start": "12:00",
-      "end": "12:30",
-      "timeZone": "Asia/Jerusalem"
-    },
-    {
-      "id": "task6",
-      "summary": "Workout",
-      "description": "Fit in a quick workout session",
-      "start": "12:30",
-      "end": "13:30",
-      "timeZone": "Asia/Jerusalem"
-    },
-    {
-      "id": "task7",
-      "summary": "Develop my app",
-      "description": "Work on finalizing user interface",
-      "start": "13:30",
-      "end": "18:00",
-      "timeZone": "Asia/Jerusalem"
-    },
-    {
-      "id": "task8",
-      "summary": "Dinner",
-      "description": "Have a healthy dinner",
-      "start": "18:00",
-      "end": "18:30",
-      "timeZone": "Asia/Jerusalem"
-    },
-    {
-      "id": "task9",
-      "summary": "Read a book",
-      "description": "Read for leisure or personal development",
-      "start": "18:30",
-      "end": "21:00",
-      "timeZone": "Asia/Jerusalem"
-    },
-    {
-      "id": "break2",
-      "summary": "Short Break",
-      "description": "Take a short break to relax",
-      "start": "21:00",
-      "end": "21:15",
-      "timeZone": "Asia/Jerusalem"
-    },
-    {
-      "id": "task10",
-      "summary": "Evening Routine",
-      "description": "Relax and prepare for bed",
-      "start": "21:15",
-      "end": "22:00",
-      "timeZone": "Asia/Jerusalem"
-    }
-  ]
+  const aiSchedule = useSelector(state => state.scheduleModule.aiSchedule);
+  console.log("🚀 ~ file: page.jsx:27 ~ aiSchedule:", aiSchedule)
+  // const aiSchedule = [
+  //   {
+  //     "id": "task1",
+  //     "summary": "Morning Routine",
+  //     "description": "Hygiene and getting dressed for the day",
+  //     "start": "07:00",
+  //     "end": "07:30",
+  //     "timeZone": "Asia/Jerusalem"
+  //   },
+  //   {
+  //     "id": "task2",
+  //     "summary": "Breakfast",
+  //     "description": "Enjoy a nutritious breakfast",
+  //     "start": "07:30",
+  //     "end": "08:00",
+  //     "timeZone": "Asia/Jerusalem"
+  //   },
+  //   {
+  //     "id": "task3",
+  //     "summary": "Learn about indie hacking",
+  //     "description": "Online research about methodologies to start with indie hacking",
+  //     "start": "08:00",
+  //     "end": "10:00",
+  //     "timeZone": "Asia/Jerusalem"
+  //   },
+  //   {
+  //     "id": "break1",
+  //     "summary": "Short Break",
+  //     "description": "Take a short break to recharge",
+  //     "start": "10:00",
+  //     "end": "10:15",
+  //     "timeZone": "Asia/Jerusalem"
+  //   },
+  //   {
+  //     "id": "task4",
+  //     "summary": "Develop my app",
+  //     "description": "Work on developing essential features",
+  //     "start": "10:15",
+  //     "end": "12:00",
+  //     "timeZone": "Asia/Jerusalem"
+  //   },
+  //   {
+  //     "id": "task5",
+  //     "summary": "Lunch",
+  //     "description": "Enjoy a balanced lunch",
+  //     "start": "12:00",
+  //     "end": "12:30",
+  //     "timeZone": "Asia/Jerusalem"
+  //   },
+  //   {
+  //     "id": "task6",
+  //     "summary": "Workout",
+  //     "description": "Fit in a quick workout session",
+  //     "start": "12:30",
+  //     "end": "13:30",
+  //     "timeZone": "Asia/Jerusalem"
+  //   },
+  //   {
+  //     "id": "task7",
+  //     "summary": "Develop my app",
+  //     "description": "Work on finalizing user interface",
+  //     "start": "13:30",
+  //     "end": "18:00",
+  //     "timeZone": "Asia/Jerusalem"
+  //   },
+  //   {
+  //     "id": "task8",
+  //     "summary": "Dinner",
+  //     "description": "Have a healthy dinner",
+  //     "start": "18:00",
+  //     "end": "18:30",
+  //     "timeZone": "Asia/Jerusalem"
+  //   },
+  //   {
+  //     "id": "task9",
+  //     "summary": "Read a book",
+  //     "description": "Read for leisure or personal development",
+  //     "start": "18:30",
+  //     "end": "21:00",
+  //     "timeZone": "Asia/Jerusalem"
+  //   },
+  //   {
+  //     "id": "break2",
+  //     "summary": "Short Break",
+  //     "description": "Take a short break to relax",
+  //     "start": "21:00",
+  //     "end": "21:15",
+  //     "timeZone": "Asia/Jerusalem"
+  //   },
+  //   {
+  //     "id": "task10",
+  //     "summary": "Evening Routine",
+  //     "description": "Relax and prepare for bed",
+  //     "start": "21:15",
+  //     "end": "22:00",
+  //     "timeZone": "Asia/Jerusalem"
+  //   }
+  // ]
 
   const multiStepForm = useSelector(state => state.scheduleModule.multiStepForm);
   const wakeupTime = multiStepForm?.preferences?.wakeup || '04:00'; // Default to 4:00 AM if wakeup time is not set

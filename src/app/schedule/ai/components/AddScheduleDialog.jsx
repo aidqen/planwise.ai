@@ -8,16 +8,19 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { scheduleService } from "@/services/scheduleService";
 
-export function AddScheduleDialog({ open, setOpen, aiSchedule, scheduleService }) {
+export function AddScheduleDialog({ open, setOpen, aiSchedule }) {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [date, setDate] = useState(new Date());
+  const [ isLoading, setIsLoading ] = useState(false)
   console.log("🚀 ~ file: AddScheduleDialog.jsx:16 ~ date:", date)
 
   async function saveScheduleToCalendar() {
     try {
+      setIsLoading(true)
       await scheduleService.sendTasksToCalendar(aiSchedule, date, "Asia/Jerusalem");
-      alert("Schedule added to Google Calendar successfully!");
+      setIsLoading(false)
       setOpen(false);
     } catch (error) {
       console.error("Error saving schedule:", error);
