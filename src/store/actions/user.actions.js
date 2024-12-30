@@ -9,15 +9,22 @@ import { getUserSession } from '@/lib/session';
 import { SET_USER } from './../reducers/user.reducer';
 import { store } from '../store';
 import { userService } from '@/services/user.service';
+import { makeId } from '@/services/util.service';
 
 export async function getUser() {
-        const user = await getUserSession()
+        const {email} = await getUserSession()
+        const user = await userService.getUser(email)
         store.dispatch({ type: SET_USER, user })
+        return user
 }
 
 export async function addScheduleToUser(schedule) {
-        const user = await getUserSession()
-        const userToSave = { ...user, schedules: user?.schedules ? [...user.schedules, schedule] : [schedule] }
+        const { id, name, updatedAt, preferences, routines, goals} = schedule
+        const user = await getUser()
+        console.log("🚀 ~ file: user.actions.js:23 ~ user:", user)
+        const scheduleToSave = {id, name, updatedAt, preferences, routines, goals}
+
+        const userToSave = { ...user, schedules: user?.schedules ? [...user.schedules, scheduleToSave] : [scheduleToSave] }
         await userService.updateUser(userToSave)
 }
 
