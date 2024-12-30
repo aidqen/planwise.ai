@@ -36,7 +36,7 @@ export function HomepageActions() {
         
       ];
     return (
-        <div className="grid grid-rows-4 xl:grid-cols-2 xl:grid-rows-2 grid-cols-1 gap-5 w-full">
+        <div className="grid grid-cols-1 grid-rows-4 gap-5 w-full xl:grid-cols-2 xl:grid-rows-2">
             {actions.map((action, idx) => <Link key={idx} href={action?.href} className="flex flex-col items-start gap-1 w-full  bg-white rounded-[10px] shadow-md hover:shadow-lg transition-shadow p-5" 
             // style={{backgroundColor: hexToRgba(action.color, 0.1)}}
             >
@@ -46,7 +46,7 @@ export function HomepageActions() {
 
                 <action.logo size={24} style={{color: action.color}}/>
                 </div>
-                <h4 className="text-black text-base">{action?.title}</h4>
+                <h4 className="text-base text-black">{action?.title}</h4>
                 <p className="text-[#B6BBC3] text-sm">{action.description}</p>
             </Link>)}
         </div>

@@ -1,30 +1,51 @@
 'use client'
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+// import {
+//   Card,
+//   CardContent,
+//   CardDescription,
+//   CardHeader,
+//   CardTitle,
+// } from '@/components/ui/card'
 // import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { TaskCard } from './components/TaskCard'
-import { TaskDialog } from './components/TaskDialog'
+// import { TaskCard } from './components/TaskCard'
+// import { TaskDialog } from './components/TaskDialog'
 import { useEffect, useState } from 'react'
 
-import { AddScheduleDialog } from './components/AddScheduleDialog'
-import { SaveToCalendarBtn } from './components/SaveToCalendarBtn'
-import { ScheduleStructure } from './components/ScheduleStructure'
+// import { AddScheduleDialog } from './components/AddScheduleDialog'
+// import { SaveToCalendarBtn } from './components/SaveToCalendarBtn'
+// import { ScheduleStructure } from './components/ScheduleStructure'
+import { useParams } from 'next/navigation'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { ScheduleStructure } from '../components/ScheduleStructure'
+import { TaskCard } from '../components/TaskCard'
+import { SaveToCalendarBtn } from '../components/SaveToCalendarBtn'
+import { AddScheduleDialog } from '../components/AddScheduleDialog'
+import { TaskDialog } from '../components/TaskDialog'
+import { scheduleService } from '@/services/scheduleService'
 
-export default function DailySchedule({}) {
+export default function DailySchedule({ }) {
   const [calendarDialogOpen, setCalendarDialogOpen] = useState(false)
   const [selectedTask, setSelectedTask] = useState(null)
   const [isVisible, setIsVisible] = useState(true)
   const [lastMouseMove, setLastMouseMove] = useState(Date.now())
+  const params = useParams()
+  const [schedule, setSchedule] = useState(null)
+  console.log("🚀 ~ file: page.jsx:35 ~ schedule:", schedule)
 
-  const aiSchedule = useSelector(state => state.scheduleModule.aiSchedule);
-  // const aiSchedule = [
+  useEffect(() => {
+    console.log('params:', params);
+    onFetchSchedule()
+  }, [params])
+
+  async function onFetchSchedule() {
+    const scheduleToSave = await scheduleService.getScheduleById(params?.id)
+    setSchedule(scheduleToSave)
+  }
+
+  // const schedule = useSelector(state => state.scheduleModule.schedule);
+  // const schedule = [
   //   {
   //     "id": "task1",
   //     "summary": "Morning Routine",
@@ -165,8 +186,8 @@ export default function DailySchedule({}) {
 
   const wakeupMinutes = getMinutesFromMidnight(wakeupTime); // Convert wake-up time to minutes from midnight
 
-  if (!aiSchedule || !aiSchedule?.schedule?.length) return <div>Loading...</div>;
-  const sortedTasks = [...aiSchedule?.schedule]?.sort((a, b) => a.start?.localeCompare(b.start));
+  if (!schedule || !schedule?.schedule?.length) return <div>Loading...</div>;
+  const sortedTasks = [...schedule?.schedule]?.sort((a, b) => a.start?.localeCompare(b.start));
 
   return (
     <Card className="overflow-y-auto mx-auto w-full max-w-4xl bg-transparent border-none ps-9">
@@ -185,7 +206,7 @@ export default function DailySchedule({}) {
         </div>
       </CardContent>
       <SaveToCalendarBtn toggleCalendarDialog={toggleCalendarDialog} isVisible={isVisible} />
-      <AddScheduleDialog open={calendarDialogOpen} setOpen={setCalendarDialogOpen} aiSchedule={aiSchedule}/>
+      <AddScheduleDialog open={calendarDialogOpen} setOpen={setCalendarDialogOpen} schedule={schedule} />
       <TaskDialog selectedTask={selectedTask} handleCloseModal={handleCloseModal} />
     </Card>
   );
