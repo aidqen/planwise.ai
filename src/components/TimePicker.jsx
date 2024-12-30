@@ -11,7 +11,6 @@ export default function TimePicker({ timeType }) {
     const dispatch = useDispatch()
     const { wakeup, sleep } = preferences
     const time = timeType === 'Wake Up' ? wakeup : sleep
-    console.log('time:', time)
 
     function handleTimeChange({target}) {
         const timeTypeKey = timeType === 'Wake Up' ? 'wakeup' : 'sleep';
@@ -52,15 +51,13 @@ export default function TimePicker({ timeType }) {
   }
 
     const wakeupTimeSlots = generateTimeSlots(4, 13)
-    console.log('wakeupTimeSlots:', wakeupTimeSlots)
     const sleepTimeSlots = generateTimeSlots(19, 4)
-    console.log('sleepTimeSlots:', sleepTimeSlots)
     const timeSlotView = timeType === 'Wake Up' ? wakeupTimeSlots : sleepTimeSlots
 
     return (
         <Select onValueChange={(value) => handleTimeChange({ target: { value } })}>
-      <SelectTrigger className="inline-flex items-center justify-start w-full py-2 px-5 me-2 text-sm max-sm:text-xs text-black/70 border-gray-200 border focus:outline-none bg-white text-black rounded-lg hover:bg-gray-100 hover:text-third focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 shadow-md transition-colors">
-        <Clock className="w-6 h-6 mr-2" />
+      <SelectTrigger className="inline-flex justify-start items-center px-5 py-2 w-full text-sm text-black bg-white rounded-lg border border-gray-200 shadow-md transition-colors me-2 max-sm:text-xs text-black/70 focus:outline-none hover:bg-gray-100 hover:text-third focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+        <Clock className="mr-2 w-6 h-6" />
         <SelectValue placeholder={time}>{time}</SelectValue>
       </SelectTrigger>
       <SelectContent className="h-[20em] overflow-auto">

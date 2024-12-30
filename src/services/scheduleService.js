@@ -3,7 +3,23 @@ import axios from "axios"
 export const scheduleService = {
   fetchAiSchedule,
   fetchUserTimezone,
-  sendTasksToCalendar
+  sendTasksToCalendar,
+  insertScheduleToDB,
+  getScheduleById
+}
+
+async function getScheduleById(id) {
+  try {
+    const response = await fetch(`/api/schedule/getById/${id}`,
+      {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      }
+    )
+    return response.json()
+  } catch (error) {
+    console.error('Error fetching schedule:', error)
+  }
 }
 
 async function fetchAiSchedule(parameters) {
@@ -12,11 +28,30 @@ async function fetchAiSchedule(parameters) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(parameters),
-    })
+    });
 
-    return await res.json()
+    return res.json();
   } catch (error) {
-    console.error('Request Failed:', error)
+    console.error('Request Failed:', error);
+  }
+}
+
+
+async function insertScheduleToDB(schedule) {
+  try {
+    const response = await fetch('/api/schedule/new', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(schedule),
+    })
+    const data = await response.json()
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to add schedule to the database")
+    }
+    return data.data
+  } catch (error) {
+    console.error("Failed to add schedule to the database:", error)
+    throw error
   }
 }
 
@@ -37,7 +72,6 @@ async function sendTasksToCalendar(aiSchedule, date, timezone) {
       timezone,
     });
 
-    console.log("Tasks added successfully:", response.data);
     return response.data; // Contains insertedTasks and failedTasks
   } catch (error) {
     if (error.response) {
