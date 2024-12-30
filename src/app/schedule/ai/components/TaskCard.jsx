@@ -44,14 +44,31 @@ export function TaskCard({ task, wakeupMinutes, handleTaskClick }) {
     return null;
   }
 
+  function handleTaskColor(category) {
+    switch (category) {
+      case 'break':
+        return '#22C55E'; // Bright Green
+      case 'goal':
+        return '#3B82F6'; // Bright Blue
+      case 'routine':
+        return '#61CDBB'; // Bright Royal Blue
+      case 'meal':
+        return '#EAB308'; // Bright Gold
+      default:
+        return '#94A3B8'; // Bright Cool Gray
+    }
+  }
+
   return (
     <Card
       onClick={(e) => handleTaskClick(task)}
-      className="absolute left-4 px-3 py-0 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md hover:scale-[1.01] bg-secondary hover:bg-blue-600 cursor-pointer text-white w-[100%]"
+      className="absolute left-4 px-3 py-0 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md hover:scale-[1.01] cursor-pointer text-white w-[100%]"
       style={{
         top: `${top}%`,
         height: `${height}%`,
         minHeight: "40px",
+        backgroundColor: handleTaskColor(task?.category),
+
       }}
     >
       <CardHeader className={`flex p-0 space-y-0 ${rowOrColumn}`}>

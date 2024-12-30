@@ -14,12 +14,11 @@ export function AddScheduleDialog({ open, setOpen, aiSchedule }) {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [date, setDate] = useState(new Date());
   const [ isLoading, setIsLoading ] = useState(false)
-  console.log("🚀 ~ file: AddScheduleDialog.jsx:16 ~ date:", date)
 
   async function saveScheduleToCalendar() {
     try {
       setIsLoading(true)
-      await scheduleService.sendTasksToCalendar(aiSchedule, date, "Asia/Jerusalem");
+      await scheduleService.sendTasksToCalendar(aiSchedule?.schedule, date, "Asia/Jerusalem");
       setIsLoading(false)
       setOpen(false);
     } catch (error) {
