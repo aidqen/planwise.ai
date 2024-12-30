@@ -1,5 +1,6 @@
 export const userService = {
-    updateUser
+    updateUser,
+    getUser
 }
 
 async function updateUser(user) {
@@ -9,4 +10,17 @@ async function updateUser(user) {
         body: JSON.stringify(user)
     })
     return await res.json()
+}
+
+async function getUser(email) {
+    const res = await fetch(`/api/user/get?email=${encodeURIComponent(email)}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    });
+
+    if (!res.ok) {
+        throw new Error(`Failed to fetch user: ${res.statusText}`);
+    }
+
+    return await res.json();
 }
