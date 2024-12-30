@@ -24,7 +24,6 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
   }
 
   function validateStartEndTime() {
-    console.log('hii');
     
     if (!startTime || !endTime) return; // Skip validation if inputs are incomplete
 
@@ -61,9 +60,9 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
   }
 
   return (
-    <Card className="mb-8 p-5 bg-white/50 w-full backdrop-blur-sm border border-gray-200/50 rounded-xl hover:shadow-xl transition-all duration-300">
+    <Card className="p-5 mb-8 w-full rounded-xl border backdrop-blur-sm transition-all duration-300 bg-white/50 border-gray-200/50 hover:shadow-xl">
       <CardContent className="p-0">
-        <form onSubmit={handleSubmit} className="space-y-4 relative">
+        <form onSubmit={handleSubmit} className="relative space-y-4">
           <div className="flex flex-col gap-2">
             <Label
               htmlFor="routineName"
@@ -77,11 +76,7 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
               value={newRoutine.name}
               onChange={e => setNewRoutine({ ...newRoutine, name: e.target.value })}
               required
-              className="h-11 px-4 py-2 border border-gray-200 rounded-lg shadow-sm
-                focus-visible:ring-2 focus-visible:ring-blue-500/50
-                focus-visible:border-blue-500 
-                placeholder:text-gray-400
-                transition-all duration-200"
+              className="px-4 py-2 h-11 rounded-lg border border-gray-200 shadow-sm transition-all duration-200 focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:border-blue-500 placeholder:text-gray-400"
             />
           </div>
 
@@ -168,9 +163,9 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
           {/* Submit Button */}
           <Button
             type="submit"
-            className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+            className="w-full h-11 font-medium text-white bg-blue-600 rounded-lg shadow-md transition-all duration-300 hover:bg-blue-700 hover:shadow-lg"
           >
-            <Plus className="mr-2 h-5 w-5" /> Add Routine
+            <Plus className="mr-2 w-5 h-5" /> Add Routine
           </Button>
         </form>
       </CardContent>
