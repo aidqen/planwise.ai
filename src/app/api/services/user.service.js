@@ -1,7 +1,6 @@
 import { dbService } from "./db.service"
 
 export async function upsertUser(profile) {
-  console.log("🚀 ~ file: user.service.js:4 ~ profile:", profile)
   try {
     const usersCollection = await dbService.getCollection('User');
 
@@ -17,10 +16,8 @@ export async function upsertUser(profile) {
     );
 
     if (result.upsertedCount > 0) {
-      console.log('User created:', result.upsertedId);
       return { created: true, id: result.upsertedId };
     } else {
-      console.log('User updated:', profile.email);
       return { created: false, email: profile.email };
     }
   } catch (err) {
@@ -28,3 +25,4 @@ export async function upsertUser(profile) {
     throw err;
   }
 }
+
