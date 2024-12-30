@@ -7,12 +7,13 @@ import { cn } from "@/lib/utils";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { TOGGLE_SIDEBAR } from "@/store/reducers/system.reducer";
-import { CalendarDays, Ellipsis, Repeat2 } from "lucide-react";
+import { CalendarDays, CirclePlus, Ellipsis, Repeat2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export function SidebarDemo() {
     const dispatch = useDispatch()
+    const router = useRouter()
     const open = useSelector(state => state.systemModule.isSidebarOpen)
     const pathname = usePathname()
     const [isVisible, setIsVisible] = useState(true)
@@ -34,8 +35,15 @@ export function SidebarDemo() {
             ),
         },
         {
+            label: "Create New Schedule",
+            href: "/schedule/new",
+            icon: (
+                <CirclePlus className="flex-shrink-0 w-5 h-5 text-neutral-700 dark:text-neutral-200" />
+            ),
+        },
+        {
             label: "Schedules",
-            href: "#",
+            href: "/schedule/all",
             icon: (
                 <CalendarDays className="flex-shrink-0 w-5 h-5 text-neutral-700 dark:text-neutral-200" />
             ),
@@ -49,6 +57,10 @@ export function SidebarDemo() {
         },
     ];
 
+    function navigateHome() {
+        router.replace('/')
+    }
+
     function toggleSidebar() {
         return { type: TOGGLE_SIDEBAR }
     }
@@ -56,13 +68,13 @@ export function SidebarDemo() {
         (<div
             className={cn(
                 "overflow-hidden flex-1 max-w-max h-screen bg-white rounded-md border max-sm:fixed z-[10] dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700",
-                open ? 'max-sm:block' : 'max-sm:hidden',
+                open ? 'max-sm:max-w-full' : 'max-sm:max-w-0',
                 isVisible ? 'opacity-100' : 'opacity-0'
             )}>
             <Sidebar open={open} setOpen={() => dispatch(toggleSidebar())}>
                 <SidebarBody className="flex flex-col gap-10 justify-between p-2 pt-8">
                     <div className="flex overflow-y-auto overflow-x-hidden flex-col">
-                        <div className="flex flex-row gap-3 items-center min-h-10">
+                        <div className="flex flex-row gap-3 items-center cursor-pointer min-h-10" onClick={navigateHome}>
 
                             <Image src="https://res.cloudinary.com/di6tqrg5y/image/upload/v1733918185/icon_1_ylom72.png" width={43} height={43} alt="Logo" />
                             <span className="min-w-max text-2xl font-medium capitalize">{open ? 'Planwise AI' : ''}</span>
