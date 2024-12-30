@@ -71,7 +71,6 @@ export const authOptions = {
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
         token.expiresAt = Math.floor(Date.now() / 1000) + account.expires_in; // Store token expiration time
-        console.log("🚀 ~ file: route.js:85 ~ token:", token)
 
         // Attach the MongoDB user ID from the database
         if (account.userId) {
@@ -81,7 +80,6 @@ export const authOptions = {
 
       // Check if the token has expired and refresh it
       if (token.expiresAt && Date.now() / 1000 > token.expiresAt) {
-        console.log("Access token expired, refreshing...");
         const refreshedTokens = await refreshAccessToken(token.refreshToken);
 
         if (refreshedTokens) {

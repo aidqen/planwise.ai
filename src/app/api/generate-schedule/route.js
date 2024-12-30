@@ -14,7 +14,7 @@ export async function POST(request) {
         status: 400,
       });
     }
-
+    
 
     const prompt = `You are an AI assistant that generates optimized daily schedules based on the user's preferences, routines, and goals. Your task is to create a daily schedule that strictly respects routines, includes meals and morning/night routines, and effectively allocates time to goals based on their importance. Every hour of the day must be accounted for, with no gaps left unscheduled.
 
@@ -26,6 +26,7 @@ export async function POST(request) {
   - "description" (string): A brief description of the task.
   - "start" (string): Start time in "hh:mm" format (24-hour).
   - "end" (string): End time in "hh:mm" format (24-hour).
+  - "category" (string): the category of the task. (break, routine, meal, goal)
 - **Do not include any markdown formatting like \`\`\`json or any other text around the JSON.**
 
 ---
@@ -39,6 +40,8 @@ export async function POST(request) {
      - Lunch: Between 12:00 and 14:00.
      - Dinner: Between 18:00 and 20:00.
    - Meals may overlap with flexible tasks.
+   - Give the meal task a category of "meal".
+   - Give the routine tasks a category of "routine".
 
 2. **Intensity-Based Scheduling**:
    - For **intense**, the entire day must be filled with tasks, leaving minimal room for breaks, but still accounting for short recovery breaks.
@@ -51,11 +54,13 @@ export async function POST(request) {
      - "Short Break" (15-30 minutes).
      - "Relaxation Time" (30 minutes to 1 hour).
      - "Outdoor Walk" (specific to evenings or afternoons).
+     - Give the break tasks a category of "break".
 
 4. **Goals**:
    - Allocate more time to high-importance goals.
    - Break medium- and low-importance goals into smaller tasks with clear descriptions.
    - Schedule tasks around routines, meals, and breaks, ensuring proper time allocation.
+   - Give the goal tasks a category of "goal".
 
 5. **Ensure No Gaps**:
    - **Every hour of the day must be filled** with either a task, break, or meal.
@@ -120,7 +125,6 @@ ${goals?.map(g => `Goal: ${g.name}, Importance: ${g.importance}`).join('\n')}
 
 `;
 
-    console.log('sup');
     
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-2024-08-06',
@@ -129,7 +133,6 @@ ${goals?.map(g => `Goal: ${g.name}, Importance: ${g.importance}`).join('\n')}
     })
 
     let responseContent = completion.choices[0]?.message?.content.trim()
-    console.log('GPT Response:', responseContent)
 
     let schedule
     try {
@@ -138,7 +141,6 @@ ${goals?.map(g => `Goal: ${g.name}, Importance: ${g.importance}`).join('\n')}
       console.warn('Invalid JSON, attempting repair...')
       try {
         responseContent = jsonrepair(responseContent)
-        console.log('Repaired JSON:', responseContent)
         schedule = JSON.parse(responseContent)
       } catch (repairError) {
         console.error('Failed to repair JSON:', repairError.message)
