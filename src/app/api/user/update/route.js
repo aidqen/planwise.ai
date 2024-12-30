@@ -5,7 +5,6 @@ import { ObjectId } from 'mongodb';
 export async function PUT(req) {
     try {
         const userToSave = await req.json();
-        console.log("Attempting to update user with email:", userToSave.email);
 
         const usersCollection = await dbService.getCollection('User');
         
@@ -24,7 +23,6 @@ export async function PUT(req) {
             { upsert: true } // This will create the document if it doesn't exist
         );
 
-        console.log("Update operation result:", result);
 
         if (result.matchedCount === 0 && result.upsertedCount === 0) {
             return NextResponse.json({ error: "User not found and update failed" }, { status: 404 });

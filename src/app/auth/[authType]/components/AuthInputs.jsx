@@ -3,23 +3,22 @@ import { useParams } from "next/navigation"
 
 export function AuthInputs() {
     const params = useParams()
-    console.log('params:', params)
   return (
     <>
       <input
         type="email"
         name="email"
         placeholder="Email"
-        className="relative rounded-full w-full border-black/20 shadow-md border max-sm:py-3 py-4 px-8 mb-4"
+        className="relative px-8 py-4 mb-4 w-full rounded-full border shadow-md border-black/20 max-sm:py-3"
       />
       <input
         type="password"
         name="password"
         placeholder="Password"
-        className="relative rounded-full w-full border-black/20 shadow-md border max-sm:py-3 py-4 px-8"
+        className="relative px-8 py-4 w-full rounded-full border shadow-md border-black/20 max-sm:py-3"
       />
-      <div className="mt-7 mb-12 flex flex-row items-center w-full justify-between">
-        <div className="flex flex-row items-center gap-2">
+      <div className="flex flex-row justify-between items-center mt-7 mb-12 w-full">
+        <div className="flex flex-row gap-2 items-center">
           <input type="checkbox" name="remember" id="remember" className="" />
           <label
             htmlFor="remember"
@@ -32,12 +31,12 @@ export function AuthInputs() {
           Forgot password?
         </p>
       </div>
-      <button className="bg-green-500 hover:bg-green-600 shadow-md transition-colors w-full text-sm text-white font-bold py-4 rounded-full mb-5">
+      <button className="py-4 mb-5 w-full text-sm font-bold text-white bg-green-500 rounded-full shadow-md transition-colors hover:bg-green-600">
         Log in
       </button>
-      <p className="text-black/50 text-xs">
+      <p className="text-xs text-black/50">
         Don&apos;t have an account?{' '}
-        <span className="text-black font-semibold">Sign Up</span>
+        <span className="font-semibold text-black">Sign Up</span>
       </p>
     </>
   )

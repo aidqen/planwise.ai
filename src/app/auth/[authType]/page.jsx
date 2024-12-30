@@ -28,7 +28,7 @@ export default async function AuthPage() {
 
       <div className="flex relative justify-center items-center w-full h-full max-sm:hidden">
         <Image
-          className="h-full w-full xl:h-[calc(100%-1rem)] xl:w-[calc(100%-1rem)] col-start-2 object-cover rounded-[50px]"
+          className="h-full w-full xl:h-[calc(100%-1rem)] xl:w-[calc(100%-1rem)] col-start-2 object-cover rounded-[30px]"
           src="https://res.cloudinary.com/di6tqrg5y/image/upload/v1733784472/ai-generated-8814121_1280_nbzs68.webp"
           fill
           alt="rice-fields-background"
