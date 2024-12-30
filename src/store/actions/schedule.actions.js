@@ -3,19 +3,31 @@ import { ADD_TASK_TO_AI_SCHEDULE, RESET_SCHEDULE, SET_AI_SCHEDULE } from '../red
 import { store } from '../store'
 import { userService } from '@/services/user.service'
 import { addScheduleToUser } from './user.actions'
+import { makeId } from '@/services/util.service'
 
 export async function generateAiSchedule(parameters) {
-    const { preferences, routines, goals } = parameters
+    var { preferences, routines, goals } = parameters;
     try {
-        const timezone = await scheduleService.fetchUserTimezone()
-        console.log('timezone:', timezone)
-        const aiSchedule = await scheduleService.fetchAiSchedule({ preferences, routines, goals, timezone })
-        await addScheduleToUser(aiSchedule)
-        store.dispatch(getCmdAiSchedule(aiSchedule.schedule))
+        const aiSchedule = await scheduleService.fetchAiSchedule({ preferences, routines, goals });
+        const scheduleToSave = formatSchedule(aiSchedule.schedule, preferences, routines, goals);
+        const schedule = await saveScheduleToDB(scheduleToSave);
+        console.log("🚀 ~ file: schedule.actions.js:14 ~ schedule:", schedule)
+        await addScheduleToUser(schedule);
+        store.dispatch(getCmdAiSchedule(scheduleToSave));
     } catch (err) {
-        console.log('Cannot fetch ai schedule', err)
-        throw err
+        throw err;
     }
+}
+
+async function saveScheduleToDB(schedule) {
+    return await scheduleService.insertScheduleToDB(schedule)
+}
+
+function formatSchedule(schedule, preferences, routines, goals) {
+    if (!schedule) return
+    const now = new Date()
+    const timestamp = now.getTime()
+    return { name: 'Daily Schedule', schedule: [...schedule], createdAt: timestamp, updatedAt: timestamp, preferences, routines, goals }
 }
 
 
@@ -32,7 +44,6 @@ export const resetSchedule = () => ({
 });
 
 export function getCmdAiSchedule(aiSchedule) {
-    console.log('aiSchedule:', aiSchedule)
     return {
         type: SET_AI_SCHEDULE,
         aiSchedule
