@@ -19,7 +19,6 @@ async function createCustomCalendar(accessToken) {
       resource: newCalendar,
     });
 
-    console.log("Custom Calendar Created:", response.data);
     return response.data.id; // This is the ID of the new calendar
   } catch (error) {
     console.error("Error creating custom calendar:", error);

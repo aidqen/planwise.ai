@@ -8,7 +8,6 @@ export async function POST(req) {
   try {
     // Get session data
     const session = await getServerSession(authOptions);
-    console.log("🚀 ~ Session:", session);
 
     if (!session || !session.accessToken) {
       return new Response(
@@ -19,7 +18,6 @@ export async function POST(req) {
 
     // Check for token expiration and refresh if necessary
     if (session.expiresAt && Date.now() / 1000 > session.expiresAt) {
-      console.log("Access token expired, refreshing...");
       const refreshedTokens = await refreshAccessToken(session.refreshToken);
 
       if (refreshedTokens) {
@@ -35,8 +33,6 @@ export async function POST(req) {
 
     // Parse request body
     const { aiSchedule, date, timezone } = await req.json();
-    console.log("🚀 ~ Timezone:", timezone);
-    console.log("🚀 ~ Date:", date);
 
     // Validate input
     if (!Array.isArray(aiSchedule) || !date || !timezone) {
@@ -46,7 +42,6 @@ export async function POST(req) {
       );
     }
 
-    console.log("🚀 ~ Access Token:", session.accessToken);
 
     // Initialize OAuth2 client
     const oauth2Client = new google.auth.OAuth2();
@@ -92,7 +87,6 @@ export async function POST(req) {
     );
 
     // Separate successful and failed tasks
-    console.log("🚀 ~ Task Results:", taskResults);
     const successfulTasks = taskResults.filter((res) => res.success);
     const failedTasks = taskResults.filter((res) => !res.success);
 
