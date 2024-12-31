@@ -53,8 +53,8 @@ export function Routines({ }) {
 
   return (
     <Section>
-      <div className="flex flex-col max-sm:items-start items-center gap-7 w-full h-full mt-7 pb-10">
-        <h1 className="text-xl font-medium text-gray-900 text-center w-full">
+      <div className="flex flex-col gap-7 items-center pb-10 mt-7 w-full max-sm:items-start">
+        <h1 className="w-full text-xl font-medium text-center text-gray-900">
           Organize your day, boost your productivity
         </h1>
         <AddRoutine
@@ -63,8 +63,9 @@ export function Routines({ }) {
           addRoutine={addRoutine}
           multiStepForm={multiStepForm}
         />
+      </div>
         <AnimatePresence>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 h-[11em] w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-[11em] w-full">
             {routines.map(routine => (
               <Routine
                 routine={routine}
@@ -76,7 +77,6 @@ export function Routines({ }) {
             ))}
           </div>
         </AnimatePresence>
-      </div>
     </Section>
   )
 }

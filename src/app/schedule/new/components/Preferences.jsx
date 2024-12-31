@@ -13,17 +13,17 @@ export function Preferences({ }) {
 
   return (
     <Section>
-      <div className="flex flex-col max-sm:items-start items-center gap-9 w-full h-full mt-10">
-      <h3 className="text-xl font-medium text-gray-900 text-center w-full">
+      <div className="flex flex-col gap-9 items-center px-3 mt-10 w-full h-full max-sm:items-start">
+      <h3 className="w-full text-xl font-medium text-center text-gray-900">
         How's your day looking?
       </h3>
         <div className="flex flex-row justify-between items-center max-sm:w-full w-[30em] mb-3">
           {timeTypes.map(timeType => (
             <div
               key={timeType}
-              className="flex flex-col items-start justify-start gap-2"
+              className="flex flex-col gap-2 justify-start items-start"
             >
-              <label className="font-normal max-sm:text-sm text-base text-black/80">{timeType}</label>
+              <label className="text-base font-normal max-sm:text-sm text-black/80">{timeType}</label>
               <TimePicker
                 timeType={timeType}
               />

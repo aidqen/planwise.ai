@@ -159,7 +159,7 @@ export function AddGoals() {
                       variant="ghost"
                       size="icon"
                       onClick={() => removeGoal(goal.id)}
-                      className="flex col-start-3 row-start-1 justify-center items-center w-8 h-8 text-gray-400 rounded-full transition-all duration-200 hover:text-red-600 hover:bg-red-50 active:bg-red-100"
+                      className="flex col-start-3 row-start-1 justify-center items-center w-8 h-8 text-white rounded-full transition-all duration-200 hover:text-red-600 hover:bg-red-50 active:bg-red-100"
                     >
                       <X className="w-4 h-4" />
                     </Button>

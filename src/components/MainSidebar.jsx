@@ -29,7 +29,7 @@ export function SidebarDemo() {
     const links = [
         {
             label: "Preferences",
-            href: "#",
+            href: "/preferences",
             icon: (
                 <Repeat2 className="flex-shrink-0 w-5 h-5 text-neutral-700 dark:text-neutral-200" />
             ),
@@ -71,17 +71,17 @@ export function SidebarDemo() {
                 open ? 'max-sm:max-w-full' : 'max-sm:max-w-0',
                 isVisible ? 'opacity-100' : 'opacity-0'
             )}>
-            <Sidebar open={open} setOpen={() => dispatch(toggleSidebar())}>
+            <Sidebar open={open} >
                 <SidebarBody className="flex flex-col gap-10 justify-between p-2 pt-8">
                     <div className="flex overflow-y-auto overflow-x-hidden flex-col">
-                        <div className="flex flex-row gap-3 items-center cursor-pointer min-h-10" onClick={navigateHome}>
+                        <div className="flex flex-row gap-3 items-center mt-2 cursor-pointer min-h-10" onClick={navigateHome}>
 
                             <Image src="https://res.cloudinary.com/di6tqrg5y/image/upload/v1733918185/icon_1_ylom72.png" width={43} height={43} alt="Logo" />
                             <span className="min-w-max text-2xl font-medium capitalize">{open ? 'Planwise AI' : ''}</span>
                         </div>
-                        <div className="flex flex-col gap-2 items-start p-3 mt-8 w-max">
+                        <div className="flex flex-col gap-2 items-start mt-8 w-max">
                             {links.map((link, idx) => (
-                                <SidebarLink key={idx} link={link} className={'max-h-8 min-h-8'} />
+                                <SidebarLink key={idx} link={link} className={'w-full max-h-10 min-h-10 rounded-[10px]'} />
                             ))}
                         </div>
                     </div>

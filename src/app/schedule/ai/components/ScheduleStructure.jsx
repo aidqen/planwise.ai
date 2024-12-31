@@ -9,13 +9,13 @@ export function ScheduleStructure({ wakeupMinutes }) {
                 return (
                     <div
                         key={index}
-                        className="absolute left-0 w-full text-sm text-gray-400"
+                        className="absolute left-0 w-full text-sm text-gray-500"
                         style={{ top: `${(index / 24) * 100}%` }}
                     >
                         <div className="absolute -left-16 w-12 text-right">
                             {format(new Date().setHours(hour, 0, 0, 0), 'h a')}
                         </div>
-                        <div className="h-[1px] bg-gray-200" />
+                        <div className="h-[1px] bg-gray-300" />
                     </div>
                 );
             })}

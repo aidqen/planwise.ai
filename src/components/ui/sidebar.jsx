@@ -1,9 +1,10 @@
 "use client";;
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import React, { useState, createContext, useContext } from "react";
+import React, { useState, createContext, useContext, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconMenu2, IconX } from "@tabler/icons-react";
+import { usePathname } from "next/navigation";
 
 const SidebarContext = createContext(undefined);
 
@@ -127,10 +128,19 @@ export const SidebarLink = ({
   ...props
 }) => {
   const { open, animate } = useSidebar();
+  const pathname = usePathname()
+  const [isActive, setIsActive] = useState(false)
+
+  useEffect(() => {
+    if (pathname === link.href) setIsActive(true)
+      else setIsActive(false)
+  }, [pathname])
+
+
   return (
     (<Link
       href={link.href}
-      className={cn("flex gap-2 justify-start items-center py-2 group/sidebar", className)}
+      className={cn("flex gap-2 justify-start items-center hover:bg-green-100 group/sidebar p-3 transition-colors duration-150", isActive && 'bg-green-300 hover:bg-green-400 text-black', className)}
       {...props}>
       {link.icon}
       <motion.span

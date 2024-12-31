@@ -1,15 +1,15 @@
 import { dbService } from "@/app/api/services/db.service";
+import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 
-export async function GET(req) {
+export async function GET(req, { params }) {
     try {
-        const { searchParams } = new URL(req.url);
-        const id = searchParams.get('id');
+        const { id } = params; 
         console.log("🚀 ~ file: route.js:6 ~ id:", id);
 
         const schedulesCollection = await dbService.getCollection('schedules');
 
-        const schedule = await schedulesCollection.findOne({ id });
+        const schedule = await schedulesCollection.findOne({ _id: ObjectId.createFromHexString(id) });
         console.log("🚀 ~ file: route.js:11 ~ schedule:", schedule);
 
         return NextResponse.json(schedule);

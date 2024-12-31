@@ -1,4 +1,5 @@
 'use client'
+import { ToggleSidebarBtn } from '@/components/ToggleSidebarBtn'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +11,7 @@ import {
 import { cn } from '@/lib/utils'
 import { getUser } from '@/store/actions/user.actions'
 import { TOGGLE_SIDEBAR } from '@/store/reducers/system.reducer'
-import { Component, LogOut, Search } from 'lucide-react'
+import { Component, LogOut, PanelRight, Search } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -51,10 +52,11 @@ export function AppHeader() {
   return (
     <header
       className={cn(
-        isVisible ? '':'hidden', 'flex flex-row justify-end items-center px-6 pb-3 w-full max-sm:justify-between'
+        isVisible ? '':'hidden', 'flex flex-row justify-between items-center pb-3 w-full ps-3 pe-6 max-sm:justify-between'
         )
         }
     >
+      <ToggleSidebarBtn />
       <button className="hidden justify-center items-center p-2 rounded-full shadow-md max-sm:flex bg-secondaryLight">
         <Component className="text-black" onClick={onToggleSidebar}/>
         {/* <Menu className="text-black"/> */}

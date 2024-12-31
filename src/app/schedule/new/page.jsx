@@ -55,13 +55,13 @@ function ScheduleNewContent() {
   }
 
   return (
-      <div className="relative flex flex-col items-center justify-between max-sm:w-full px-6 w-full h-[calc(100%-5em)] overflow-x-hidden overflow-y-auto text-black pt-5 rounded-xl pb-20">
+      <div className="flex overflow-y-auto overflow-x-hidden relative flex-col justify-between items-center px-6 pt-5 w-full h-full text-black rounded-xl max-sm:w-full">
         <div className="flex flex-col items-center w-full max-sm:block">
           <Breadcrumbs currentIdx={step} setStep={setStep} />
           {/* <div className="h-[1px] w-full bg-black/10"></div> */}
           {renderStepContent()}
         </div>
-        <div className="flex fixed bottom-0 left-0 flex-row gap-20 justify-center items-center py-10 pt-7 w-full btns max-sm:justify-center max-sm:gap-5">
+        <div className="flex flex-row gap-20 justify-center items-center py-10 pt-7 w-full btns max-sm:justify-center max-sm:gap-5">
           <button
             onClick={goBackStep}
             className="px-10 py-2.5 rounded-lg font-medium transition-all duration-300 transform hover:scale-[1.02] bg-white hover:bg-gray-50 text-gray-700 shadow-md border border-gray-200"

@@ -32,17 +32,17 @@ export default function DailySchedule({ }) {
   const [lastMouseMove, setLastMouseMove] = useState(Date.now())
   const params = useParams()
   const [schedule, setSchedule] = useState(null)
-  console.log("🚀 ~ file: page.jsx:35 ~ schedule:", schedule)
+  const multiStepForm = useSelector(state => state.scheduleModule.multiStepForm);
+  const wakeupTime = multiStepForm?.preferences?.wakeup || '04:00';
+  // console.log("🚀 ~ file: page.jsx:35 ~ schedule:", schedule)
 
   useEffect(() => {
     console.log('params:', params);
     onFetchSchedule()
   }, [params])
 
-  async function onFetchSchedule() {
-    const scheduleToSave = await scheduleService.getScheduleById(params?.id)
-    setSchedule(scheduleToSave)
-  }
+
+  
 
   // const schedule = useSelector(state => state.scheduleModule.schedule);
   // const schedule = [
@@ -144,8 +144,7 @@ export default function DailySchedule({ }) {
   //   }
   // ]
 
-  const multiStepForm = useSelector(state => state.scheduleModule.multiStepForm);
-  const wakeupTime = multiStepForm?.preferences?.wakeup || '04:00'; // Default to 4:00 AM if wakeup time is not set
+ // Default to 4:00 AM if wakeup time is not set
   // const wakeupTime = '07:00';
 
   useEffect(() => {
@@ -183,6 +182,14 @@ export default function DailySchedule({ }) {
     setSelectedTask(null); // Close the modal by clearing the selected task
   }
 
+  async function onFetchSchedule() {
+    console.log('hiiiii');
+    
+    console.log("🚀 ~ file: page.jsx:187 ~ params?.id:", params?.id)
+    const scheduleToSave = await scheduleService.getScheduleById(params?.id)
+    console.log("🚀 ~ file: page.jsx:188 ~ scheduleToSave:", scheduleToSave)
+    setSchedule(scheduleToSave)
+  }
 
   const wakeupMinutes = getMinutesFromMidnight(wakeupTime); // Convert wake-up time to minutes from midnight
 
@@ -211,8 +218,6 @@ export default function DailySchedule({ }) {
     </Card>
   );
 }
-
-
 
 
 function getMinutesFromMidnight(time) {

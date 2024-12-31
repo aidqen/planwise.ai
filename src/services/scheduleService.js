@@ -13,7 +13,7 @@ async function getScheduleById(id) {
     const response = await fetch(`/api/schedule/getById/${id}`,
       {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' }
       }
     )
     return response.json()
