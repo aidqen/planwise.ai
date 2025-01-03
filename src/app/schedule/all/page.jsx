@@ -57,7 +57,7 @@ export default function AllSchedules() {
                 {/* Navigation UI */}
                 <ScheduleFilter tabs={tabs} setSelectedTab={setSelectedTab} selectedTab={selectedTab} />
                 {/* Schedules Grid */}
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
                     {user?.schedules?.map((schedule) => (
                         <SchedulePreview key={schedule.id} schedule={schedule} />
                     ))}

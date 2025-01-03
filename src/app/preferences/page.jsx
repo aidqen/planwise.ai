@@ -35,17 +35,20 @@ export default function PlanwiseDashboard() {
     }
 
     return (
-        <div className="p-6 px-20 w-full min-h-screen">
+        <div className="p-6 max-sm:px-4 px-20 w-full min-h-screen">
             <div className="mx-auto max-w-7xl">
                 <h1 className="mb-1 text-2xl font-medium text-gray-900">Your Preferences</h1>
                 <p className='mb-6 text-base text-neutral'>Manage your goals, routines and preferences to get the best results for your schedule.</p>
 
-                <div className="grid gap-2 rows-3">
+                <div className="grid gap-2 max-sm:grid-rows-3 grid-cols-3">
                     <PreferenceSection
                         title="Preferences"
-                        icon={<Settings2 className="w-4 h-4 text-blue-500" />}
+                        icon={<Settings2 className="w-4 h-4 text-black/70" />}
                         description="Schedule settings"
                     >
+                        <AddButton title="Edit Preferences" compact>
+                            <PreferenceForm onSubmit={updatePreferences} initialPreferences={preferences} />
+                        </AddButton>
                         <div className="p-3 mb-2 rounded-lg">
                             <div className="flex flex-row items-center space-x-5">
                                 <div>
@@ -62,14 +65,11 @@ export default function PlanwiseDashboard() {
                                 </div>
                             </div>
                         </div>
-                        <AddButton title="Edit Preferences" compact>
-                            <PreferenceForm onSubmit={updatePreferences} initialPreferences={preferences} />
-                        </AddButton>
                     </PreferenceSection>
 
                     <PreferenceSection
                         title="Goals"
-                        icon={<Target className="w-4 h-4 text-blue-500" />}
+                        icon={<Target className="w-4 h-4 text-black/70" />}
                         description="Track your objectives"
                     >
                         <AddButton title="Add Goal" compact>
@@ -88,7 +88,7 @@ export default function PlanwiseDashboard() {
 
                     <PreferenceSection
                         title="Routines"
-                        icon={<Clock className="w-4 h-4 text-blue-500" />}
+                        icon={<Clock className="w-4 h-4 text-black/70" />}
                         description="Daily activities"
                     >
                         <AddButton title="Add Routine" compact>

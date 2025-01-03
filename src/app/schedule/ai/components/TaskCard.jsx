@@ -66,7 +66,7 @@ export function TaskCard({ task, wakeupMinutes, handleTaskClick }) {
       style={{
         top: `${top}%`,
         height: `${height}%`,
-        minHeight: "40px",
+        // minHeight: "40px",
         backgroundColor: handleTaskColor(task?.category),
 
       }}

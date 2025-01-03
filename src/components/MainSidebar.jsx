@@ -6,7 +6,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { TOGGLE_SIDEBAR } from "@/store/reducers/system.reducer";
+import { CLOSE_SIDEBAR, TOGGLE_SIDEBAR } from "@/store/reducers/system.reducer";
 import { CalendarDays, CirclePlus, Ellipsis, Repeat2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
@@ -15,6 +15,7 @@ export function SidebarDemo() {
     const dispatch = useDispatch()
     const router = useRouter()
     const open = useSelector(state => state.systemModule.isSidebarOpen)
+    console.log("🚀 ~ file: MainSidebar.jsx:18 ~ open:", open)
     const pathname = usePathname()
     const [isVisible, setIsVisible] = useState(true)
 
@@ -62,8 +63,12 @@ export function SidebarDemo() {
     }
 
     function toggleSidebar() {
-        return { type: TOGGLE_SIDEBAR }
+        dispatch({ type: TOGGLE_SIDEBAR })
     }
+
+    // function closeSidebar() {
+    //     return { type: CLOSE_SIDEBAR }
+    // }
     return (
         (<div
             className={cn(
@@ -71,7 +76,7 @@ export function SidebarDemo() {
                 open ? 'max-sm:max-w-full' : 'max-sm:max-w-0',
                 isVisible ? 'opacity-100' : 'opacity-0'
             )}>
-            <Sidebar open={open} >
+            <Sidebar open={open} setOpen={toggleSidebar}>
                 <SidebarBody className="flex flex-col gap-10 justify-between p-2 pt-8">
                     <div className="flex overflow-y-auto overflow-x-hidden flex-col">
                         <div className="flex flex-row gap-3 items-center mt-2 cursor-pointer min-h-10" onClick={navigateHome}>
@@ -81,12 +86,14 @@ export function SidebarDemo() {
                         </div>
                         <div className="flex flex-col gap-2 items-start mt-8 w-max">
                             {links.map((link, idx) => (
-                                <SidebarLink key={idx} link={link} className={'w-full max-h-10 min-h-10 rounded-[10px]'} />
+                                // <div onClick={closeSidebar}>
+                                <SidebarLink key={idx} link={link} onClick={() => dispatch(toggleSidebar)} className={'w-full max-h-10 min-h-10 rounded-[10px]'} />
+                                // </div>
                             ))}
                         </div>
                     </div>
                     <div>
-                        <SidebarLink
+                        {/* <SidebarLink
                             link={{
                                 label: "Manu Arora",
                                 href: "#",
@@ -98,7 +105,7 @@ export function SidebarDemo() {
                                 //     height={50}
                                 //     alt="Avatar" />
                                 // ),
-                            }} />
+                            }} /> */}
                     </div>
                 </SidebarBody>
             </Sidebar>

@@ -198,7 +198,7 @@ export default function DailySchedule({ }) {
 
   return (
     <Card className="overflow-y-auto mx-auto w-full max-w-4xl bg-transparent border-none ps-9">
-      <CardHeader className="flex flex-col gap-0 items-center py-5 ps-6 pe-10">
+      <CardHeader className="flex flex-col gap-0 items-center pb-5 pt-0 ps-6 pe-10">
         <CardTitle className="text-lg font-semibold text-center">Daily Schedule</CardTitle>
         <CardDescription className="mt-0 text-base text-start max-sm:text-sm text-black/60">
           Here&apos;s your AI generated schedule for today.

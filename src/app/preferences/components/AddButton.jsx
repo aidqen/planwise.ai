@@ -9,7 +9,7 @@ export function AddButton({ title, children, compact = false }) {
                 <Button
                     variant="outline"
                     size="sm"
-                    className="mt-2 w-full max-w-max h-8 text-xs text-white bg-blue-500 border-blue-200 hover:bg-blue-50 hover:text-blue-600"
+                    className="my-2 w-full max-w-max h-8 text-xs text-white bg-blue-500 border-blue-200 hover:bg-blue-50 hover:text-blue-600"
                 >
                     <Plus className="mr-1 w-3 h-3" />
                     {title}

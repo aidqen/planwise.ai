@@ -13,7 +13,7 @@ export default function Home() {
   return (
 
     <div className="flex overflow-y-auto flex-col justify-start items-center pb-10 w-full h-full sm:p-20">
-      <div className="flex flex-col items-center w-[60%]">
+      <div className="flex flex-col items-center w-[60%] max-sm:w-full">
 
         <p className="flex mt-12 xl:mt-5 mb-4 text-[#B6BBC3] max-sm:text-base text-xl w-max capitalize">
           Hello {user?.name?.split(' ').slice(0, 1)} 👋
