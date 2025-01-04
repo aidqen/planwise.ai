@@ -2,8 +2,9 @@ import { dbService } from "@/app/api/services/db.service";
 import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 
-export async function GET(req, { params }) {
+export async function GET(req, context) {
     try {
+        const { params } = context
         const { id } = params; 
         console.log("🚀 ~ file: route.js:6 ~ id:", id);
 
