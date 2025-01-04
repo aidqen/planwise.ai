@@ -13,29 +13,44 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { useEffect, useState } from 'react'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
-export function TaskDialog({ selectedTask, handleCloseModal}) {
-  const [task, setTask] = useState(selectedTask)
+export function TaskDialog({ isCreateTask ,selectedTask, handleCloseModal, handleSaveTask }) {
+  const [task, setTask] = useState({start: '', end: '', category: 'routine', summary: '', description: ''})
+  console.log("🚀 ~ file: TaskDialog.jsx:20 ~ task:", task)
 
   useEffect(() => {
-    setTask(selectedTask);
+    if (selectedTask) {
+      setTask(selectedTask);
+    }
   }, [selectedTask]);
 
-  const handleSave = () => {
-    // onSave?.(task)
+
+  function onHandleSaveTask() {
+    handleSaveTask(task)
+    onHandleCloseModal()
   }
 
-  function handleChange(e) {
-    const time = e.target.value
-    const [hours, minutes] = time?.split(':')
-    const period = Number(hours) >= 12 ? 'PM' : 'AM'
-    const formattedHours = Number(hours) > 12 ? Number(hours) - 12 : Number(hours)
-    const timeString = `${formattedHours}:${minutes} ${period}`
-    setTask({ ...task, startTime: timeString })
+  function onHandleCloseModal() {
+    setTask({start: '', end: '', category: 'routine', summary: '', description: ''})
+    handleCloseModal()
+  }
+
+  function handleChange({target}) {
+    const { name, value } = target
+    let formattedValue
+    if (name === 'start' || name === 'end') {
+      const time = value
+      const [hours, minutes] = time?.split(':')
+      const militaryHours = hours.padStart(2, '0')
+      formattedValue = `${militaryHours}:${minutes}`
+    } else formattedValue = value
+    console.log("🚀 ~ file: TaskDialog.jsx:36 ~ timeString:", formattedValue)
+    setTask({ ...task, [name]: formattedValue })
   }
 
   return (
-    <Dialog open={!!selectedTask} onOpenChange={handleCloseModal}>
+    <Dialog open={!!selectedTask || isCreateTask} onOpenChange={onHandleCloseModal}>
       <DialogContent className="max-sm:w-[90%] rounded-[15px]" onOpenAutoFocus={(event) => event.preventDefault()}>
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">Edit Task</DialogTitle>
@@ -51,7 +66,6 @@ export function TaskDialog({ selectedTask, handleCloseModal}) {
               value={task ? task?.summary : ''} 
               onChange={e => setTask({ ...task, summary: e.target.value })}
               className="col-span-3"
-            
             />
           </div>
           <div className="grid gap-2">
@@ -63,6 +77,24 @@ export function TaskDialog({ selectedTask, handleCloseModal}) {
               className="col-span-3"
             />
           </div>
+          <div className="grid gap-2">
+            <Label htmlFor="category">Category</Label>
+            <Select
+              id="category"
+              value={task?.category}
+              onValueChange={(value) => setTask({ ...task, category: value })}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="break">Break</SelectItem>
+                <SelectItem value="meal">Meal</SelectItem>
+                <SelectItem value="goal">Goal</SelectItem>
+                <SelectItem value="routine">Routine</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
               <Label htmlFor="startTime" className="flex gap-2 items-center">
@@ -73,7 +105,8 @@ export function TaskDialog({ selectedTask, handleCloseModal}) {
                 id="startTime"
                 type="time"
                 value={task?.start?.split(' ')[0]}
-                onChange={e => {}}
+                name="start"
+                onChange={handleChange}
               />
             </div>
             <div className="grid gap-2">
@@ -84,6 +117,7 @@ export function TaskDialog({ selectedTask, handleCloseModal}) {
               <Input
                 id="endTime"
                 type="time"
+                name="end"
                 value={task?.end?.split(' ')[0]}
                 onChange={handleChange}
               />
@@ -94,7 +128,7 @@ export function TaskDialog({ selectedTask, handleCloseModal}) {
           <Button className="shadow-md" variant="outline" onClick={handleCloseModal}>
             Cancel
           </Button>
-          <Button onClick={handleSave} className="text-white shadow-md bg-secondary">Save changes</Button>
+          <Button onClick={onHandleSaveTask} className="text-white shadow-md bg-secondary">Save changes</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
