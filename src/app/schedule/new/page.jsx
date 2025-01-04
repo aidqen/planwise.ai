@@ -8,15 +8,24 @@ import { AddGoals } from './components/AddGoals'
 import { Routines } from './components/Routines'
 import { ConfettiButton } from '@/components/ui/confetti-button'
 import { useSelector } from 'react-redux'
+import { StepsBreadcrumbs } from './components/StepsBreadcrumbs'
+import { CalendarSync, Goal, UserRoundPen } from 'lucide-react'
+
 
 function ScheduleNewContent() {
   const [step, setStep] = useState(0) // Default value, will update below
-
-  const multiStepForm = useSelector(state => state.scheduleModule.multiStepForm)
+  
+  // const multiStepForm = useSelector(state => state.scheduleModule.multiStepForm)
   
   const router = useRouter()
   const searchParams = useSearchParams()
   const totalSteps = 3
+  const steps = [
+    { id: 1, name: 'Preferences', href: '#', logo: UserRoundPen },
+    { id: 2, name: 'Goals', href: '#', logo: Goal },
+    { id: 3, name: 'Routines', href: '#', logo: CalendarSync },
+    // { id: 4, name: 'Confirmation', href: '#' },
+  ]
   
   useEffect(() => {
     // Parse the step value from the query params
@@ -55,9 +64,10 @@ function ScheduleNewContent() {
   }
 
   return (
-      <div className="flex overflow-y-auto overflow-x-hidden relative flex-col justify-between items-center px-6 pt-5 w-full h-full text-black rounded-xl max-sm:w-full">
-        <div className="flex flex-col items-center w-full max-sm:block">
-          <Breadcrumbs currentIdx={step} setStep={setStep} />
+      <div className="flex overflow-y-auto overflow-x-hidden relative flex-col justify-between items-center sm:px-5 md:px-1 px-8  sm:w-[60%] md-[50%] xl:w-[40%] 2xl:w-[30%] h-full text-black rounded-xl w-full">
+        <div className="flex flex-col items-center pt-1 w-full max-sm:block">
+          {/* <Breadcrumbs currentIdx={step} setStep={setStep} /> */}
+          <StepsBreadcrumbs currentStep={step + 1} steps={steps} />
           {/* <div className="h-[1px] w-full bg-black/10"></div> */}
           {renderStepContent()}
         </div>
