@@ -9,12 +9,12 @@ import { useSelector } from 'react-redux'
 export function GenerateScheduleBtn() {
   const multistepForm = useSelector(state => state.scheduleModule.multiStepForm)
   const router = useRouter()
-  const [isLoading, setIsLoading ] = useState(false)
 
   async function onGenerateAiSchedule() {
     router.replace('/schedule/loading')
-    await generateAiSchedule(multistepForm)
-    router.push('/schedule/ai')
+    const schedule = await generateAiSchedule(multistepForm)
+    console.log("🚀 ~ file: GenerateScheduleBtn.jsx:17 ~ schedule:", schedule)
+    router.replace(`/schedule/ai/${schedule._id}`)
   }
 
   return (
