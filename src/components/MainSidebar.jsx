@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { CLOSE_SIDEBAR, TOGGLE_SIDEBAR } from "@/store/reducers/system.reducer";
-import { CalendarDays, CirclePlus, Ellipsis, Repeat2 } from "lucide-react";
+import { CalendarDays, CirclePlus, Ellipsis, Mail, Repeat2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -54,6 +54,13 @@ export function SidebarDemo() {
             href: "#",
             icon: (
                 <Ellipsis  className="flex-shrink-0 w-5 h-5 text-neutral-700 dark:text-neutral-200" />
+            ),
+        },
+        {
+            label: "Contact Us",
+            href: "#",
+            icon: (
+                <Mail  className="flex-shrink-0 w-5 h-5 text-neutral-700 dark:text-neutral-200" />
             ),
         },
     ];
