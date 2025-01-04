@@ -61,14 +61,14 @@ export function AddGoals() {
   return (
     <Section>
       <Card className="overflow-y-auto mx-auto w-full max-w-2xl bg-transparent border-0 shadow-none">
-        <CardContent className="flex flex-col gap-7 p-6">
-          <h3 className="w-full text-xl font-medium text-center text-gray-900">
+        <CardContent className="flex flex-col gap-7 p-6 w-full">
+          <h3 className="w-full text-base font-medium text-center text-gray-900 md:text-xl">
             What would you like to accomplish today?
           </h3>
 
           <form
             onSubmit={handleSubmit}
-            className="grid grid-cols-[1fr_50px] grid-rows-2 gap-2"
+            className="w-full grid grid-cols-[1fr_50px] grid-rows-2 gap-2"
           >
             <Input
               type="text"

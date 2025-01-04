@@ -12,12 +12,12 @@ export function Preferences({ }) {
   const timeTypes = ['Wake Up', 'Sleep']
 
   return (
-    <Section>
-      <div className="flex flex-col gap-9 items-center px-3 mt-10 w-full h-full max-sm:items-start">
-      <h3 className="w-full text-xl font-medium text-center text-gray-900">
+    <Section className="w-full">
+      <div className="flex flex-col gap-9 items-center mt-5 w-full h-full md:mt-10 max-sm:items-start">
+      <h3 className="w-full text-xl font-medium text-center text-gray-900 max-sm:text-base">
         How's your day looking?
       </h3>
-        <div className="flex flex-row justify-between items-center max-sm:w-full w-[30em] mb-3">
+        <div className="flex flex-row justify-between items-center mb-3 w-full">
           {timeTypes.map(timeType => (
             <div
               key={timeType}

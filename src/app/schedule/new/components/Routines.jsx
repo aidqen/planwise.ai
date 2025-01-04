@@ -52,9 +52,9 @@ export function Routines({ }) {
   }
 
   return (
-    <Section>
+    <Section className="">
       <div className="flex flex-col gap-7 items-center pb-10 mt-7 w-full max-sm:items-start">
-        <h1 className="w-full text-xl font-medium text-center text-gray-900">
+        <h1 className="w-full text-xl font-medium text-center text-gray-900 max-sm:text-base">
           Organize your day, boost your productivity
         </h1>
         <AddRoutine
