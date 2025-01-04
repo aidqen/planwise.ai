@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Plus, Target, Clock, Settings2 } from 'lucide-react'
+import { Plus, Target, Clock, Settings2, UserRoundPen, Goal, CalendarSync } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { GoalForm } from './components/GoalForm'
@@ -35,21 +35,21 @@ export default function PlanwiseDashboard() {
     }
 
     return (
-        <div className="p-6 max-sm:px-4 px-20 w-full min-h-screen">
+        <div className="p-6 px-6 w-full min-h-screen md:px-10 lg:px-20">
             <div className="mx-auto max-w-7xl">
-                <h1 className="mb-1 text-2xl font-medium text-gray-900">Your Preferences</h1>
-                <p className='mb-6 text-base text-neutral'>Manage your goals, routines and preferences to get the best results for your schedule.</p>
+                <h1 className="mb-1 text-lg font-medium text-gray-900 md:text-2xl">Your Preferences</h1>
+                <p className='mb-6 text-sm text-neutral'>Manage your goals, routines and preferences to get the best results for your schedule.</p>
 
-                <div className="grid gap-2 max-sm:grid-rows-3 grid-cols-3">
+                <div className="grid gap-2 rows-3 md:rows-1 md:grid-cols-3">
                     <PreferenceSection
                         title="Preferences"
-                        icon={<Settings2 className="w-4 h-4 text-black/70" />}
+                        icon={<UserRoundPen className="w-4 h-4 text-black/70" />}
                         description="Schedule settings"
                     >
                         <AddButton title="Edit Preferences" compact>
                             <PreferenceForm onSubmit={updatePreferences} initialPreferences={preferences} />
                         </AddButton>
-                        <div className="p-3 mb-2 rounded-lg">
+                        <div className="py-0 mb-2 rounded-lg md:py-3">
                             <div className="flex flex-row items-center space-x-5">
                                 <div>
                                     <p className="text-sm font-medium text-gray-900">intensity</p>
@@ -69,7 +69,7 @@ export default function PlanwiseDashboard() {
 
                     <PreferenceSection
                         title="Goals"
-                        icon={<Target className="w-4 h-4 text-black/70" />}
+                        icon={<Goal className="w-4 h-4 text-black/70" />}
                         description="Track your objectives"
                     >
                         <AddButton title="Add Goal" compact>
@@ -88,7 +88,7 @@ export default function PlanwiseDashboard() {
 
                     <PreferenceSection
                         title="Routines"
-                        icon={<Clock className="w-4 h-4 text-black/70" />}
+                        icon={<CalendarSync className="w-4 h-4 text-black/70" />}
                         description="Daily activities"
                     >
                         <AddButton title="Add Routine" compact>

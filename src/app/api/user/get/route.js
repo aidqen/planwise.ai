@@ -8,12 +8,10 @@ export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
     const email = searchParams.get('email');
-    console.log("🚀 ~ file: route.js:11 ~ email:", email)
 
     const usersCollection = await dbService.getCollection('User');
 
     const user = await usersCollection.findOne({ email });
-    console.log("🚀 ~ file: route.js:11 ~ user:", user)
 
     return NextResponse.json(user)
   } catch (err) {
