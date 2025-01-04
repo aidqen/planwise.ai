@@ -14,10 +14,10 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { useEffect, useState } from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { makeId } from '@/services/util.service'
 
-export function TaskDialog({ isCreateTask ,selectedTask, handleCloseModal, handleSaveTask }) {
+export function TaskDialog({ isCreateTask ,selectedTask, handleCloseModal, handleSaveTask, handleNewTaskSave, deleteTask }) {
   const [task, setTask] = useState({start: '', end: '', category: 'routine', summary: '', description: ''})
-  console.log("🚀 ~ file: TaskDialog.jsx:20 ~ task:", task)
 
   useEffect(() => {
     if (selectedTask) {
@@ -25,9 +25,18 @@ export function TaskDialog({ isCreateTask ,selectedTask, handleCloseModal, handl
     }
   }, [selectedTask]);
 
+  function onDeleteTask() {
+    deleteTask(task.id)
+    onHandleCloseModal()
+  }
+
 
   function onHandleSaveTask() {
-    handleSaveTask(task)
+    if (isCreateTask) {
+      console.log("🚀 ~ file: TaskDialog.jsx:31 ~ isCreateTask:", isCreateTask)
+      task.id = makeId(8)
+      handleNewTaskSave(task)
+    } else handleSaveTask(task)
     onHandleCloseModal()
   }
 
@@ -53,7 +62,7 @@ export function TaskDialog({ isCreateTask ,selectedTask, handleCloseModal, handl
     <Dialog open={!!selectedTask || isCreateTask} onOpenChange={onHandleCloseModal}>
       <DialogContent className="max-sm:w-[90%] rounded-[15px]" onOpenAutoFocus={(event) => event.preventDefault()}>
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">Edit Task</DialogTitle>
+          <DialogTitle className="text-xl font-semibold">{isCreateTask ? 'Create New Task' : 'Edit Task'}</DialogTitle>
           <DialogDescription className="text-start">
             Modify the task details and save your changes.
           </DialogDescription>
@@ -128,7 +137,10 @@ export function TaskDialog({ isCreateTask ,selectedTask, handleCloseModal, handl
           <Button className="shadow-md" variant="outline" onClick={handleCloseModal}>
             Cancel
           </Button>
-          <Button onClick={onHandleSaveTask} className="text-white shadow-md bg-secondary">Save changes</Button>
+          {!isCreateTask && <Button className="text-white shadow-md" variant="destructive" onClick={onDeleteTask}>
+            Delete
+          </Button>}
+          <Button onClick={onHandleSaveTask} className="text-white shadow-md bg-secondary">{isCreateTask ? 'Create New Task' :  'Save changes'}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
