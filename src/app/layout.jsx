@@ -21,11 +21,11 @@ const poppins = Poppins({
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`h-full ${poppins.className}`}>
-      <body className={`grid flex-col grid-rows-1 grid-cols-[auto_1fr] h-full min-h-screen max-h-screen min-w-screen max-w-screen bg-mainLight font-[poppins] max-sm:flex`}>
+      <body className={`grid flex-col grid-rows-1 h-full min-h-screen max-h-screen grid-cols-[auto_1fr] min-w-screen max-w-screen bg-mainLight font-[poppins] max-sm:flex`}>
         {/* <div className="overflow-y-auto w-full h-full"> */}
           <ReduxProvider>
             <SidebarDemo />
-            <main className="flex flex-col col-start-2 row-start-1 items-center pt-10 h-full overflow-y-auto">
+            <main className="flex overflow-y-auto flex-col col-start-2 row-start-1 items-center pt-10 h-full">
               <AppHeader />
               {children}
             </main>
