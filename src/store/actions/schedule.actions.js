@@ -11,9 +11,9 @@ export async function generateAiSchedule(parameters) {
         const aiSchedule = await scheduleService.fetchAiSchedule({ preferences, routines, goals });
         const scheduleToSave = formatSchedule(aiSchedule.schedule, preferences, routines, goals);
         const schedule = await saveScheduleToDB(scheduleToSave);
-        console.log("🚀 ~ file: schedule.actions.js:14 ~ schedule:", schedule)
         await addScheduleToUser(schedule);
         store.dispatch(getCmdAiSchedule(scheduleToSave));
+        return schedule
     } catch (err) {
         throw err;
     }

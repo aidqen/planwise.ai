@@ -5,7 +5,8 @@ export const scheduleService = {
   fetchUserTimezone,
   sendTasksToCalendar,
   insertScheduleToDB,
-  getScheduleById
+  getScheduleById,
+  updateSchedule
 }
 
 async function getScheduleById(id) {
@@ -19,6 +20,19 @@ async function getScheduleById(id) {
     return response.json()
   } catch (error) {
     console.error('Error fetching schedule:', error)
+  }
+}
+
+async function updateSchedule(schedule) {
+  try {
+    const response = await fetch('/api/schedule/update', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(schedule),
+    })
+    return response.json()
+  } catch (error) {
+    console.error('Error updating schedule:', error)
   }
 }
 
