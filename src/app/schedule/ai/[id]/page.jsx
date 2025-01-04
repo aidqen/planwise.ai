@@ -207,9 +207,7 @@ export default function DailySchedule({ }) {
       <CardContent>
         <div className="relative h-[1640px] border-l-2 border-gray-300">
           <ScheduleStructure wakeupMinutes={wakeupMinutes} />
-          {sortedTasks?.map(task => (
-            <TaskCard key={task.id} task={task} wakeupMinutes={wakeupMinutes} handleTaskClick={handleTaskClick} />
-          ))}
+          <TaskList tasks={sortedTasks} wakeupMinutes={wakeupMinutes} handleTaskClick={handleTaskClick} />
         </div>
       </CardContent>
       <SaveToCalendarBtn toggleCalendarDialog={toggleCalendarDialog} isVisible={isVisible} />

@@ -1,12 +1,10 @@
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { format } from "date-fns";
 import { useState, useEffect } from "react";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-export function TaskCard({ task, wakeupMinutes, handleTaskClick }) {
+export function TaskCard({ task, wakeupMinutes, handleTaskClick, overlappingTasks }) {
   const [isDescVisible, setIsDescVisible] = useState(false);
   const [rowOrColumn, setRowOrColumn] = useState("");
 
-  // Convert "HH:mm" strings into total minutes since midnight
   const parseTimeToMinutes = (time) => {
     const [hours, minutes] = time.split(":").map(Number);
     return hours * 60 + minutes;
@@ -20,9 +18,14 @@ export function TaskCard({ task, wakeupMinutes, handleTaskClick }) {
     duration += 24 * 60; // Handle tasks that span midnight
   }
 
-  // Adjust top and height to start from wake-up time
   const top = ((startTotalMinutes - wakeupMinutes) / (24 * 60)) * 100;
   const height = (duration / (24 * 60)) * 100;
+
+  // Calculate the width and left position based on overlapping tasks
+  const totalOverlapping = overlappingTasks.length;
+  const index = overlappingTasks.findIndex(t => t.id === task.id);
+  const width = 100 / totalOverlapping;
+  const left = (index * width) + 3; // Add 4 to account for the left padding
 
   useEffect(() => {
     let classes = "";
@@ -47,28 +50,28 @@ export function TaskCard({ task, wakeupMinutes, handleTaskClick }) {
   function handleTaskColor(category) {
     switch (category) {
       case 'break':
-        return '#f6bf26'; // Bright Green
+        return '#f6bf26';
       case 'goal':
-        return '#1badf8'; // Bright Blue
+        return '#1badf8';
       case 'routine':
-        return '#29bf12'; // Bright Royal Blue
+        return '#29bf12';
       case 'meal':
-        return '#fe938c'; // Bright Gold
+        return '#fe938c';
       default:
-        return '#94A3B8'; // Bright Cool Gray
+        return '#94A3B8';
     }
   }
 
   return (
     <Card
-      onClick={(e) => handleTaskClick(task)}
-      className="absolute left-4 px-3 py-0 shadow-sm transition-all rounded-lg duration-100 ease-in-out hover:shadow-md hover:ring-2 hover:z-20 hover:ring-blue-500 cursor-pointer text-white w-[100%]"
+      onClick={() => handleTaskClick(task)}
+      className="absolute px-2 py-0 text-white rounded-lg shadow-sm transition-all duration-100 ease-in-out cursor-pointer hover:shadow-md hover:ring-2 hover:z-20 hover:ring-blue-500"
       style={{
         top: `${top}%`,
         height: `${height}%`,
-        // minHeight: "40px",
+        width: `${width}%`,
+        left: `${left}%`,
         backgroundColor: handleTaskColor(task?.category),
-
       }}
     >
       <CardHeader className={`flex p-0 space-y-0 ${rowOrColumn}`}>

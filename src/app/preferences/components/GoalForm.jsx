@@ -42,7 +42,7 @@ export function GoalForm({ onSubmit }) {
         </Select>
       </div>
       <Button type="submit" className="w-full text-white bg-blue-500 hover:bg-blue-600">
-        + Add Goal
+        Edit Goals
       </Button>
     </form>
   )
