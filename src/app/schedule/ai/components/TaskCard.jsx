@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Pen } from "lucide-react";
 
 export function TaskCard({ task, wakeupMinutes, handleTaskClick, overlappingTasks }) {
   const [isDescVisible, setIsDescVisible] = useState(false);
@@ -50,13 +51,13 @@ export function TaskCard({ task, wakeupMinutes, handleTaskClick, overlappingTask
   function handleTaskColor(category) {
     switch (category) {
       case 'break':
-        return '#f6bf26';
+        return '#3b82f6';
       case 'goal':
-        return '#1badf8';
+        return '#06b6d4';
       case 'routine':
-        return '#29bf12';
+        return '#0284c7';
       case 'meal':
-        return '#fe938c';
+        return '#22c55e';
       default:
         return '#94A3B8';
     }
