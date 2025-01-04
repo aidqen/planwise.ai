@@ -13,7 +13,7 @@ export function InfoCard({ item }) {
   }
 
   return (
-    <Card onClick={navigateToHref} className="grid grid-cols-[65px_1fr] grid-rows-[auto_1fr] shadow-md p-4 ps-0 hover:border-neutral cursor-pointer hover:bg-gray-400/10 transition-colors">
+    <Card onClick={navigateToHref} className="grid  grid-cols-[65px_1fr] grid-rows-[auto_1fr] border-0 bg-transparent shadow-none p-4 ps-0 hover:border-neutral cursor-pointer hover:bg-gray-400/10 transition-colors">
       {/* Icon in Row 1, Column 1 */}
       <div className="flex justify-center items-center">
         <div

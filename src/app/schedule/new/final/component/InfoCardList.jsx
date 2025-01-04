@@ -1,6 +1,6 @@
 'use client'
 
-import { Clock, Moon, Repeat, Sun, Target } from "lucide-react"
+import { CalendarSync, Clock, Goal, Moon, Repeat, Sun, Target } from "lucide-react"
 import { useSelector } from "react-redux"
 import { InfoCard } from "./InfoCard"
 
@@ -12,8 +12,8 @@ export function InfoCardList() {
         { icon: Sun, title: "Wake Time", content: preferences.wakeup, color: "#EAB308" },
         { icon: Moon, title: "Sleep Time", content: preferences.sleep, color: "#3B82F6" },
         { icon: Clock, title: "Intensity", content: preferences.intensity, color: "#6B7280" }, 
-        { icon: Target, title: "Goals", content: goals, isList: true, color: "#22C55E" }, 
-        { icon: Repeat, title: "Routines", content: routines, isList: true, color: "#A855F7" }, 
+        { icon: Goal, title: "Goals", content: goals, isList: true, color: "#22C55E" }, 
+        { icon: CalendarSync, title: "Routines", content: routines, isList: true, color: "#A855F7" }, 
     ];
 
     return (
