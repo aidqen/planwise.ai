@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Pen } from "lucide-react";
+import { useEffect, useState } from "react";
 
-export function TaskCard({ task, wakeupMinutes, handleTaskClick, overlappingTasks }) {
+export function TaskCard({ task, wakeupMinutes, handleTaskClick, columnIndex, totalColumns }) {
   const [isDescVisible, setIsDescVisible] = useState(false);
   const [rowOrColumn, setRowOrColumn] = useState("");
 
@@ -22,11 +21,12 @@ export function TaskCard({ task, wakeupMinutes, handleTaskClick, overlappingTask
   const top = ((startTotalMinutes - wakeupMinutes) / (24 * 60)) * 100;
   const height = (duration / (24 * 60)) * 100;
 
-  // Calculate the width and left position based on overlapping tasks
-  const totalOverlapping = overlappingTasks.length;
-  const index = overlappingTasks.findIndex(t => t.id === task.id);
-  const width = 100 / totalOverlapping;
-  const left = (index * width) + 3; // Add 4 to account for the left padding
+  // Calculate width and position based on columnIndex and totalColumns
+  const width = 100 / totalColumns;
+  const left = columnIndex * width + 4;
+
+  // Dynamic z-index based on columnIndex (higher index = lower priority)
+  const zIndex = totalColumns - columnIndex;
 
   useEffect(() => {
     let classes = "";
@@ -66,13 +66,14 @@ export function TaskCard({ task, wakeupMinutes, handleTaskClick, overlappingTask
   return (
     <Card
       onClick={() => handleTaskClick(task)}
-      className="absolute px-2 py-0 text-white rounded-lg shadow-sm transition-all duration-100 ease-in-out cursor-pointer hover:shadow-md hover:ring-2 hover:z-20 hover:ring-blue-500"
+      className="absolute px-2 py-0 text-white rounded-lg shadow-sm transition-all duration-100 ease-in-out cursor-pointer hover:ring-2 hover:ring-blue-500 hover:z-[100] hover:shadow-md"
       style={{
         top: `${top}%`,
         height: `${height}%`,
         width: `${width}%`,
         left: `${left}%`,
         backgroundColor: handleTaskColor(task?.category),
+        zIndex, // Dynamic z-index for click priority
       }}
     >
       <CardHeader className={`flex p-0 space-y-0 ${rowOrColumn}`}>
@@ -85,3 +86,4 @@ export function TaskCard({ task, wakeupMinutes, handleTaskClick, overlappingTask
     </Card>
   );
 }
+
