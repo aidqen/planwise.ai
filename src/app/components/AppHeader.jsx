@@ -52,12 +52,12 @@ export function AppHeader() {
   return (
     <header
       className={cn(
-        isVisible ? '':'hidden', 'flex flex-row justify-between items-center pb-3 w-full ps-3 pe-6 max-sm:justify-between'
+        isVisible ? '':'hidden', 'flex flex-row justify-between items-center pb-3 w-full md:justify-end ps-3 pe-6 max-sm:justify-between'
         )
         }
     >
-      <ToggleSidebarBtn />
-      <button className="hidden justify-center items-center p-2 rounded-full shadow-md max-sm:flex bg-secondaryLight">
+      
+      <button className="flex justify-center items-center p-2 rounded-full shadow-md md:hidden bg-secondaryLight">
         <Component className="text-black" onClick={onToggleSidebar}/>
         {/* <Menu className="text-black"/> */}
       </button>

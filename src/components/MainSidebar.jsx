@@ -10,6 +10,7 @@ import { CLOSE_SIDEBAR, TOGGLE_SIDEBAR } from "@/store/reducers/system.reducer";
 import { CalendarDays, CirclePlus, Ellipsis, Mail, Repeat2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { ToggleSidebarBtn } from "./ToggleSidebarBtn";
 
 export function SidebarDemo() {
     const dispatch = useDispatch()
@@ -84,8 +85,9 @@ export function SidebarDemo() {
                 isVisible ? 'opacity-100' : 'opacity-0'
             )}>
             <Sidebar open={open} setOpen={toggleSidebar}>
-                <SidebarBody className="flex flex-col gap-10 justify-between p-2 pt-8">
+                <SidebarBody className="flex flex-col gap-10 justify-between p-2 pt-2">
                     <div className="flex overflow-y-auto overflow-x-hidden flex-col">
+                    <ToggleSidebarBtn />
                         <div className="flex flex-row gap-3 items-center mt-2 cursor-pointer min-h-10" onClick={navigateHome}>
 
                             <Image src="https://res.cloudinary.com/di6tqrg5y/image/upload/v1733918185/icon_1_ylom72.png" width={43} height={43} alt="Logo" />
