@@ -13,6 +13,7 @@ import { scheduleService } from '@/services/scheduleService'
 import { TaskList } from '../components/TaskList'
 import { Button } from '@/components/ui/button'
 import { format } from 'date-fns'
+import {CategoryDropdown} from '../components/CategoryDropdown'
 
 export default function DailySchedule({ }) {
   const [calendarDialogOpen, setCalendarDialogOpen] = useState(false)
@@ -112,15 +113,17 @@ export default function DailySchedule({ }) {
   const sortedTasks = [...schedule?.schedule]?.sort((a, b) => a.start?.localeCompare(b.start));
 
   return (
+    <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] justify-between w-full">
+      <CategoryDropdown tasks={sortedTasks}/>
     <Card className="overflow-y-auto mx-auto w-full max-w-5xl bg-transparent border-none scrollbar ps-9">
       <CardHeader className="flex flex-col gap-0 items-center pt-0 pb-5 ps-6 pe-10">
-        <CardTitle className="text-lg font-semibold text-center">{schedule?.name}</CardTitle>
-        <CardDescription className="mt-0 text-base text-start max-sm:text-sm text-black/60">
+        <CardTitle className="text-xl font-medium text-center">{schedule?.name}</CardTitle>
+        <CardDescription className="mt-0 text-sm text-gray-600 text-start max-sm:text-sm">
           Last Updated: {format(new Date(schedule?.updatedAt), "MMM d, h:mm a")}
         </CardDescription>
-        <div className="flex gap-3 justify-end w-full">
-          <Button onClick={onCreateTask} className='px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg'>+ Add New Task</Button>
-          <Button variant="outline" className="hover:bg-white/70">Save</Button>
+        <div className="flex flex-col gap-3 justify-end w-full sm:flex-row">
+          <Button onClick={onCreateTask} className='px-4 py-2 w-full text-sm font-medium text-white bg-blue-500 rounded-lg sm:w-auto'>+ Add New Task</Button>
+          <Button variant="outline" className="w-full hover:bg-white/70 sm:w-auto">Save</Button>
         </div>
       </CardHeader>
       <CardContent>
@@ -133,6 +136,7 @@ export default function DailySchedule({ }) {
       <AddScheduleDialog open={calendarDialogOpen} setOpen={setCalendarDialogOpen} schedule={schedule} />
       <TaskDialog isCreateTask={isCreateTask} selectedTask={selectedTask} handleCloseModal={handleCloseModal} handleSaveTask={handleSaveTask} handleNewTaskSave={handleNewTaskSave} deleteTask={deleteTask}/>
     </Card>
+    </div>
   );
 }
 
