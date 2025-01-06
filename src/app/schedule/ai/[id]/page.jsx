@@ -107,7 +107,26 @@ export default function DailySchedule({ }) {
     setSchedule(scheduleToSave)
   }
 
-  const wakeupMinutes = getMinutesFromMidnight(wakeupTime); // Convert wake-up time to minutes from midnight
+  async function handleSaveSchedule(e) {
+    if (e) e.preventDefault()
+    try {
+      // Create a clean copy of the schedule without any circular references
+      const scheduleToSave = {
+        ...schedule,
+        id: schedule._id,
+        name: schedule.name,
+        preferences: schedule.preferences,
+        schedule: schedule.schedule,
+        updatedAt: new Date().toISOString()
+      }
+      await scheduleService.updateSchedule(scheduleToSave)
+      await updateScheduleInUser(scheduleToSave)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const wakeupMinutes = getMinutesFromMidnight(wakeupTime);
 
   if (!schedule || !schedule?.schedule?.length) return <div>Loading...</div>;
   const sortedTasks = [...schedule?.schedule]?.sort((a, b) => a.start?.localeCompare(b.start));
@@ -125,6 +144,8 @@ export default function DailySchedule({ }) {
           <Button onClick={onCreateTask} className='px-4 py-2 w-full text-sm font-medium text-white bg-blue-500 rounded-lg sm:w-auto'>+ Add New Task</Button>
           <Button variant="outline" className="w-full hover:bg-white/70 sm:w-auto">Save</Button>
         </div>
+          <DesktopActions onCreateTask={onCreateTask} onEdit={() => setIsEditModalOpen(true)} handleSaveSchedule={handleSaveSchedule} />
+          <MobileDropdownMenu onCreateTask={onCreateTask} onEdit={() => setIsEditModalOpen(true)} handleSaveSchedule={handleSaveSchedule} />
       </CardHeader>
       <CardContent>
         <div className="relative h-[1640px] w-[calc(100%-2em)] border-l-2 border-gray-300">
@@ -135,6 +156,13 @@ export default function DailySchedule({ }) {
       <SaveToCalendarBtn toggleCalendarDialog={toggleCalendarDialog} isVisible={isVisible} />
       <AddScheduleDialog open={calendarDialogOpen} setOpen={setCalendarDialogOpen} schedule={schedule} />
       <TaskDialog isCreateTask={isCreateTask} selectedTask={selectedTask} handleCloseModal={handleCloseModal} handleSaveTask={handleSaveTask} handleNewTaskSave={handleNewTaskSave} deleteTask={deleteTask}/>
+        <EditScheduleModal 
+          schedule={schedule}
+          setSchedule={setSchedule}
+          onSaveEditSchedule={handleSaveSchedule}
+          open={isEditModalOpen}
+          onOpenChange={setIsEditModalOpen}
+        />
     </Card>
     </div>
   );
