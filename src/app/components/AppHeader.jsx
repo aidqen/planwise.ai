@@ -52,7 +52,7 @@ export function AppHeader() {
   return (
     <header
       className={cn(
-        isVisible ? '':'hidden', 'flex flex-row justify-between items-center pb-3 w-full md:justify-end ps-3 pe-6 max-sm:justify-between'
+        isVisible ? '':'hidden', 'flex flex-row justify-between items-center pb-3 w-full md:hidden md:justify-end ps-3 pe-6 max-sm:justify-between'
         )
         }
     >
