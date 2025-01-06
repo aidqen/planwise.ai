@@ -26,7 +26,7 @@ export function SchedulePreview({ schedule }) {
         <div
             key={schedule?.id}
             onClick={navigateToSchedule}
-            className="relative p-6 min-w-max bg-white rounded-lg border border-gray-200 shadow-sm transition-shadow cursor-pointer hover:shadow-md"
+            className="relative p-6 min-w-max bg-white rounded-lg border border-gray-200 shadow-sm transition-shadow cursor-pointer hover:shadow-md xl:min-w-md"
         >
             <div className="flex justify-between items-start mb-4">
                 <div>

@@ -8,7 +8,7 @@ export function SaveToCalendarBtn({ toggleCalendarDialog, isVisible }) {
         <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 md:hidden">
             <Button
                 onClick={toggleCalendarDialog}
-                className="text-gray-100 bg-green-500 shadow-xl transition-all hover:scale-[1.02] duration-100 hover:shadow-xl"
+                className="text-gray-100 bg-green-500 shadow-xl z-[100] transition-all hover:scale-[1.02] duration-100 hover:shadow-xl"
             >
                 <CalendarIcon />
                 Add To Calendar
@@ -33,7 +33,7 @@ export function SaveToCalendarBtn({ toggleCalendarDialog, isVisible }) {
             >
                 <Button
                     onClick={toggleCalendarDialog}
-                    className="text-gray-100 bg-green-500 shadow-md transition-all hover:scale-[1.02] duration-100 hover:shadow-xl"
+                    className="text-gray-100 bg-green-500 z-[100] shadow-md transition-all hover:scale-[1.02] duration-100 hover:shadow-xl"
                 >
                     <CalendarIcon />
                     Add To Calendar

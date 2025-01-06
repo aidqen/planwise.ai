@@ -23,7 +23,7 @@ export function TaskCard({ task, wakeupMinutes, handleTaskClick, columnIndex, to
 
   // Calculate width and position based on columnIndex and totalColumns
   const width = 100 / totalColumns;
-  const left = columnIndex * width + 4;
+  const left = columnIndex * width + 2;
 
   // Dynamic z-index based on columnIndex (higher index = lower priority)
   const zIndex = totalColumns - columnIndex;
@@ -66,7 +66,7 @@ export function TaskCard({ task, wakeupMinutes, handleTaskClick, columnIndex, to
   return (
     <Card
       onClick={() => handleTaskClick(task)}
-      className="absolute px-2 py-0 text-white rounded-lg shadow-sm transition-all duration-100 ease-in-out cursor-pointer hover:ring-2 hover:ring-blue-500 hover:z-[100] hover:shadow-md"
+      className="absolute px-2 py-0 text-white rounded-lg shadow-sm transition-all duration-100 ease-in-out cursor-pointer hover:ring-2 hover:ring-blue-500 hover:z-[80] hover:shadow-md"
       style={{
         top: `${top}%`,
         height: `${height}%`,

@@ -12,7 +12,7 @@ export function ScheduleStructure({ wakeupMinutes }) {
                         className="absolute left-0 w-full text-sm text-gray-500"
                         style={{ top: `${(index / 24) * 100}%` }}
                     >
-                        <div className="absolute -left-16 w-12 text-right">
+                        <div className="absolute -left-14 w-12 text-right md:-left-16">
                             {format(new Date().setHours(hour, 0, 0, 0), 'h a')}
                         </div>
                         <div className="h-[1px] bg-gray-300" />
