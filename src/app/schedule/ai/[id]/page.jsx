@@ -11,12 +11,14 @@ import { TaskDialog } from '../components/TaskDialog'
 import { scheduleService } from '@/services/scheduleService'
 import { TaskList } from '../components/TaskList'
 import { format } from 'date-fns'
-import { CategoryDropdown } from '../components/CategoryDropdown'
+import { ScheduleSidebar } from '../components/ScheduleSidebar/ScheduleSidebar'
 import { Loading } from '../components/Loading'
 import { MobileDropdownMenu } from '../components/MobileDropdownMenu'
 import { DesktopActions } from '../components/DesktopActions'
 import { EditScheduleModal } from '../components/EditScheduleModal'
 import { updateScheduleInUser } from '@/store/actions/user.actions'
+import { Star } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 export default function DailySchedule({ }) {
   const [calendarDialogOpen, setCalendarDialogOpen] = useState(false)
@@ -27,6 +29,7 @@ export default function DailySchedule({ }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const params = useParams()
   const [schedule, setSchedule] = useState({schedule: []})
+  console.log("🚀 ~ file: page.jsx:30 ~ schedule:", schedule)
   const wakeupTime = schedule.preferences?.wakeup || '04:00';
 
   useEffect(() => {
@@ -123,45 +126,45 @@ export default function DailySchedule({ }) {
 
   const wakeupMinutes = getMinutesFromMidnight(wakeupTime);
 
-  if (!schedule || !schedule?.schedule?.length) return <Loading />
-
-  const sortedTasks = [...schedule?.schedule]?.sort((a, b) => a.start?.localeCompare(b.start));
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-[auto_1fr]  justify-between w-full">
-      <CategoryDropdown tasks={sortedTasks}/>
-      <Card className="overflow-y-auto mx-auto w-full max-w-5xl bg-transparent border-none md:pt-16 scrollbar ps-9">
-        <CardHeader className="flex flex-row gap-3 items-center pt-0 pb-5 md:pb-10 ps-6 pe-6">
-          <div className="flex flex-col items-start w-full">
-            <CardTitle className="text-xl font-semibold text-center whitespace-nowrap">{schedule?.name}</CardTitle>
-            <CardDescription className="mt-0 text-sm font-medium text-gray-600 whitespace-nowrap text-start max-sm:text-sm">
-              Last Updated: {format(new Date(schedule?.updatedAt), "MMM d, h:mm a")}
-            </CardDescription>
-          </div>
-          <DesktopActions onCreateTask={onCreateTask} onEdit={() => setIsEditModalOpen(true)} handleSaveSchedule={handleSaveSchedule} />
-          <MobileDropdownMenu onCreateTask={onCreateTask} onEdit={() => setIsEditModalOpen(true)} handleSaveSchedule={handleSaveSchedule} />
-        </CardHeader>
-        <CardContent className="pe-0">
-          <div className="relative h-[1640px] w-[calc(100%-2em)] border-l-2 border-gray-300">
-            <ScheduleStructure wakeupMinutes={wakeupMinutes} />
-            <TaskList tasks={sortedTasks} wakeupMinutes={wakeupMinutes} handleTaskClick={handleTaskClick} />
-          </div>
-        </CardContent>
-        <SaveToCalendarBtn toggleCalendarDialog={toggleCalendarDialog} isVisible={isVisible} />
-        <AddScheduleDialog
-          open={calendarDialogOpen}
-          onOpenChange={setCalendarDialogOpen}
-          schedule={schedule}
-        />
-        <TaskDialog isCreateTask={isCreateTask} selectedTask={selectedTask} handleCloseModal={handleCloseModal} handleSaveTask={handleSaveTask} handleNewTaskSave={handleNewTaskSave} deleteTask={deleteTask}/>
-        <EditScheduleModal 
-          schedule={schedule}
-          setSchedule={setSchedule}
-          onSaveEditSchedule={handleSaveSchedule}
-          open={isEditModalOpen}
-          onOpenChange={setIsEditModalOpen}
-        />
-      </Card>
+      <ScheduleSidebar schedule={schedule}/>
+      {!schedule || !schedule?.schedule.length ? (
+        <Loading />
+      ) : (
+        <Card className="overflow-y-auto mx-auto w-full max-w-5xl bg-transparent border-none md:pt-16 scrollbar ps-9">
+          <CardHeader className="flex flex-row gap-3 items-center pt-0 pb-5 md:pb-10 ps-6 pe-6">
+            <div className="flex flex-col items-start w-full">
+              <CardTitle className="text-xl font-semibold text-center whitespace-nowrap">{schedule?.name}</CardTitle>
+              <CardDescription className="mt-0 text-sm font-medium text-gray-600 whitespace-nowrap text-start max-sm:text-sm">
+                Last Updated: {format(new Date(schedule?.updatedAt), "MMM d, h:mm a")}
+              </CardDescription>
+            </div>
+            <DesktopActions onCreateTask={onCreateTask} onEdit={() => setIsEditModalOpen(true)} handleSaveSchedule={handleSaveSchedule} />
+            <MobileDropdownMenu onCreateTask={onCreateTask} onEdit={() => setIsEditModalOpen(true)} handleSaveSchedule={handleSaveSchedule} />
+          </CardHeader>
+          <CardContent className="pe-0">
+            <div className="relative h-[1640px] w-[calc(100%-2em)] border-l-2 border-gray-300">
+              <ScheduleStructure wakeupMinutes={wakeupMinutes} />
+              <TaskList tasks={schedule.schedule.sort((a, b) => a.start.localeCompare(b.start))} wakeupMinutes={wakeupMinutes} handleTaskClick={handleTaskClick} />
+            </div>
+          </CardContent>
+          <SaveToCalendarBtn toggleCalendarDialog={toggleCalendarDialog} isVisible={isVisible} />
+          <AddScheduleDialog
+            open={calendarDialogOpen}
+            onOpenChange={setCalendarDialogOpen}
+            schedule={schedule}
+          />
+          <TaskDialog isCreateTask={isCreateTask} selectedTask={selectedTask} handleCloseModal={handleCloseModal} handleSaveTask={handleSaveTask} handleNewTaskSave={handleNewTaskSave} deleteTask={deleteTask}/>
+          <EditScheduleModal 
+            schedule={schedule}
+            setSchedule={setSchedule}
+            onSaveEditSchedule={handleSaveSchedule}
+            open={isEditModalOpen}
+            onOpenChange={setIsEditModalOpen}
+          />
+        </Card>
+      )}
     </div>
   );
 }
