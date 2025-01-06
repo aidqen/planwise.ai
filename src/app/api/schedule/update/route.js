@@ -1,12 +1,27 @@
-import { dbService } from "../../services/db.service";
+import { dbService } from "../../services/db.service"
+import { ObjectId } from "mongodb"
+import { NextResponse } from "next/server"
 
-export default async function PUT(req, context) {
+export async function PUT(req) {
     try {
         const scheduleToSave = await req.json()
         
         const schedulesCollection = await dbService.getCollection('schedules')
-        schedulesCollection.updateOne({_id: scheduleToSave._id}, {$set: scheduleToSave})
+        const result = await schedulesCollection.updateOne(
+            { _id: ObjectId.createFromHexString(scheduleToSave.id) },
+            { 
+                $set: {
+                    name: scheduleToSave.name,
+                    preferences: scheduleToSave.preferences,
+                    schedule: scheduleToSave.schedule,
+                    updatedAt: scheduleToSave.updatedAt
+                } 
+            }
+        )
+
+        return NextResponse.json({ success: true, result })
     } catch (err) {
-        throw err
+        console.error('Error updating schedule:', err)
+        return NextResponse.json({ error: err.message }, { status: 500 })
     }
 }
