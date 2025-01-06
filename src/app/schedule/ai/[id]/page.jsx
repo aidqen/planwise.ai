@@ -128,7 +128,8 @@ export default function DailySchedule({ }) {
 
   const wakeupMinutes = getMinutesFromMidnight(wakeupTime);
 
-  if (!schedule || !schedule?.schedule?.length) return <div>Loading...</div>;
+  if (!schedule || !schedule?.schedule?.length) return <Loading />
+
   const sortedTasks = [...schedule?.schedule]?.sort((a, b) => a.start?.localeCompare(b.start));
 
   return (
