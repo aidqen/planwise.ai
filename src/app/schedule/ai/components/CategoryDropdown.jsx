@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChevronDown } from 'lucide-react'
+import { CategoryItem } from './CategoryItem'
 
 const categories = [
     {
@@ -35,17 +36,17 @@ export function CategoryDropdown({ tasks }) {
     }
 
     return (
-        <Card className="relative overflow-hidden mx-auto w-[21em] max-w-md bg-transparent border-0 hidden md:block h-full">
+        <Card className="relative overflow-hidden mx-auto w-[20em] pt-16 max-w-md bg-transparent hidden md:block h-full">
             {/* <div className="absolute bottom-0 left-0 z-0 w-full h-screen bg-white"></div> */}
-            <CardHeader className="pt-0 pb-8">
-                <CardTitle className="text-xl font-medium text-green-500">
+            <CardHeader className="flex flex-col gap-1.5 pt-0 pb-6 space-y-0">
+                <CardTitle className="text-lg font-semibold text-black">
                     Task Categories
                 </CardTitle>
-                <CardDescription className="text-gray-600 dark:text-gray-300">
-                    Explore your color-coded Planwise tasks
+                <CardDescription className="mt-0 text-sm font-medium text-gray-600 dark:text-gray-300">
+                    View more details about your tasks
                 </CardDescription>
             </CardHeader>
-            <CardContent className="grid gap-4 p-6">
+            <CardContent className="grid gap-4">
                 {categories.map((category) => (
                     <CategoryItem
                         key={category.name}
@@ -60,55 +61,3 @@ export function CategoryDropdown({ tasks }) {
     )
 }
 
-function CategoryItem({ category, isOpen, onToggle, tasks }) {
-    const contentRef = useRef(null)
-    const [contentHeight, setContentHeight] = useState(undefined)
-
-    useEffect(() => {
-        if (contentRef.current) {
-            setContentHeight(contentRef.current.scrollHeight)
-        }
-    }, [isOpen])
-
-    return (
-        <div className="overflow-hidden bg-white rounded-lg shadow-sm dark:bg-gray-700">
-            <div
-                className="flex items-center p-4 space-x-4 cursor-pointer"
-                onClick={onToggle}
-            >
-                <div
-                    className="flex justify-center items-center w-12 h-12 rounded-full"
-                    style={{ backgroundColor: category.color }}
-                    aria-hidden="true"
-                />
-                <div className="flex-grow">
-                    <h3 className="text-lg font-semibold text-gray-800 dark:text-white">{category.name}</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-300">
-                        {isOpen ? 'Click to close' : 'Click to view tasks'}
-                    </p>
-                </div>
-                <div
-                    className={`w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
-                >
-                    <ChevronDown className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-                </div>
-            </div>
-            <div
-                ref={contentRef}
-                className="overflow-hidden transition-[max-height] duration-300 ease-in-out"
-                style={{ maxHeight: isOpen ? contentHeight : 0 }}
-            >
-                <div className="px-4 pb-4">
-                    {tasks.map((task) => (
-                        <div key={task.id} className="p-2 mb-2 bg-gray-100 rounded dark:bg-gray-600">
-                            <h4 className="font-medium text-gray-800 dark:text-white">{task.summary}</h4>
-                            <p className="text-sm text-gray-500 dark:text-gray-300">
-                                {task.start} - {task.end}
-                            </p>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
-    )
-}
