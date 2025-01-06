@@ -35,8 +35,8 @@ export default function PlanwiseDashboard() {
     }
 
     return (
-        <div className="p-6 px-6 w-full min-h-screen md:px-10 lg:px-20">
-            <div className="mx-auto max-w-7xl">
+        <div className="p-6 px-6 w-full min-h-screen md:pt-16 md:px-10 lg:px-20">
+            <div className="max-w-7xl">
                 <h1 className="mb-1 text-lg font-medium text-gray-900 md:text-2xl">Your Preferences</h1>
                 <p className='mb-6 text-sm text-neutral'>Manage your goals, routines and preferences to get the best results for your schedule.</p>
 
