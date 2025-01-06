@@ -12,22 +12,36 @@ import { userService } from '@/services/user.service';
 import { makeId } from '@/services/util.service';
 
 export async function getUser() {
-        const {email} = await getUserSession()
+        const { email } = await getUserSession()
         const user = await userService.getUser(email)
         store.dispatch({ type: SET_USER, user })
         return user
 }
 
 export async function addScheduleToUser(schedule) {
-        const { id, name, updatedAt, preferences, routines, goals} = schedule
+        const { id, name, updatedAt, preferences, routines, goals } = schedule
         const user = await getUser()
         console.log("🚀 ~ file: user.actions.js:23 ~ user:", user)
-        const scheduleToSave = {id, name, updatedAt, preferences, routines, goals}
+        const scheduleToSave = { id, name, updatedAt, preferences, routines, goals }
 
         const userToSave = { ...user, schedules: user?.schedules ? [...user.schedules, scheduleToSave] : [scheduleToSave] }
         await userService.updateUser(userToSave)
 }
 
+export async function updateScheduleInUser(schedule) {
+        console.log("🚀 ~ file: user.actions.js:32 ~ schedule:", schedule)
+        try {
+                const { id, name, updatedAt, preferences, routines, goals } = schedule
+                const user = await getUser()
+                const scheduleToSave = { id, name, updatedAt, preferences, routines, goals }
+                const updatedSchedules = user?.schedules?.map(s => s.id === id ? scheduleToSave : s) || [scheduleToSave]
+                const userToSave = { ...user, schedules: updatedSchedules }
+                console.log("🚀 ~ file: user.actions.js:37 ~ userToSave:", userToSave)
+                await userService.updateUser(userToSave)
+        } catch (err) {
+                throw err
+        }
+}
 // export async function loadUsers() {
 //     try {
 //         store.dispatch({ type: LOADING_START })

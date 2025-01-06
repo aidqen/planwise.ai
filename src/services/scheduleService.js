@@ -30,9 +30,16 @@ async function updateSchedule(schedule) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(schedule),
     })
-    return response.json()
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    
+    const result = await response.json()
+    return result
   } catch (error) {
     console.error('Error updating schedule:', error)
+    throw error
   }
 }
 
