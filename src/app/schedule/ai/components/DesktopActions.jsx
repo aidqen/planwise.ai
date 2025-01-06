@@ -14,11 +14,11 @@ export function DesktopActions({ onCreateTask, onEdit, handleSaveSchedule }) {
                 <Pen className="mr-1 w-4 h-4" />
                 
             </Button>
-            <Button onClick={onCreateTask} className='px-3 py-2 w-full text-sm font-medium text-white bg-blue-500 rounded-lg shadow-md sm:w-auto'>
+            <Button onClick={onCreateTask} className='px-3 py-2 w-full text-sm font-medium text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 sm:w-auto'>
                 <Plus className="mr-1 w-4 h-4" />
                 Add New Task
             </Button>
-            <Button onClick={handleSaveSchedule} variant="outline" className="w-full text-white bg-green-400 shadow-md hover:bg-white/70 sm:w-auto">
+            <Button onClick={handleSaveSchedule} variant="outline" className="w-full text-black shadow-md hover:bg-green-500 sm:w-auto">
                 <Save className="mr-2 w-4 h-4" />
                 Save
             </Button>

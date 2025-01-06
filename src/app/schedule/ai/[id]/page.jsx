@@ -127,29 +127,31 @@ export default function DailySchedule({ }) {
   const wakeupMinutes = getMinutesFromMidnight(wakeupTime);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[auto_1fr]  justify-between w-full">
+    <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] overflow-y-hidden justify-between w-full">
       <ScheduleSidebar schedule={schedule}/>
       {!schedule || !schedule?.schedule.length ? (
         <Loading />
       ) : (
-        <Card className="overflow-y-auto mx-auto w-full max-w-5xl bg-transparent border-none md:pt-16 scrollbar ps-9">
-          <CardHeader className="flex flex-row gap-3 items-center pt-0 pb-5 md:pb-10 ps-6 pe-6">
-            <div className="flex flex-col items-start w-full">
-              <CardTitle className="text-xl font-semibold text-center whitespace-nowrap">{schedule?.name}</CardTitle>
-              <CardDescription className="mt-0 text-sm font-medium text-gray-600 whitespace-nowrap text-start max-sm:text-sm">
-                Last Updated: {format(new Date(schedule?.updatedAt), "MMM d, h:mm a")}
-              </CardDescription>
-            </div>
-            <DesktopActions onCreateTask={onCreateTask} onEdit={() => setIsEditModalOpen(true)} handleSaveSchedule={handleSaveSchedule} />
-            <MobileDropdownMenu onCreateTask={onCreateTask} onEdit={() => setIsEditModalOpen(true)} handleSaveSchedule={handleSaveSchedule} />
-          </CardHeader>
-          <CardContent className="pe-0">
-            <div className="relative h-[1640px] w-[calc(100%-2em)] border-l-2 border-gray-300">
-              <ScheduleStructure wakeupMinutes={wakeupMinutes} />
-              <TaskList tasks={schedule.schedule.sort((a, b) => a.start.localeCompare(b.start))} wakeupMinutes={wakeupMinutes} handleTaskClick={handleTaskClick} />
-            </div>
-          </CardContent>
-          <SaveToCalendarBtn toggleCalendarDialog={toggleCalendarDialog} isVisible={isVisible} />
+        <Card className="overflow-y-auto w-full bg-transparent border-none md:pt-16 scrollbar">
+          <div className="mx-auto w-[80%]">
+            <CardHeader className="flex flex-row gap-3 items-center pt-0 pb-5 pe-0 md:pb-9">
+              <div className="flex flex-col items-start w-full">
+                <CardTitle className="text-xl font-semibold text-center whitespace-nowrap">{schedule?.name}</CardTitle>
+                <CardDescription className="mt-0 text-sm font-medium text-gray-600 whitespace-nowrap text-start max-sm:text-sm">
+                  Last Updated: {format(new Date(schedule?.updatedAt), "MMM d, h:mm a")}
+                </CardDescription>
+              </div>
+              <DesktopActions onCreateTask={onCreateTask} onEdit={() => setIsEditModalOpen(true)} handleSaveSchedule={handleSaveSchedule} />
+              <MobileDropdownMenu onCreateTask={onCreateTask} onEdit={() => setIsEditModalOpen(true)} handleSaveSchedule={handleSaveSchedule} />
+            </CardHeader>
+            <CardContent className="">
+              <div className="relative h-[1640px] w-full border-l-2 border-gray-300">
+                <ScheduleStructure wakeupMinutes={wakeupMinutes} />
+                <TaskList tasks={schedule.schedule.sort((a, b) => a.start.localeCompare(b.start))} wakeupMinutes={wakeupMinutes} handleTaskClick={handleTaskClick} />
+              </div>
+            </CardContent>
+            <SaveToCalendarBtn toggleCalendarDialog={toggleCalendarDialog} isVisible={isVisible} />
+          </div>
           <AddScheduleDialog
             open={calendarDialogOpen}
             onOpenChange={setCalendarDialogOpen}

@@ -1,5 +1,3 @@
-"use client"
-
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -11,22 +9,29 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { format } from 'date-fns'
 import {
     Select,
     SelectContent,
-    SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useToast } from "@/components/hooks/use-toast";
+import { updateScheduleInUser } from '@/store/actions/user.actions';
+import { useDispatch } from 'react-redux';
 
 export function EditScheduleModal({ schedule, setSchedule, onSaveEditSchedule, open, onOpenChange }) {
+    const router = useRouter();
+    const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false);
+    const { toast } = useToast();
+
     const timeOptions = Array.from({ length: 24 * 4 }, (_, i) => {
         const hour = Math.floor(i / 4)
         const minute = (i % 4) * 15
-        return format(new Date().setHours(hour, minute), 'HH:mm')
+        return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`
     })
 
     const handleInputChange = (field, value) => {
@@ -47,6 +52,38 @@ export function EditScheduleModal({ schedule, setSchedule, onSaveEditSchedule, o
         onOpenChange(false)
     }
 
+    const handleDelete = async () => {
+        try {
+            setLoading(true);
+            const response = await fetch(`/api/schedule/delete/${schedule.id}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete schedule');
+            }
+
+            // Update user state to remove the deleted schedule
+            dispatch(updateScheduleInUser(null, schedule.id));
+            
+            toast({
+                title: "Success",
+                description: "Schedule deleted successfully",
+            });
+            router.push('/schedule/all');
+        } catch (error) {
+            console.error('Failed to delete schedule:', error);
+            toast({
+                title: "Error",
+                description: "Failed to delete schedule",
+                variant: "destructive",
+            });
+        } finally {
+            setLoading(false);
+            onOpenChange(false);
+        }
+    };
+
     // Get night time options (7 PM to 3 AM)
     const nightTimeOptions = [
         ...timeOptions.slice(76, 96), // 19:00 to 23:45
@@ -58,91 +95,88 @@ export function EditScheduleModal({ schedule, setSchedule, onSaveEditSchedule, o
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="rounded-[10px] w-[95%] sm:max-w-md">
+            <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle className="text-xl font-semibold">Edit Schedule</DialogTitle>
-                    <DialogDescription className="text-sm text-gray-500">
-                        Customize your schedule settings
+                    <DialogTitle>Edit Schedule</DialogTitle>
+                    <DialogDescription>
+                        Make changes to your schedule here. Click save when you're done.
                     </DialogDescription>
                 </DialogHeader>
-                <form onSubmit={handleSubmit} className="grid gap-6 py-4">
-                    <div className="grid gap-2">
-                        <Label htmlFor="name" className="text-sm font-medium">
-                            Schedule Name
-                        </Label>
-                        <Input
-                            id="name"
-                            value={schedule?.name || ''}
-                            onChange={(e) => handleInputChange('name', e.target.value)}
-                            className="w-full"
-                            placeholder="Enter schedule name"
-                        />
-                    </div>
-                    <div className="grid gap-4 md:grid-cols-2">
-                        <div className="grid gap-2">
-                            <Label htmlFor="wakeup" className="text-sm font-medium">
-                                Wake Up Time
+                <form onSubmit={handleSubmit}>
+                    <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 gap-4 items-center">
+                            <Label htmlFor="name" className="text-right">
+                                Name
+                            </Label>
+                            <Input
+                                id="name"
+                                value={schedule?.name || ''}
+                                onChange={(e) => handleInputChange('name', e.target.value)}
+                                className="col-span-3"
+                                placeholder="Enter schedule name"
+                            />
+                        </div>
+                        <div className="grid grid-cols-4 gap-4 items-center">
+                            <Label htmlFor="wakeup" className="text-right">
+                                Wake Up
                             </Label>
                             <Select
                                 value={schedule?.preferences?.wakeup || '06:00'}
                                 onValueChange={(value) => handleInputChange('wakeup', value)}
                             >
-                                <SelectTrigger className="w-full">
+                                <SelectTrigger className="col-span-3">
                                     <SelectValue placeholder="Select time" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectGroup>
-                                        <SelectLabel>Morning</SelectLabel>
-                                        {morningTimeOptions.map((time) => (
-                                            <SelectItem key={time} value={time}>
-                                                {format(new Date(`2000-01-01T${time}`), 'h:mm a')}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectGroup>
+                                    {morningTimeOptions.map((time) => (
+                                        <SelectItem key={time} value={time}>
+                                            {time}
+                                        </SelectItem>
+                                    ))}
                                 </SelectContent>
                             </Select>
                         </div>
-                        <div className="grid gap-2">
-                            <Label htmlFor="sleep" className="text-sm font-medium">
-                                Sleep Time
+                        <div className="grid grid-cols-4 gap-4 items-center">
+                            <Label htmlFor="sleep" className="text-right">
+                                Sleep
                             </Label>
                             <Select
                                 value={schedule?.preferences?.sleep || '22:00'}
                                 onValueChange={(value) => handleInputChange('sleep', value)}
                             >
-                                <SelectTrigger className="w-full">
+                                <SelectTrigger className="col-span-3">
                                     <SelectValue placeholder="Select time" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectGroup>
-                                        <SelectLabel>Night</SelectLabel>
-                                        {nightTimeOptions.map((time) => (
-                                            <SelectItem key={time} value={time}>
-                                                {format(new Date(`2000-01-01T${time}`), 'h:mm a')}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectGroup>
+                                    {nightTimeOptions.map((time) => (
+                                        <SelectItem key={time} value={time}>
+                                            {time}
+                                        </SelectItem>
+                                    ))}
                                 </SelectContent>
                             </Select>
                         </div>
                     </div>
-                    <DialogFooter className="gap-3 sm:gap-0">
-                        <Button
-                            variant="outline"
-                            onClick={() => onOpenChange(false)}
-                            className="w-full sm:w-auto"
-                        >
-                            Cancel
-                        </Button>
+                    <DialogFooter className="gap-2">
                         <Button
                             type="submit"
                             className="w-full text-white bg-blue-500 hover:bg-blue-600 sm:w-auto"
+                            disabled={loading}
                         >
                             Save Changes
+                        </Button>
+                        <Button
+                            type="button"
+                            variant="destructive"
+                            className="w-full text-white sm:w-auto"
+                            onClick={handleDelete}
+                            disabled={loading}
+                        >
+                            Delete
                         </Button>
                     </DialogFooter>
                 </form>
             </DialogContent>
         </Dialog>
-    )
+    );
 }

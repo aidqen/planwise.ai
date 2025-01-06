@@ -1,4 +1,4 @@
-import { Target } from "lucide-react";
+import { Goal, Target } from "lucide-react";
 import { CollapsibleSection } from "./CollapsibleSection";
 
 export function GoalsSection({ goals, isOpen, onToggle }) {
@@ -26,7 +26,7 @@ export function GoalsSection({ goals, isOpen, onToggle }) {
     return (
         <CollapsibleSection 
             title="Goals" 
-            icon={Target}
+            icon={Goal}
             isOpen={isOpen}
             onToggle={onToggle}
             iconColor="#c1121f"

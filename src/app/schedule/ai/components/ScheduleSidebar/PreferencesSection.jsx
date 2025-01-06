@@ -1,11 +1,11 @@
-import { Moon, Settings, Sun, Zap } from "lucide-react";
+import { Moon, Settings, Sun, UserRoundPen, Zap } from "lucide-react";
 import { CollapsibleSection } from "./CollapsibleSection";
 
 export function PreferencesSection({ preferences, isOpen, onToggle }) {
     return (
         <CollapsibleSection 
             title="Schedule Preferences" 
-            icon={Settings}
+            icon={UserRoundPen}
             isOpen={isOpen}
             onToggle={onToggle}
             iconColor="#5fa8d3"

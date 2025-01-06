@@ -1,4 +1,5 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Clock, Coffee, Repeat, Target, Utensils } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function TaskCard({ task, wakeupMinutes, handleTaskClick, columnIndex, totalColumns }) {
@@ -63,10 +64,27 @@ export function TaskCard({ task, wakeupMinutes, handleTaskClick, columnIndex, to
     }
   }
 
+  const getCategoryIcon = (category) => {
+    switch (category) {
+      case 'break':
+        return Coffee;
+      case 'goal':
+        return Target;
+      case 'routine':
+        return Repeat;
+      case 'meal':
+        return Utensils;
+      default:
+        return Clock;
+    }
+  };
+
+  const CategoryIcon = getCategoryIcon(task?.category);
+
   return (
     <Card
       onClick={() => handleTaskClick(task)}
-      className="absolute px-2 py-0 text-white rounded-lg shadow-sm transition-all duration-100 ease-in-out cursor-pointer hover:ring-2 hover:ring-blue-500 hover:z-[80] hover:shadow-md"
+      className="absolute px-2 py-0 text-white rounded-lg shadow-sm transition-all duration-100 ease-in-out cursor-pointer hover:scale-[1.01] hover:z-[80] hover:shadow-md"
       style={{
         top: `${top}%`,
         height: `${height}%`,
@@ -77,7 +95,10 @@ export function TaskCard({ task, wakeupMinutes, handleTaskClick, columnIndex, to
       }}
     >
       <CardHeader className={`flex p-0 space-y-0 ${rowOrColumn}`}>
-        <CardTitle className="text-xs font-semibold truncate">{task?.summary}</CardTitle>
+        <div className="flex items-center gap-1.5">
+          <CategoryIcon className="w-3 h-3 text-white/80" />
+          <CardTitle className="text-xs font-semibold truncate">{task?.summary}</CardTitle>
+        </div>
         {isDescVisible && <CardDescription className="mt-0 text-xs truncate text-white/90">{task?.description}</CardDescription>}
         <CardDescription className="mt-0 text-xs truncate text-white/90">
           {task.start} - {task.end}
