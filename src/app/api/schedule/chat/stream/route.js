@@ -6,18 +6,29 @@ const openai = new OpenAI({
 
 export async function GET(request) {
   try {
-    const { message, schedule } = await request.json();
+    // Get URL parameters
+    const { searchParams } = new URL(request.url);
+    const message = searchParams.get('message');
+    const schedule = JSON.parse(searchParams.get('schedule'));
 
-    const summaryPrompt = `You are an AI assistant that helps modify daily schedules. A user has requested changes to their schedule.
+    if (!message || !schedule) {
+      return new Response('Missing message or schedule', { status: 400 });
+    }
+
+    const summaryPrompt = `You are a friendly and helpful AI assistant that helps users manage their schedules. You should:
+
+1. Be conversational and natural in your responses
+2. Only suggest changes when the user explicitly asks for them
+3. Respond appropriately to greetings and casual conversation
+4. When changes are requested, be specific about what you'll modify
 
 Current Schedule:
 ${JSON.stringify(schedule, null, 2)}
 
-User Request: ${message}
+User Message: ${message}
 
-Provide a clear, concise explanation of what changes you would make to the schedule and why. 
-Keep it natural and conversational, but specific about the changes.
-Focus on explaining:
+If the user is just saying hello or chatting, respond naturally without mentioning the schedule.
+If the user requests schedule changes, provide a clear, concise explanation:
 1. What specific tasks will be moved/modified
 2. Why these changes make sense
 3. How this affects the overall flow of the day
