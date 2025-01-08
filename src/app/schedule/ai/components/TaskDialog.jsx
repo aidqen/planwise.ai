@@ -134,7 +134,7 @@ export function TaskDialog({ isCreateTask ,selectedTask, handleCloseModal, handl
           </div>
         </div>
         <DialogFooter className="flex gap-2">
-          <Button className="shadow-md" variant="outline" onClick={handleCloseModal}>
+          <Button className="shadow-md" variant="outline" onClick={onHandleCloseModal}>
             Cancel
           </Button>
           {!isCreateTask && <Button className="text-white shadow-md" variant="destructive" onClick={onDeleteTask}>

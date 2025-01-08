@@ -30,6 +30,7 @@ const DEFAULT_SCHEDULE = {
 export default function DailySchedule() {
   const [calendarDialogOpen, setCalendarDialogOpen] = useState(false)
   const [selectedTask, setSelectedTask] = useState(null)
+  console.log("🚀 ~ file: page.jsx:33 ~ selectedTask:", selectedTask)
   const [isCreateTask, setIsCreateTask] = useState(false)
   const [isVisible, setIsVisible] = useState(true)
   const [lastMouseMove, setLastMouseMove] = useState(Date.now())
@@ -112,8 +113,8 @@ export default function DailySchedule() {
   }
 
   function handleCloseModal() {
-    setIsCreateTask(false)
     setSelectedTask(null)
+    setIsCreateTask(false)
   }
 
   function deleteTask(taskId) {
@@ -216,15 +217,14 @@ export default function DailySchedule() {
       )}
 
       <TaskDialog
-        open={selectedTask !== null || isCreateTask}
-        onOpenChange={handleCloseModal}
-        task={selectedTask}
-        isCreate={isCreateTask}
+        selectedTask={selectedTask}
+        isCreateTask={isCreateTask}
+        handleCloseModal={handleCloseModal}
+        handleSaveTask={handleSaveTask}
+        handleNewTaskSave={handleSaveTask}
+        deleteTask={deleteTask}
         schedule={schedule}
         onScheduleUpdate={setSchedule}
-        handleSaveTask={handleSaveTask}
-        handleNewTaskSave={handleNewTaskSave}
-        deleteTask={deleteTask}
       />
 
       <AddScheduleDialog
