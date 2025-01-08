@@ -9,7 +9,7 @@ import { useState, useEffect, useRef } from "react";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-export function AIChat({ chat, schedule }) {
+export function AIChat({ chat, schedule, onScheduleEdit, isLoading, setIsLoading }) {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState(chat);
     const [loading, setLoading] = useState(false);
@@ -40,7 +40,7 @@ export function AIChat({ chat, schedule }) {
         e.preventDefault();
         if (!message.trim()) return;
         const newMessage = createNewMessage(message);
-        setLoading(true);
+        setIsLoading(true)
         try {
             setMessages(prev => prev?.length ? [...prev, newMessage] : [newMessage]);
             setMessage('');
@@ -48,7 +48,7 @@ export function AIChat({ chat, schedule }) {
         } catch (error) {
             console.error('Failed to send message:', error);
         } finally {
-            setLoading(false);
+            setIsLoading(false);
         }
     };
 
@@ -64,17 +64,22 @@ export function AIChat({ chat, schedule }) {
             while (true) {
                 const { done, value } = await stream.read();
                 if (done) break;
-                
+
                 const text = decoder.decode(value);
                 aiResponse += text;
-                
+
                 // Update the AI message in the messages array
-                setMessages(prev => prev.map(msg => 
-                    msg.id === initialAiMessage.id 
+                setMessages(prev => prev.map(msg =>
+                    msg.id === initialAiMessage.id
                         ? { ...msg, text: aiResponse }
                         : msg
                 ));
             }
+
+            // Get the edited schedule from the API response
+            const editedScheduleResponse = await scheduleService.getEditedSchedule(schedule?.schedule, aiResponse);
+            console.log("🚀 ~ file: AIChat.jsx:84 ~ editedScheduleResponse:", editedScheduleResponse)
+            onScheduleEdit(editedScheduleResponse); // Pass edited schedule to parent
 
             // Save the updated chat
             await scheduleService.saveChat(schedule._id, messages);
@@ -117,30 +122,29 @@ export function AIChat({ chat, schedule }) {
                 <motion.div
                     initial={false}
                     animate={{ opacity: 1 }}
-                    className={`px-4 py-2 ${
-                        isUser 
+                    className={`px-4 py-2 ${isUser
                             ? 'bg-blue-500 text-white rounded-2xl rounded-tr-sm'
                             : 'bg-gray-100 text-gray-800 rounded-xl'
-                    }`}
+                        }`}
                 >
                     {isUser ? (
                         <p className="text-sm whitespace-pre-wrap">{message.text}</p>
                     ) : (
                         <div className="markdown-content text-sm">
-                            <ReactMarkdown 
+                            <ReactMarkdown
                                 remarkPlugins={[remarkGfm]}
                                 components={{
                                     p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
                                     ul: ({ children }) => <ul className="list-disc ml-4 mb-2">{children}</ul>,
                                     ol: ({ children }) => <ol className="list-decimal ml-4 mb-2">{children}</ol>,
                                     li: ({ children }) => <li className="mb-1">{children}</li>,
-                                    code: ({ inline, children }) => 
-                                        inline 
+                                    code: ({ inline, children }) =>
+                                        inline
                                             ? <code className="bg-gray-200 px-1 rounded">{children}</code>
                                             : <pre className="bg-gray-800 text-white p-2 rounded my-2 overflow-x-auto">
                                                 <code>{children}</code>
-                                              </pre>,
-                                    blockquote: ({ children }) => 
+                                            </pre>,
+                                    blockquote: ({ children }) =>
                                         <blockquote className="border-l-4 border-gray-300 pl-4 italic my-2">
                                             {children}
                                         </blockquote>,
@@ -173,8 +177,8 @@ export function AIChat({ chat, schedule }) {
                     </motion.div>
                 ) : (
                     <div className="flex flex-col gap-3 py-4 overflow-y-hidden overflow-x-hidden">
-                        <AnimatePresence 
-                            mode="popLayout" 
+                        <AnimatePresence
+                            mode="popLayout"
                             initial={false}
                             presenceAffectsLayout
                         >
@@ -201,7 +205,7 @@ export function AIChat({ chat, schedule }) {
                         placeholder="Ask AI to modify your schedule..."
                         className="flex-grow text-sm rounded-md border-gray-300 max-h-[20rem] min-h-[40px] px-3 py-2.5 transition-all duration-200 resize-none"
                         style={{ height: 'auto', overflow: 'hidden' }}
-                        disabled={loading}
+                        disabled={isLoading}
                         onKeyDown={(e) => {
                             if (e.key === 'Enter' && !e.shiftKey) {
                                 e.preventDefault();
@@ -213,12 +217,11 @@ export function AIChat({ chat, schedule }) {
                     <Button
                         type="submit"
                         size="icon"
-                        disabled={loading || !message.trim()}
-                        className={`transition-all duration-200 h-10 w-10 shrink-0 text-white ${
-                            message.trim() 
+                        disabled={isLoading || !message.trim()}
+                        className={`transition-all duration-200 h-10 w-10 shrink-0 text-white ${message.trim()
                                 ? 'bg-blue-500 hover:bg-blue-600'
                                 : 'bg-gray-300 cursor-not-allowed'
-                        }`}
+                            }`}
                     >
                         <Send className="w-4 h-4" />
                     </Button>

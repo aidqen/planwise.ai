@@ -15,7 +15,7 @@ export function SaveToCalendarBtn({ toggleCalendarDialog, isVisible }) {
             </Button>
         </div>
 
-        <div className="hidden md:block">
+        <div className="hidden md:block z-50 sticky bottom-0">
             <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 animate={isVisible ?

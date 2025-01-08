@@ -6,7 +6,11 @@ export const scheduleService = {
   sendTasksToCalendar,
   insertScheduleToDB,
   getScheduleById,
-  updateSchedule
+  updateSchedule,
+  streamScheduleChanges,
+  updateScheduleWithChanges,
+  saveChat,
+  getEditedSchedule
 }
 
 async function getScheduleById(id) {
@@ -102,5 +106,101 @@ async function sendTasksToCalendar(aiSchedule, date, timezone) {
       console.error("Network error:", error.message);
       throw new Error("Network error occurred while adding tasks");
     }
+  }
+}
+
+async function streamScheduleChanges(message, schedule) {
+  try {
+    // Convert the message and schedule to URL-safe strings
+    const params = new URLSearchParams({
+      message: message,
+      schedule: JSON.stringify(schedule)
+    });
+
+    const response = await fetch(`/api/schedule/chat/stream?${params}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+
+    return {
+      stream: reader,
+      decoder,
+      cancel: () => reader.cancel()
+    };
+  } catch (error) {
+    console.error('Error streaming schedule changes:', error);
+    throw error;
+  }
+}
+
+async function updateScheduleWithChanges(message, schedule, explanation) {
+  try {
+    const response = await fetch('/api/schedule/chat/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message, schedule, explanation }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    return result.updatedSchedule;
+  } catch (error) {
+    console.error('Error updating schedule with changes:', error);
+    throw error;
+  }
+}
+
+async function saveChat(scheduleId, chat) {
+  try {
+    const response = await fetch('/api/schedule/chat/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ scheduleId, chat }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error('Error saving chat:', error);
+    throw error;
+  }
+}
+
+async function getEditedSchedule(schedule, explanation) {
+  try {
+    const response = await fetch('/api/schedule/chat/update', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        schedule,
+        explanation
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to get edited schedule');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error getting edited schedule:', error);
+    throw error;
   }
 }

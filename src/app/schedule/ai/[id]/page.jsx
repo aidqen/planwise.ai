@@ -16,27 +16,37 @@ import { Loading } from '../components/Loading'
 import { MobileDropdownMenu } from '../components/MobileDropdownMenu'
 import { DesktopActions } from '../components/DesktopActions'
 import { EditScheduleModal } from '../components/EditScheduleModal'
-import { updateScheduleInUser } from '@/store/actions/user.actions'
-import { Star } from 'lucide-react'
+import { getMinutesFromMidnight } from '@/services/util.service'
 import { Button } from '@/components/ui/button'
+import { Check, X } from 'lucide-react'
 
-export default function DailySchedule({ }) {
+const DEFAULT_SCHEDULE = {
+  schedule: [],
+  preferences: {
+    wakeup: '04:00'
+  }
+}
+
+export default function DailySchedule() {
   const [calendarDialogOpen, setCalendarDialogOpen] = useState(false)
   const [selectedTask, setSelectedTask] = useState(null)
   const [isCreateTask, setIsCreateTask] = useState(false)
   const [isVisible, setIsVisible] = useState(true)
   const [lastMouseMove, setLastMouseMove] = useState(Date.now())
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [editedSchedule, setEditedSchedule] = useState(null)
   const params = useParams()
-  const [schedule, setSchedule] = useState({schedule: []})
-  console.log("🚀 ~ file: page.jsx:30 ~ schedule:", schedule)
-  const wakeupTime = schedule.preferences?.wakeup || '04:00';
+  const [schedule, setSchedule] = useState(DEFAULT_SCHEDULE)
+  const wakeupTime = schedule?.preferences?.wakeup || '04:00'
+  const wakeupMinutes = getMinutesFromMidnight(wakeupTime)
+  const multiStepForm = useSelector(state => state.scheduleModule.multiStepForm)
 
   useEffect(() => {
     if (params?.id) {
       onFetchSchedule()
     }
-  }, [])
+  }, [params?.id])
 
   useEffect(() => {
     let timeoutId
@@ -54,19 +64,47 @@ export default function DailySchedule({ }) {
     }
 
     window.addEventListener('mousemove', handleMouseMove)
-
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
       clearTimeout(timeoutId)
     }
   }, [lastMouseMove])
 
-  function toggleCalendarDialog() {
-    setCalendarDialogOpen(!calendarDialogOpen)
+  const onFetchSchedule = async () => {
+    try {
+      setIsLoading(true)
+      const fetchedSchedule = await scheduleService.getScheduleById(params.id)
+      setSchedule(fetchedSchedule || DEFAULT_SCHEDULE)
+    } catch (error) {
+      console.error('Error fetching schedule:', error)
+      setSchedule(DEFAULT_SCHEDULE)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleScheduleEdit = (newSchedule) => {
+    setEditedSchedule(newSchedule)
+  }
+
+  const handleAcceptChanges = async () => {
+    try {
+      const updatedSchedule = { ...schedule, id: schedule._id, schedule: editedSchedule }
+      console.log("🚀 ~ file: page.jsx:93 ~ updatedSchedule:", updatedSchedule)
+      await scheduleService.updateSchedule(updatedSchedule)
+      setSchedule(updatedSchedule)
+      setEditedSchedule(null)
+    } catch (error) {
+      console.error('Failed to accept changes:', error)
+    }
+  }
+
+  const handleRejectChanges = () => {
+    setEditedSchedule(null)
   }
 
   function handleTaskClick(task) {
-    setSelectedTask({ ...task });
+    setSelectedTask({ ...task })
   }
 
   function onCreateTask() {
@@ -75,7 +113,7 @@ export default function DailySchedule({ }) {
 
   function handleCloseModal() {
     setIsCreateTask(false)
-    setSelectedTask(null);
+    setSelectedTask(null)
   }
 
   function deleteTask(taskId) {
@@ -84,94 +122,123 @@ export default function DailySchedule({ }) {
     setSchedule(scheduleToSave)
   }
 
-  async function handleSaveTask(task) {
-    try {
-      const tasksToSave = schedule?.schedule?.map(prevTask => task.id === prevTask.id ? task : prevTask)
-      const scheduleToSave = { ...schedule, schedule: tasksToSave }
-      setSchedule(scheduleToSave)
-    } catch (err){
-      console.error(err);
-    }
-  }
-
-  function handleNewTaskSave(task) {
-    const tasksToSave = [...(schedule?.schedule || []), task];
-    const scheduleToSave = { ...schedule, schedule: tasksToSave };
-    setSchedule(scheduleToSave);
-  }
-  
-  async function onFetchSchedule() {
-    const scheduleToSave = await scheduleService.getScheduleById(params?.id)
+  function handleSaveTask(taskToSave) {
+    const tasksToSave = schedule?.schedule?.map(prevTask =>
+      prevTask.id === taskToSave.id ? taskToSave : prevTask
+    )
+    const scheduleToSave = { ...schedule, schedule: tasksToSave }
     setSchedule(scheduleToSave)
   }
 
-  async function handleSaveSchedule(e) {
-    if (e) e.preventDefault()
-    try {
-      // Create a clean copy of the schedule without any circular references
-      const scheduleToSave = {
-        ...schedule,
-        id: schedule._id,
-        name: schedule.name,
-        preferences: schedule.preferences,
-        schedule: schedule.schedule,
-        updatedAt: new Date().toISOString()
-      }
-      await scheduleService.updateSchedule(scheduleToSave)
-      await updateScheduleInUser(scheduleToSave)
-    } catch (err) {
-      console.error(err)
-    }
+  function handleNewTaskSave(taskToSave) {
+    const tasksToSave = [...(schedule?.schedule || []), taskToSave]
+    const scheduleToSave = { ...schedule, schedule: tasksToSave }
+    setSchedule(scheduleToSave)
   }
-
-  const wakeupMinutes = getMinutesFromMidnight(wakeupTime);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] overflow-y-hidden justify-between w-full">
-      <ScheduleSidebar schedule={schedule}/>
-      {!schedule || !schedule?.schedule.length ? (
+      <ScheduleSidebar
+        schedule={isLoading ? multiStepForm : schedule}
+        setIsLoading={setIsLoading}
+        isLoading={isLoading}
+        multiStepForm={multiStepForm}
+        onScheduleEdit={handleScheduleEdit}
+      />
+      {(isLoading || !schedule?.schedule?.length) ? (
         <Loading />
       ) : (
-        <Card className="overflow-y-auto w-full bg-transparent border-none md:pt-16 scrollbar">
-          <div className="mx-auto w-[80%]">
-            <CardHeader className="flex flex-row gap-3 items-center pt-0 pb-5 pe-0 md:pb-9">
-              <div className="flex flex-col items-start w-full">
-                <CardTitle className="text-xl font-semibold text-center whitespace-nowrap">{schedule?.name}</CardTitle>
-                <CardDescription className="mt-0 text-sm font-medium text-gray-600 whitespace-nowrap text-start max-sm:text-sm">
-                  Last Updated: {format(new Date(schedule?.updatedAt), "MMM d, h:mm a")}
-                </CardDescription>
+        <Card className="relative overflow-y-auto w-full bg-transparent border-none md:pt-16 scrollbar">
+          <div className="mx-auto w-[80%] relative">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Daily Schedule</CardTitle>
+                  <CardDescription>
+                    {format(new Date(), 'EEEE, MMMM do yyyy')}
+                  </CardDescription>
+                </div>
+                <div className="hidden md:flex gap-4">
+                  <DesktopActions
+                    schedule={schedule}
+                    onOpenCalendarDialog={() => setCalendarDialogOpen(true)}
+                    onCreateTask={onCreateTask}
+                  />
+                </div>
+                <div className="md:hidden">
+                  <MobileDropdownMenu
+                    schedule={schedule}
+                    onOpenCalendarDialog={() => setCalendarDialogOpen(true)}
+                    onCreateTask={onCreateTask}
+                  />
+                </div>
               </div>
-              <DesktopActions onCreateTask={onCreateTask} onEdit={() => setIsEditModalOpen(true)} handleSaveSchedule={handleSaveSchedule} />
-              <MobileDropdownMenu onCreateTask={onCreateTask} onEdit={() => setIsEditModalOpen(true)} handleSaveSchedule={handleSaveSchedule} />
             </CardHeader>
-            <CardContent className="">
-              <div className="relative h-[1640px] w-full border-l-2 border-gray-300">
+
+            <CardContent>
+              <div className="relative h-[1640px] w-full border-l-2 border-gray-300 pl-16 pr-4">
                 <ScheduleStructure wakeupMinutes={wakeupMinutes} />
-                <TaskList tasks={schedule.schedule.sort((a, b) => a.start.localeCompare(b.start))} wakeupMinutes={wakeupMinutes} handleTaskClick={handleTaskClick} />
+                <TaskList
+                  tasks={editedSchedule || schedule.schedule}
+                  wakeupMinutes={wakeupMinutes}
+                  handleTaskClick={handleTaskClick}
+                />
               </div>
+
+              {editedSchedule && (
+                <div className="sticky bottom-4 flex justify-center z-50">
+                  <div className="flex gap-4 p-4 rounded-lg">
+                    <Button
+                      onClick={handleRejectChanges}
+                      className="flex items-center bg-red-500 gap-2 text-white hover:bg-red-600 shadow-md"
+                    >
+                      <X className="w-4 h-4" />
+                      Reject Changes
+                    </Button>
+                    <Button
+                      onClick={handleAcceptChanges}
+                      className="flex items-center gap-2 bg-green-500 hover:bg-green-600 shadow-md text-white"
+                    >
+                      <Check className="w-4 h-4" />
+                      Accept Changes
+                    </Button>
+                  </div>
+                </div>
+              )}
             </CardContent>
-            <SaveToCalendarBtn toggleCalendarDialog={toggleCalendarDialog} isVisible={isVisible} />
           </div>
-          <AddScheduleDialog
-            open={calendarDialogOpen}
-            onOpenChange={setCalendarDialogOpen}
-            schedule={schedule}
-          />
-          <TaskDialog isCreateTask={isCreateTask} selectedTask={selectedTask} handleCloseModal={handleCloseModal} handleSaveTask={handleSaveTask} handleNewTaskSave={handleNewTaskSave} deleteTask={deleteTask}/>
-          <EditScheduleModal 
-            schedule={schedule}
-            setSchedule={setSchedule}
-            onSaveEditSchedule={handleSaveSchedule}
-            open={isEditModalOpen}
-            onOpenChange={setIsEditModalOpen}
-          />
+
+          {!editedSchedule && <SaveToCalendarBtn 
+            toggleCalendarDialog={() => setCalendarDialogOpen(true)} 
+            isVisible={isVisible} 
+          />}
         </Card>
       )}
-    </div>
-  );
-}
 
-function getMinutesFromMidnight(time) {
-  const [hours, minutes] = time?.split(':').map(Number)
-  return hours * 60 + minutes
+      <TaskDialog
+        open={selectedTask !== null || isCreateTask}
+        onOpenChange={handleCloseModal}
+        task={selectedTask}
+        isCreate={isCreateTask}
+        schedule={schedule}
+        onScheduleUpdate={setSchedule}
+        handleSaveTask={handleSaveTask}
+        handleNewTaskSave={handleNewTaskSave}
+        deleteTask={deleteTask}
+      />
+
+      <AddScheduleDialog
+        open={calendarDialogOpen}
+        onOpenChange={setCalendarDialogOpen}
+        schedule={schedule}
+      />
+
+      <EditScheduleModal
+        open={isEditModalOpen}
+        onOpenChange={setIsEditModalOpen}
+        schedule={schedule}
+        onScheduleUpdate={setSchedule}
+      />
+    </div>
+  )
 }

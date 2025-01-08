@@ -17,8 +17,8 @@ export default function PlanwiseDashboard() {
     const [goals, setGoals] = useState([])
     const [routines, setRoutines] = useState([])
     const [preferences, setPreferences] = useState({
-        wakeupTime: '07:00',
-        sleepTime: '22:00',
+        wakeup: '07:00',
+        sleep: '22:00',
         intensity: 'medium'
     })
 
@@ -57,11 +57,11 @@ export default function PlanwiseDashboard() {
                                 </div>
                                 <div>
                                     <p className="text-sm font-medium text-gray-900">Wakeup</p>
-                                    <p className="text-sm text-gray-600 capitalize font-regular">{preferences.wakeupTime}</p>
+                                    <p className="text-sm text-gray-600 capitalize font-regular">{preferences.wakeup}</p>
                                 </div>
                                 <div>
                                     <p className="text-sm font-medium text-gray-900">Sleep</p>
-                                    <p className="text-sm text-gray-600 capitalize font-regular">{preferences.sleepTime}</p>
+                                    <p className="text-sm text-gray-600 capitalize font-regular">{preferences.sleep}</p>
                                 </div>
                             </div>
                         </div>

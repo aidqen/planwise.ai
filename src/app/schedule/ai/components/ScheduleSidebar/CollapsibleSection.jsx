@@ -26,7 +26,7 @@ export function CollapsibleSection({ title, icon: Icon, isOpen, onToggle, childr
                     <span className="text-sm font-medium text-gray-900">{title}</span>
                 </div>
                 <div className='flex flex-row gap-5 justify-end'>
-                    {length && <span className=" text-center ml-2 min-w-6 max-w-6 px-2 py-0.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
+                    {length && <span className="ml-2 px-2 py-0.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
                         {length}
                     </span>}
                     <div className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>

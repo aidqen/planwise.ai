@@ -1,5 +1,4 @@
 
-import { getUser } from './../actions/user.actions';
 export const SET_USER = 'SET_USER'
 export const SET_WATCHED_USER = 'SET_WATCHED_USER'
 export const REMOVE_USER = 'REMOVE_USER'

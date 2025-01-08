@@ -10,7 +10,7 @@ export function ScheduleStructure({ wakeupMinutes }) {
     };
 
     return (
-        <>
+        <div className=" inset-0 pointer-events-none">
             {Array.from({ length: 24 }).map((_, index) => {
                 const hour = Math.floor((wakeupMinutes + index * 60) / 60) % 24;
                 const current = isCurrentHour(hour);
@@ -25,8 +25,8 @@ export function ScheduleStructure({ wakeupMinutes }) {
                             duration: 0.5,
                             ease: "easeOut"
                         }}
-                        className="absolute left-0 w-full group"
-                        style={{ top: `${(index / 24) * 100}%` }}
+                        className="absolute left-0 w-full group pointer-events-auto"
+                        style={{ top: `${(index * 68.33)}px`, height: '68.33px' }}
                     >
                         <div className={`
                             absolute -left-14 w-12 text-right md:-left-16 
@@ -37,7 +37,7 @@ export function ScheduleStructure({ wakeupMinutes }) {
                                 {format(new Date().setHours(hour, 0, 0, 0), 'h a')}
                             </span>
                         </div>
-                        <div className="relative">
+                        <div className="relative h-full">
                             <div className={`
                                 h-[1px] w-full transition-all duration-200
                                 ${current 
@@ -67,6 +67,6 @@ export function ScheduleStructure({ wakeupMinutes }) {
                     </motion.div>
                 );
             })}
-        </>
+        </div>
     );
 }

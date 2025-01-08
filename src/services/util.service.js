@@ -43,8 +43,8 @@ export function convertToGoogleTimestamp(date, time, timeZone) {
   }
 }
 
-export function isValidJSON(str) {
-  if (str.indexOf('{') !== -1 && str.indexOf('}') !== -1) return true;
-  else return true
 
+export function getMinutesFromMidnight(time) {
+  const [hours, minutes] = time?.split(':').map(Number)
+  return hours * 60 + minutes
 }

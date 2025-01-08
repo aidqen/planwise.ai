@@ -21,7 +21,7 @@ export function ScheduleDetails({ schedule, openSection, toggleSection }) {
                 isOpen={openSection === 'routines'}
                 onToggle={() => toggleSection('routines')}
             />
-            <CategoryDropdown schedule={schedule} />
+            {schedule?.schedule?.length ? <CategoryDropdown schedule={schedule} /> : null}
         </div>
     )
 }

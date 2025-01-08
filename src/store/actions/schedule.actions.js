@@ -8,8 +8,9 @@ import { makeId } from '@/services/util.service'
 export async function generateAiSchedule(parameters) {
     var { preferences, routines, goals } = parameters;
     try {
+        const user = store.getState().userModule.user
         const aiSchedule = await scheduleService.fetchAiSchedule({ preferences, routines, goals });
-        const scheduleToSave = formatSchedule(aiSchedule.schedule, preferences, routines, goals);
+        const scheduleToSave = formatSchedule(aiSchedule.schedule, preferences, routines, goals, user);
         const schedule = await saveScheduleToDB(scheduleToSave);
         await addScheduleToUser(schedule);
         store.dispatch(getCmdAiSchedule(scheduleToSave));
@@ -23,11 +24,11 @@ async function saveScheduleToDB(schedule) {
     return await scheduleService.insertScheduleToDB(schedule)
 }
 
-function formatSchedule(schedule, preferences, routines, goals) {
+function formatSchedule(schedule, preferences, routines, goals, user) {
     if (!schedule) return
     const now = new Date()
     const timestamp = now.getTime()
-    return { name: 'Daily Schedule', schedule: [...schedule], createdAt: timestamp, updatedAt: timestamp, preferences, routines, goals }
+    return { name: 'Daily Schedule', schedule: [...schedule], createdAt: timestamp, updatedAt: timestamp, preferences, routines, goals, creator: {id: user?._id, name: user?.name} }
 }
 
 

@@ -2,6 +2,7 @@ import { Moon, Settings, Sun, UserRoundPen, Zap } from "lucide-react";
 import { CollapsibleSection } from "./CollapsibleSection";
 
 export function PreferencesSection({ preferences, isOpen, onToggle }) {
+    if (!preferences) return null
     return (
         <CollapsibleSection 
             title="Schedule Preferences" 

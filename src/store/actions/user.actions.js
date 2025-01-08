@@ -20,7 +20,7 @@ export async function getUser() {
 
 export async function addScheduleToUser(schedule) {
         const { id, name, updatedAt, preferences, routines, goals } = schedule
-        const user = await getUser()
+        const user = store.getState().userModule.user
         console.log("🚀 ~ file: user.actions.js:23 ~ user:", user)
         const scheduleToSave = { id, name, updatedAt, preferences, routines, goals }
 
@@ -32,7 +32,7 @@ export async function updateScheduleInUser(schedule) {
         console.log("🚀 ~ file: user.actions.js:32 ~ schedule:", schedule)
         try {
                 const { id, name, updatedAt, preferences, routines, goals } = schedule
-                const user = await getUser()
+                const user = store.getState().userModule.user
                 const scheduleToSave = { id, name, updatedAt, preferences, routines, goals }
                 const updatedSchedules = user?.schedules?.map(s => s.id === id ? scheduleToSave : s) || [scheduleToSave]
                 const userToSave = { ...user, schedules: updatedSchedules }
