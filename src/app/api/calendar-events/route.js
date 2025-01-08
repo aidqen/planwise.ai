@@ -1,4 +1,4 @@
-import { getCalendarEvents, getUserSession } from "@/lib/session"
+import { getCalendarEvents } from "@/lib/session"
 import { getServerSession } from "next-auth"
 import { authOptions } from "../auth/[...nextauth]/route"
 
