@@ -8,17 +8,17 @@ import { AIChat } from './AIChat'
 
 
 
-export function ScheduleSidebar({ schedule, onScheduleEdit, setIsLoading, isLoading }) {
+export function ScheduleSidebar({ schedule, setSchedule, onScheduleEdit, setIsLoading, isLoading, multiStepForm }) {
     const [openSection, setOpenSection] = useState(null)
     const [activeView, setActiveView] = useState("details")
-    console.log("🚀 ~ file: ScheduleSidebar.jsx:15 ~ activeView:", activeView === 'chat')
+    const scheduleToShow = isLoading ? multiStepForm : schedule
 
     const toggleSection = (sectionName) => {
         setOpenSection(openSection === sectionName ? null : sectionName)
     }
 
     return (
-        <Card className={"relative overflow-x-hidden overflow-y-auto mx-auto w-[25em] pt-16 px-0 max-w-md bg-transparent hidden md:block h-full transition-all duration-200"}
+        <Card className={"hidden overflow-y-auto overflow-x-hidden relative px-0 pt-16 mx-auto max-w-md h-full min-h-screen max-h-screen bg-transparent transition-all duration-200 w-[25em] md:block"}
             style={{ width: '40em' }}>
             <CardHeader className="flex flex-col gap-1.5 pt-0 pb-6 md:pb-8 space-y-0">
                 <CardTitle className="text-lg font-semibold text-black">
@@ -54,7 +54,7 @@ export function ScheduleSidebar({ schedule, onScheduleEdit, setIsLoading, isLoad
                 <div className=" overflow-hidden h-[calc(100vh-16rem)]">
                     {activeView === "details" ? (
                         <ScheduleDetails
-                            schedule={schedule}
+                            schedule={scheduleToShow}
                             openSection={openSection}
                             toggleSection={toggleSection}
                         />
@@ -62,6 +62,7 @@ export function ScheduleSidebar({ schedule, onScheduleEdit, setIsLoading, isLoad
                         <AIChat chat={schedule?.chat} schedule={schedule} onScheduleEdit={onScheduleEdit}
                         setIsLoading={setIsLoading}
                         isLoading={isLoading}
+                        setSchedule={setSchedule}
                         />
                     )}
                 </div>

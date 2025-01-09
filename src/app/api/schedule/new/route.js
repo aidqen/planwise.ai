@@ -10,7 +10,6 @@ export async function POST(req) {
         
         // Insert the schedule into the database
         const result = await schedulesCollection.insertOne(schedule);
-        console.log("🚀 ~ file: route.js:13 ~ result:", result)
         schedule.id = result.insertedId;
         // Respond with the result, making sure it's valid JSON
         return NextResponse.json({ message: "Schedule added successfully", data: schedule }, { status: 200 });

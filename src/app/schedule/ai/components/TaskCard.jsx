@@ -24,7 +24,7 @@ export function TaskCard({ task, wakeupMinutes, handleTaskClick, columnIndex, to
 
   // Calculate width and position based on columnIndex and totalColumns
   const width = 100 / totalColumns;
-  const left = columnIndex * width + 2;
+  const left = columnIndex * width ;
 
   // Dynamic z-index based on columnIndex (higher index = lower priority)
   const zIndex = totalColumns - columnIndex;

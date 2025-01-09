@@ -2,20 +2,24 @@ import { dbService } from "@/app/api/services/db.service";
 import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 
-export async function GET(req, context) {
+export async function GET(request, { params }) {
     try {
-        const { params } = context
-        const { id } = params; 
-        console.log("🚀 ~ file: route.js:6 ~ id:", id);
+        // `params` is automatically available here
+        const id = params?.id; // Access `id` directly
+        if (!id) {
+            return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+        }
 
         const schedulesCollection = await dbService.getCollection('schedules');
+        const schedule = await schedulesCollection.findOne({ _id: new ObjectId(id) });
 
-        const schedule = await schedulesCollection.findOne({ _id: ObjectId.createFromHexString(id) });
-        console.log("🚀 ~ file: route.js:11 ~ schedule:", schedule);
+        if (!schedule) {
+            return NextResponse.json({ error: 'Schedule not found' }, { status: 404 });
+        }
 
         return NextResponse.json(schedule);
     } catch (err) {
-        console.error('Error in upsert operation:', err);
-        throw err;
+        console.error('Error fetching schedule:', err);
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
 }

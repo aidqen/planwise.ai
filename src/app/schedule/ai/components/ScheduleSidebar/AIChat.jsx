@@ -9,10 +9,9 @@ import { useState, useEffect, useRef } from "react";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-export function AIChat({ chat, schedule, onScheduleEdit, isLoading, setIsLoading }) {
+export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading, setIsLoading }) {
     const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState(chat);
-    const [loading, setLoading] = useState(false);
+    // const [messages, setMessages] = useState(chat || []);
     const messagesEndRef = useRef(null);
     const textareaRef = useRef(null);
 
@@ -30,61 +29,86 @@ export function AIChat({ chat, schedule, onScheduleEdit, isLoading, setIsLoading
 
     useEffect(() => {
         scrollToBottom();
-    }, [messages]);
+    }, [chat]);
 
     useEffect(() => {
         adjustTextareaHeight();
     }, [message]);
 
+    function addMessageToChat(message) {
+        setSchedule(schedule => ({
+            ...schedule,
+            chat: [...(Array.isArray(schedule?.chat) ? schedule?.chat : []), message]
+        }));
+    }
+
     const handleSendMessage = async (e) => {
         e.preventDefault();
-        if (!message.trim()) return;
+        if (!message.trim() || isLoading) return;
+
         const newMessage = createNewMessage(message);
-        setIsLoading(true)
+
         try {
-            setMessages(prev => prev?.length ? [...prev, newMessage] : [newMessage]);
+            addMessageToChat(newMessage)
             setMessage('');
             await handleAIResponse(message);
         } catch (error) {
             console.error('Failed to send message:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
+        };
+    }
     const handleAIResponse = async (userMessage) => {
         try {
             const { stream, decoder } = await scheduleService.streamScheduleChanges(userMessage, schedule);
             let aiResponse = '';
+            let messageType = null;
 
-            // Create initial AI message
             const initialAiMessage = createAIMessage('');
-            setMessages(prev => [...prev, initialAiMessage]);
+            addMessageToChat(initialAiMessage)
 
             while (true) {
                 const { done, value } = await stream.read();
                 if (done) break;
 
                 const text = decoder.decode(value);
+
+                // Check for message type in the first chunk
+                if (text.startsWith('[TYPE:')) {
+                    messageType = text.match(/\[TYPE:(.*?)\]/)[1];
+                    continue;
+                }
+
                 aiResponse += text;
 
-                // Update the AI message in the messages array
-                setMessages(prev => prev.map(msg =>
-                    msg.id === initialAiMessage.id
-                        ? { ...msg, text: aiResponse }
-                        : msg
-                ));
+                setSchedule(prev => ({
+                    ...prev,
+                    chat: Array.isArray(prev.chat)
+                        ? prev.chat.map(msg =>
+                            msg.id === initialAiMessage.id
+                                ? { ...msg, text: aiResponse }
+                                : msg
+                        )
+                        : [initialAiMessage]
+                }));
             }
 
-            // Get the edited schedule from the API response
-            const editedScheduleResponse = await scheduleService.getEditedSchedule(schedule?.schedule, aiResponse);
-            console.log("🚀 ~ file: AIChat.jsx:84 ~ editedScheduleResponse:", editedScheduleResponse)
-            onScheduleEdit(editedScheduleResponse); // Pass edited schedule to parent
+            // Only get edited schedule if it's a schedule_edit message
+            if (messageType === 'schedule_edit') {
+                setIsLoading(true)
+                const editedScheduleResponse = await scheduleService.getEditedSchedule(schedule, aiResponse);
+                console.log("🚀 ~ file: AIChat.jsx:96 ~ editedScheduleResponse:", editedScheduleResponse)
+                if (editedScheduleResponse) {
+                    onScheduleEdit(editedScheduleResponse);
+                }
+                setIsLoading(false)
+            }
 
             // Save the updated chat
-            await scheduleService.saveChat(schedule._id, messages);
+            if (schedule?._id && Array.isArray(chat)) {
+                await scheduleService.saveChat(schedule._id, chat);
+            }
         } catch (error) {
             console.error('Failed to get AI response:', error);
+            addMessageToChat(createAIMessage('Sorry, I encountered an error. Please try again.'));
         }
     };
 
@@ -123,29 +147,29 @@ export function AIChat({ chat, schedule, onScheduleEdit, isLoading, setIsLoading
                     initial={false}
                     animate={{ opacity: 1 }}
                     className={`px-4 py-2 ${isUser
-                            ? 'bg-blue-500 text-white rounded-2xl rounded-tr-sm'
-                            : 'bg-gray-100 text-gray-800 rounded-xl'
+                        ? 'text-white bg-blue-500 rounded-2xl rounded-tr-sm'
+                        : 'text-gray-800 bg-gray-100 rounded-xl'
                         }`}
                 >
                     {isUser ? (
                         <p className="text-sm whitespace-pre-wrap">{message.text}</p>
                     ) : (
-                        <div className="markdown-content text-sm">
+                        <div className="text-sm markdown-content">
                             <ReactMarkdown
                                 remarkPlugins={[remarkGfm]}
                                 components={{
                                     p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
-                                    ul: ({ children }) => <ul className="list-disc ml-4 mb-2">{children}</ul>,
-                                    ol: ({ children }) => <ol className="list-decimal ml-4 mb-2">{children}</ol>,
+                                    ul: ({ children }) => <ul className="mb-2 ml-4 list-disc">{children}</ul>,
+                                    ol: ({ children }) => <ol className="mb-2 ml-4 list-decimal">{children}</ol>,
                                     li: ({ children }) => <li className="mb-1">{children}</li>,
                                     code: ({ inline, children }) =>
                                         inline
-                                            ? <code className="bg-gray-200 px-1 rounded">{children}</code>
-                                            : <pre className="bg-gray-800 text-white p-2 rounded my-2 overflow-x-auto">
+                                            ? <code className="px-1 bg-gray-200 rounded">{children}</code>
+                                            : <pre className="overflow-x-auto p-2 my-2 text-white bg-gray-800 rounded">
                                                 <code>{children}</code>
                                             </pre>,
                                     blockquote: ({ children }) =>
-                                        <blockquote className="border-l-4 border-gray-300 pl-4 italic my-2">
+                                        <blockquote className="pl-4 my-2 italic border-l-4 border-gray-300">
                                             {children}
                                         </blockquote>,
                                 }}
@@ -155,7 +179,7 @@ export function AIChat({ chat, schedule, onScheduleEdit, isLoading, setIsLoading
                         </div>
                     )}
                     {isUser && (
-                        <span className="text-xs text-blue-100 self-end">
+                        <span className="self-end text-xs text-blue-100">
                             {message.timestamp}
                         </span>
                     )}
@@ -166,8 +190,8 @@ export function AIChat({ chat, schedule, onScheduleEdit, isLoading, setIsLoading
 
     return (
         <div className="flex flex-col h-[calc(100vh-15.5rem)] overflow-hidden">
-            <div className={cn(messages?.length === 0 ? "overflow-y-hidden" : "overflow-y-auto", "scrollbar overflow-x-hidden flex-grow px-2")}>
-                {messages?.length === 0 ? (
+            <div className={cn(!chat?.length ? "overflow-y-hidden" : "overflow-y-auto", "scrollbar overflow-x-hidden flex-grow px-2")}>
+                {!chat?.length ? (
                     <motion.div
                         initial={false}
                         animate={{ opacity: 1, y: 0 }}
@@ -176,13 +200,13 @@ export function AIChat({ chat, schedule, onScheduleEdit, isLoading, setIsLoading
                         Chat with AI to modify your schedule
                     </motion.div>
                 ) : (
-                    <div className="flex flex-col gap-3 py-4 overflow-y-hidden overflow-x-hidden">
+                    <div className="flex overflow-x-hidden overflow-y-hidden flex-col gap-3 py-4">
                         <AnimatePresence
                             mode="popLayout"
                             initial={false}
                             presenceAffectsLayout
                         >
-                            {messages?.map((msg) => (
+                            {chat?.map((msg) => (
                                 <MessageBubble key={msg.id} message={msg} />
                             ))}
                         </AnimatePresence>
@@ -192,7 +216,7 @@ export function AIChat({ chat, schedule, onScheduleEdit, isLoading, setIsLoading
             </div>
             <motion.form
                 onSubmit={handleSendMessage}
-                className="relative p-4 border-t backdrop-blur-sm bg-white/50 mt-auto"
+                className="relative p-4 mt-auto border-t backdrop-blur-sm bg-white/50"
                 initial={false}
                 animate={{ opacity: 1 }}
                 transition={{ type: "spring", stiffness: 200, damping: 20 }}
@@ -219,8 +243,8 @@ export function AIChat({ chat, schedule, onScheduleEdit, isLoading, setIsLoading
                         size="icon"
                         disabled={isLoading || !message.trim()}
                         className={`transition-all duration-200 h-10 w-10 shrink-0 text-white ${message.trim()
-                                ? 'bg-blue-500 hover:bg-blue-600'
-                                : 'bg-gray-300 cursor-not-allowed'
+                            ? 'bg-blue-500 hover:bg-blue-600'
+                            : 'bg-gray-300 cursor-not-allowed'
                             }`}
                     >
                         <Send className="w-4 h-4" />

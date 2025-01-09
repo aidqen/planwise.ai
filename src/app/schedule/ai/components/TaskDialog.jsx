@@ -33,7 +33,6 @@ export function TaskDialog({ isCreateTask ,selectedTask, handleCloseModal, handl
 
   function onHandleSaveTask() {
     if (isCreateTask) {
-      console.log("🚀 ~ file: TaskDialog.jsx:31 ~ isCreateTask:", isCreateTask)
       task.id = makeId(8)
       handleNewTaskSave(task)
     } else handleSaveTask(task)
@@ -54,7 +53,6 @@ export function TaskDialog({ isCreateTask ,selectedTask, handleCloseModal, handl
       const militaryHours = hours.padStart(2, '0')
       formattedValue = `${militaryHours}:${minutes}`
     } else formattedValue = value
-    console.log("🚀 ~ file: TaskDialog.jsx:36 ~ timeString:", formattedValue)
     setTask({ ...task, [name]: formattedValue })
   }
 

@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 export function SaveToCalendarBtn({ toggleCalendarDialog, isVisible }) {
 
     return <>
-        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 md:hidden">
+        <div className="flex fixed right-0 left-0 bottom-6 z-50 justify-center md:hidden">
             <Button
                 onClick={toggleCalendarDialog}
                 className="text-gray-100 bg-green-500 shadow-xl z-[100] transition-all hover:scale-[1.02] duration-100 hover:shadow-xl"
@@ -15,7 +15,7 @@ export function SaveToCalendarBtn({ toggleCalendarDialog, isVisible }) {
             </Button>
         </div>
 
-        <div className="hidden md:block z-50 sticky bottom-0">
+        <div className="hidden sticky bottom-6 z-50 w-full md:block">
             <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 animate={isVisible ?
@@ -29,7 +29,7 @@ export function SaveToCalendarBtn({ toggleCalendarDialog, isVisible }) {
                     damping: 30,
                     mass: 1
                 }}
-                className="fixed bottom-6 left-1/2 transform -translate-x-1/2"
+                className="flex justify-center"
             >
                 <Button
                     onClick={toggleCalendarDialog}

@@ -48,7 +48,7 @@ export function EditScheduleModal({ schedule, setSchedule, onSaveEditSchedule, o
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        onSaveEditSchedule(schedule)
+        // onSaveEditSchedule(schedule)
         onOpenChange(false)
     }
 

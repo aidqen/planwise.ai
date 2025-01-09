@@ -188,7 +188,7 @@ async function getEditedSchedule(schedule, explanation) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        schedule,
+        scheduleData: schedule,
         explanation
       }),
     });

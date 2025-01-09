@@ -13,7 +13,6 @@ export function GenerateScheduleBtn() {
   async function onGenerateAiSchedule() {
     router.replace('/schedule/ai/loading')
     const schedule = await generateAiSchedule(multistepForm)
-    console.log("🚀 ~ file: GenerateScheduleBtn.jsx:17 ~ schedule:", schedule)
     router.replace(`/schedule/ai/${schedule._id}`)
   }
 

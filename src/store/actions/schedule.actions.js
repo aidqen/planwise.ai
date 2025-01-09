@@ -1,9 +1,16 @@
 import { scheduleService } from '@/services/scheduleService'
-import { ADD_TASK_TO_AI_SCHEDULE, RESET_SCHEDULE, SET_AI_SCHEDULE } from '../reducers/schedule.reducer'
+import { ADD_TASK_TO_AI_SCHEDULE, RESET_SCHEDULE, SET_SCHEDULE } from '../reducers/schedule.reducer'
 import { store } from '../store'
 import { userService } from '@/services/user.service'
 import { addScheduleToUser } from './user.actions'
 import { makeId } from '@/services/util.service'
+
+export async function saveScheduleToRedux(schedule) {
+    store.dispatch({
+        type: SET_SCHEDULE,
+        schedule
+    })
+}
 
 export async function generateAiSchedule(parameters) {
     var { preferences, routines, goals } = parameters;
@@ -46,7 +53,7 @@ export const resetSchedule = () => ({
 
 export function getCmdAiSchedule(aiSchedule) {
     return {
-        type: SET_AI_SCHEDULE,
+        type: SET_SCHEDULE,
         aiSchedule
     }
 }

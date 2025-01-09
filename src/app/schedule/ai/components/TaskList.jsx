@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { TaskCard } from "./TaskCard";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Pen } from "lucide-react";
 
 export function TaskList({ tasks, wakeupMinutes, handleTaskClick }) {
     const [groupedTasks, setGroupedTasks] = useState([]);
@@ -47,7 +45,7 @@ export function TaskList({ tasks, wakeupMinutes, handleTaskClick }) {
     };
 
     return (
-        <div className="relative h-full">
+        <div className="relative w-full h-full">
             {groupedTasks.map((column, columnIndex) => (
                 <div key={columnIndex} className="absolute top-0 left-0 w-full h-full">
                     {column.map((task) => (
@@ -66,4 +64,3 @@ export function TaskList({ tasks, wakeupMinutes, handleTaskClick }) {
         </div>
     );
 }
-

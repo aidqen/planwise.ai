@@ -18,8 +18,6 @@ export function SidebarDemo() {
     const router = useRouter()
     const open = useSelector(state => state.systemModule.isSidebarOpen)
     const user = useSelector(state => state.userModule.user)
-    console.log("🚀 ~ file: MainSidebar.jsx:21 ~ user:", user)
-    console.log("🚀 ~ file: MainSidebar.jsx:18 ~ open:", open)
     const pathname = usePathname()
     const [isVisible, setIsVisible] = useState(true)
 

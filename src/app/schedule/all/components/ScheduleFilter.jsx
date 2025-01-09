@@ -3,7 +3,6 @@ import { Router } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export function ScheduleFilter({ tabs, setSelectedTab, selectedTab }) {
-    console.log("🚀 ~ file: ScheduleFilter.jsx:2 ~ tabs:", tabs);
     const router = useRouter()
 
     function navigateToScheduleMaker() {

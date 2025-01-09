@@ -1,7 +1,11 @@
 import { Button } from "@/components/ui/button"
 import { Pen, Plus, Save, Edit, Star } from 'lucide-react'
 
-export function DesktopActions({ onCreateTask, onEdit, handleSaveSchedule }) {
+export function DesktopActions({ onCreateTask, handleSaveSchedule, setIsEditModalOpen }) {
+
+    function onEdit() {
+        setIsEditModalOpen(true)
+    }
     return (
         <div className="hidden flex-row md:gap-1.5 lg:gap-2 xl:gap-3 justify-end w-max md:flex">
             

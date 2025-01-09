@@ -1,71 +1,141 @@
 import OpenAI from 'openai';
 
+// OpenAI configuration
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+// Prompt templates
+const PROMPTS = {
+  classification: `The user is chatting with an AI that can both manage their schedule and engage in friendly conversation.
+Classify the following user message into one of these categories:
+- "schedule_edit" (if the message requests any kind of schedule modification or asks about the schedule)
+- "friendly_message" (if the message is just a conversation)
+
+User message: "__MESSAGE__"
+
+Reply with ONLY ONE WORD: either "schedule_edit" or "friendly_message"`,
+
+  scheduleEdit: `You are a friendly and helpful AI assistant that helps users manage their schedules.
+
+Current Schedule Details:
+Wake up: __WAKEUP__
+Sleep: __SLEEP__
+Intensity: __INTENSITY__
+
+Tasks:
+__SCHEDULE__
+
+Routines:
+__ROUTINES__
+
+Goals:
+__GOALS__
+
+User Message: __MESSAGE__
+
+**Instructions:**
+1. Do not move task routines unless the user asked you to, keep them in the same place (unless they are morning or night routines).
+2. Change wake up and sleep time only if the user asked you to.
+
+**Rules:**
+1. If the user requests specific changes:
+   - When changing wake up or sleep time, always specify the exact change in your response (e.g., "I'll change your wake up time from 8:00 to 9:00")
+   - Briefly list what tasks will be changed
+   - Explain why these changes make sense
+
+2. If you identify improvements the user hasn't requested:
+   Provide a clear, concise explanation:
+   - What specific tasks could be moved/modified
+   - Why these changes would improve the schedule
+   - How this affects the overall flow of the day
+
+3. Always be friendly but direct in your responses
+
+Keep your response focused and to-the-point.`,
+
+  friendlyChat: `You are a friendly AI assistant engaging in conversation.
+
+User Message: __MESSAGE__
+
+Rules:
+1. Be friendly and natural in your response
+2. DO NOT mention or discuss the schedule unless the user specifically asks
+3. Keep responses concise and engaging`
+};
+
+// Helper functions
+const createChatCompletion = async (prompt, { stream = false, maxTokens = 500, temperature = 0.7 } = {}) => {
+  return await openai.chat.completions.create({
+    model: 'gpt-4o-2024-08-06',
+    messages: [{ role: 'user', content: prompt }],
+    max_tokens: maxTokens,
+    stream,
+    temperature,
+  });
+};
+
+const createStreamResponse = (response, messageType) => {
+  const encoder = new TextEncoder();
+  return new ReadableStream({
+    async start(controller) {
+      try {
+        // Send message type as first chunk
+        controller.enqueue(encoder.encode(`[TYPE:${messageType}]`));
+
+        // Stream the response
+        for await (const chunk of response) {
+          const text = chunk.choices[0]?.delta?.content || '';
+          controller.enqueue(encoder.encode(text));
+        }
+      } catch (error) {
+        controller.error(error);
+      } finally {
+        controller.close();
+      }
+    }
+  });
+};
+
 export async function GET(request) {
   try {
-    // Get URL parameters
+    // Extract and validate parameters
     const { searchParams } = new URL(request.url);
     const message = searchParams.get('message');
-    const schedule = JSON.parse(searchParams.get('schedule'));
+    const scheduleData = JSON.parse(searchParams.get('schedule'));
 
-    if (!message || !schedule) {
+    if (!message || !scheduleData) {
       return new Response('Missing message or schedule', { status: 400 });
     }
 
-    const summaryPrompt = `You are a friendly and helpful AI assistant that helps users manage their schedules.
+    // Step 1: Classify the message
+    const classificationPrompt = PROMPTS.classification.replace('__MESSAGE__', message);
+    const classification = await createChatCompletion(classificationPrompt, {
+      maxTokens: 10,
+      temperature: 0,
+      stream: false
+    });
+    const messageType = classification.choices[0].message.content.trim().toLowerCase();
 
-Current Schedule:
-${JSON.stringify(schedule, null, 2)}
+    // Step 2: Generate response based on message type
+    const responsePrompt = messageType === 'schedule_edit'
+      ? PROMPTS.scheduleEdit
+          .replace('__WAKEUP__', scheduleData.preferences?.wakeup || '')
+          .replace('__SLEEP__', scheduleData.preferences?.sleep || '')
+          .replace('__INTENSITY__', scheduleData.preferences?.intensity || '')
+          .replace('__SCHEDULE__', JSON.stringify(scheduleData.schedule || [], null, 2))
+          .replace('__ROUTINES__', JSON.stringify(scheduleData.routines || [], null, 2))
+          .replace('__GOALS__', JSON.stringify(scheduleData.goals || [], null, 2))
+          .replace('__MESSAGE__', message)
+      : PROMPTS.friendlyChat
+          .replace('__MESSAGE__', message);
 
-User Message: ${message}
-
-Rules:
-1. If the user is just greeting or chatting, respond naturally without mentioning the schedule
-
-2. If the user requests specific changes:
-   - Briefly list what tasks will be changed
-   - Make the changes directly
-
-3. If you identify improvements the user hasn't requested:
-   Provide a clear, concise explanation:
-   - What specific tasks will be moved/modified
-   - Why these changes make sense
-   - How this affects the overall flow of the day
-
-4. Always be friendly but direct in your responses
-
-DO NOT make the actual changes yet, just explain what you would change.
-Keep your response focused and to-the-point.`;
-
-    // Create a streaming response
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-2024-08-06',
-      messages: [{ role: 'user', content: summaryPrompt }],
-      max_tokens: 500,
-      stream: true,
-      temperature: 0.7,
+    // Step 3: Create streaming response
+    const response = await createChatCompletion(responsePrompt, {
+      stream: true
     });
 
-    // Create a readable stream with proper encoding
-    const encoder = new TextEncoder();
-    const stream = new ReadableStream({
-      async start(controller) {
-        try {
-          for await (const chunk of response) {
-            const text = chunk.choices[0]?.delta?.content || '';
-            const encoded = encoder.encode(text);
-            controller.enqueue(encoded);
-          }
-        } catch (error) {
-          controller.error(error);
-        } finally {
-          controller.close();
-        }
-      }
-    });
+    const stream = createStreamResponse(response, messageType);
 
     return new Response(stream, {
       headers: {
@@ -77,7 +147,7 @@ Keep your response focused and to-the-point.`;
   } catch (error) {
     console.error('Streaming error:', error);
     return new Response(
-      JSON.stringify({ error: 'Failed to process streaming response' }), 
+      JSON.stringify({ error: 'Failed to process streaming response' }),
       { status: 500 }
     );
   }

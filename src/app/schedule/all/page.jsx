@@ -9,7 +9,6 @@ import { ScheduleFilter } from './components/ScheduleFilter';
 
 export default function AllSchedules() {
     const user = useSelector(state => state.userModule.user);
-    console.log("🚀 ~ file: page.jsx:10 ~ user:", user);
     const [selectedTab, setSelectedTab] = useState('all'); // Use state to track the selected tab
     const tabs = [
         { id: "all", label: "All" },

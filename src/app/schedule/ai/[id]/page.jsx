@@ -19,6 +19,8 @@ import { EditScheduleModal } from '../components/EditScheduleModal'
 import { getMinutesFromMidnight } from '@/services/util.service'
 import { Button } from '@/components/ui/button'
 import { Check, X } from 'lucide-react'
+import { SET_SCHEDULE } from '@/store/reducers/schedule.reducer'
+import { useDispatch } from 'react-redux'
 
 const DEFAULT_SCHEDULE = {
   schedule: [],
@@ -28,17 +30,20 @@ const DEFAULT_SCHEDULE = {
 }
 
 export default function DailySchedule() {
+  const dispatch = useDispatch()
+  const params = useParams()
+
   const [calendarDialogOpen, setCalendarDialogOpen] = useState(false)
   const [selectedTask, setSelectedTask] = useState(null)
-  console.log("🚀 ~ file: page.jsx:33 ~ selectedTask:", selectedTask)
   const [isCreateTask, setIsCreateTask] = useState(false)
   const [isVisible, setIsVisible] = useState(true)
   const [lastMouseMove, setLastMouseMove] = useState(Date.now())
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [editedSchedule, setEditedSchedule] = useState(null)
-  const params = useParams()
   const [schedule, setSchedule] = useState(DEFAULT_SCHEDULE)
+  // console.log("🚀 ~ file: page.jsx:45 ~ schedule:", schedule)
+  // const schedule = useSelector(state => state.scheduleModule.schedule)
   const wakeupTime = schedule?.preferences?.wakeup || '04:00'
   const wakeupMinutes = getMinutesFromMidnight(wakeupTime)
   const multiStepForm = useSelector(state => state.scheduleModule.multiStepForm)
@@ -51,7 +56,7 @@ export default function DailySchedule() {
 
   useEffect(() => {
     let timeoutId
-
+    clearTimeout(timeoutId)
     const handleMouseMove = () => {
       setLastMouseMove(Date.now())
       setIsVisible(true)
@@ -61,23 +66,25 @@ export default function DailySchedule() {
         if (Date.now() - lastMouseMove >= 3000) {
           setIsVisible(false)
         }
-      }, 3000)
+      }, 2000)
     }
 
     window.addEventListener('mousemove', handleMouseMove)
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-      clearTimeout(timeoutId)
-    }
+    // return () => {
+    //   window.removeEventListener('mousemove', handleMouseMove)
+    //   // clearTimeout(timeoutId)
+    // }
   }, [lastMouseMove])
 
   const onFetchSchedule = async () => {
     try {
       setIsLoading(true)
       const fetchedSchedule = await scheduleService.getScheduleById(params.id)
+      // dispatch({type: SET_SCHEDULE, schedule: fetchedSchedule })
       setSchedule(fetchedSchedule || DEFAULT_SCHEDULE)
     } catch (error) {
       console.error('Error fetching schedule:', error)
+      // dispatch({type: SET_SCHEDULE, schedule: DEFAULT_SCHEDULE })
       setSchedule(DEFAULT_SCHEDULE)
     } finally {
       setIsLoading(false)
@@ -90,10 +97,10 @@ export default function DailySchedule() {
 
   const handleAcceptChanges = async () => {
     try {
-      const updatedSchedule = { ...schedule, id: schedule._id, schedule: editedSchedule }
-      console.log("🚀 ~ file: page.jsx:93 ~ updatedSchedule:", updatedSchedule)
-      await scheduleService.updateSchedule(updatedSchedule)
-      setSchedule(updatedSchedule)
+      setSchedule({_id:schedule?._id,editedSchedule})
+      console.log("🚀 ~ file: page.jsx:101 ~ editedSchedule:", editedSchedule)
+      // dispatch({type: SET_SCHEDULE, schedule: updatedSchedule})
+      await scheduleService.updateSchedule({id:schedule?._id,editedSchedule})
       setEditedSchedule(null)
     } catch (error) {
       console.error('Failed to accept changes:', error)
@@ -120,6 +127,7 @@ export default function DailySchedule() {
   function deleteTask(taskId) {
     const tasksToSave = schedule?.schedule?.filter(prevTask => taskId !== prevTask.id)
     const scheduleToSave = { ...schedule, schedule: tasksToSave }
+    // dispatch({type: SET_SCHEDULE, schedule: scheduleToSave})
     setSchedule(scheduleToSave)
   }
 
@@ -128,6 +136,7 @@ export default function DailySchedule() {
       prevTask.id === taskToSave.id ? taskToSave : prevTask
     )
     const scheduleToSave = { ...schedule, schedule: tasksToSave }
+    // dispatch({type: SET_SCHEDULE, schedule: scheduleToSave})
     setSchedule(scheduleToSave)
   }
 
@@ -135,35 +144,39 @@ export default function DailySchedule() {
     const tasksToSave = [...(schedule?.schedule || []), taskToSave]
     const scheduleToSave = { ...schedule, schedule: tasksToSave }
     setSchedule(scheduleToSave)
+    // dispatch({type: SET_SCHEDULE, schedule: scheduleToSave})
   }
+
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] overflow-y-hidden justify-between w-full">
       <ScheduleSidebar
-        schedule={isLoading ? multiStepForm : schedule}
+        schedule={schedule}
         setIsLoading={setIsLoading}
         isLoading={isLoading}
+        setSchedule={setSchedule}
         multiStepForm={multiStepForm}
         onScheduleEdit={handleScheduleEdit}
       />
       {(isLoading || !schedule?.schedule?.length) ? (
         <Loading />
       ) : (
-        <Card className="relative overflow-y-auto w-full bg-transparent border-none md:pt-16 scrollbar">
+        <Card className="overflow-y-auto relative w-full bg-transparent border-none md:pt-16 scrollbar">
           <div className="mx-auto w-[80%] relative">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
+            <CardHeader className="pt-0">
+              <div className="flex justify-between items-center">
+                <div className="space-y-1">
                   <CardTitle>Daily Schedule</CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-gray-600">
                     {format(new Date(), 'EEEE, MMMM do yyyy')}
                   </CardDescription>
                 </div>
-                <div className="hidden md:flex gap-4">
+                <div className="hidden gap-4 md:flex">
                   <DesktopActions
                     schedule={schedule}
                     onOpenCalendarDialog={() => setCalendarDialogOpen(true)}
                     onCreateTask={onCreateTask}
+                    setIsEditModalOpen={setIsEditModalOpen}
                   />
                 </div>
                 <div className="md:hidden">
@@ -177,28 +190,28 @@ export default function DailySchedule() {
             </CardHeader>
 
             <CardContent>
-              <div className="relative h-[1640px] w-full border-l-2 border-gray-300 pl-16 pr-4">
+              <div className="relative h-[1640px] w-full border-l-2 border-gray-300 pl-8 pr-4">
                 <ScheduleStructure wakeupMinutes={wakeupMinutes} />
                 <TaskList
-                  tasks={editedSchedule || schedule.schedule}
+                  tasks={editedSchedule?.schedule || schedule.schedule}
                   wakeupMinutes={wakeupMinutes}
                   handleTaskClick={handleTaskClick}
                 />
               </div>
 
               {editedSchedule && (
-                <div className="sticky bottom-4 flex justify-center z-50">
+                <div className="flex sticky bottom-4 z-50 justify-center">
                   <div className="flex gap-4 p-4 rounded-lg">
                     <Button
                       onClick={handleRejectChanges}
-                      className="flex items-center bg-red-500 gap-2 text-white hover:bg-red-600 shadow-md"
+                      className="flex gap-2 items-center text-white bg-red-500 shadow-md hover:bg-red-600"
                     >
                       <X className="w-4 h-4" />
                       Reject Changes
                     </Button>
                     <Button
                       onClick={handleAcceptChanges}
-                      className="flex items-center gap-2 bg-green-500 hover:bg-green-600 shadow-md text-white"
+                      className="flex gap-2 items-center text-white bg-green-500 shadow-md hover:bg-green-600"
                     >
                       <Check className="w-4 h-4" />
                       Accept Changes
@@ -209,9 +222,9 @@ export default function DailySchedule() {
             </CardContent>
           </div>
 
-          {!editedSchedule && <SaveToCalendarBtn 
-            toggleCalendarDialog={() => setCalendarDialogOpen(true)} 
-            isVisible={isVisible} 
+          {!editedSchedule && <SaveToCalendarBtn
+            toggleCalendarDialog={() => setCalendarDialogOpen(true)}
+            isVisible={isVisible}
           />}
         </Card>
       )}
@@ -221,10 +234,9 @@ export default function DailySchedule() {
         isCreateTask={isCreateTask}
         handleCloseModal={handleCloseModal}
         handleSaveTask={handleSaveTask}
-        handleNewTaskSave={handleSaveTask}
+        handleNewTaskSave={handleNewTaskSave}
         deleteTask={deleteTask}
         schedule={schedule}
-        onScheduleUpdate={setSchedule}
       />
 
       <AddScheduleDialog
@@ -237,7 +249,6 @@ export default function DailySchedule() {
         open={isEditModalOpen}
         onOpenChange={setIsEditModalOpen}
         schedule={schedule}
-        onScheduleUpdate={setSchedule}
       />
     </div>
   )
