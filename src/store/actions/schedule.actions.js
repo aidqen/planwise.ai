@@ -35,7 +35,7 @@ function formatSchedule(schedule, preferences, routines, goals, user) {
     if (!schedule) return
     const now = new Date()
     const timestamp = now.getTime()
-    return { name: 'Daily Schedule', schedule: [...schedule], createdAt: timestamp, updatedAt: timestamp, preferences, routines, goals, creator: {id: user?._id, name: user?.name} }
+    return { name: 'Daily Schedule', schedule: [...schedule], createdAt: timestamp, updatedAt: timestamp, preferences, routines, goals, creator: {id: user?._id, name: user?.name} , chat:[]}
 }
 
 

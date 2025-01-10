@@ -89,10 +89,10 @@ async function fetchUserTimezone() {
   }
 }
 
-async function sendTasksToCalendar(aiSchedule, date, timezone) {
+async function sendTasksToCalendar(schedule, date, timezone) {
   try {
     const response = await axios.post("/api/google-calendar/add-task", {
-      aiSchedule,
+      schedule,
       date,
       timezone,
     });

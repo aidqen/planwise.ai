@@ -97,10 +97,11 @@ export default function DailySchedule() {
 
   const handleAcceptChanges = async () => {
     try {
-      setSchedule({_id:schedule?._id,editedSchedule})
+      const chat = schedule?.chat
+      setSchedule({...editedSchedule, chat})
       console.log("🚀 ~ file: page.jsx:101 ~ editedSchedule:", editedSchedule)
       // dispatch({type: SET_SCHEDULE, schedule: updatedSchedule})
-      await scheduleService.updateSchedule({id:schedule?._id,editedSchedule})
+      await scheduleService.updateSchedule(editedSchedule)
       setEditedSchedule(null)
     } catch (error) {
       console.error('Failed to accept changes:', error)

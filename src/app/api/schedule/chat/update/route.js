@@ -14,8 +14,9 @@ export async function POST(request) {
     ${explanation}
     
     Create an updated version of the schedule that implements these changes.
-    Return a JSON object that follows EXACTLY this structure:
+    Return a JSON object that follows EXACTLY this structure, with no additional text or formatting:
     {
+      "id": "${scheduleData._id}",
       "name": "${scheduleData.name}",
       "schedule": [ array of tasks with id, summary, description, start, end, category ],
       "preferences": {
@@ -36,37 +37,40 @@ export async function POST(request) {
     ${JSON.stringify(scheduleData, null, 2)}
     
     Important Rules:
-    1. Maintain the same JSON structure exactly as shown above
+    1. Return ONLY valid JSON - no markdown, no backticks, no explanations
     2. Keep all existing task IDs when possible
-    3. For new tasks, create new unique IDs
-    4. Ensure all times are in "HH:mm" 24-hour format
-    5. Return ONLY the JSON object, no additional text
-    6. Every minute of the day must be accounted for
-    7. DO NOT modify tasks with category "routine" unless explicitly mentioned in explanation
-    8. DO NOT schedule tasks before wake up time or after sleep time
-    9. Keep all task categories as one of: routine, meal, break, goal
-    10. Update preferences.wakeup/sleep only if specified in explanation.
-    11. Keep createdAt if it exists in the original schedule
-    12. DO NOT PLACE TASKS BEFORE ${scheduleData.preferences.wakeup} and AFTER ${scheduleData.preferences.sleep}.
-    `;
-
+    3. For new tasks, create new unique IDs using format "task_[number]"
+    4. Ensure all times are in "HH:mm" 24-hour format (e.g. "09:00", "14:30")
+    5. Every minute of the day must be accounted for
+    6. DO NOT modify tasks with category "routine" unless explicitly mentioned
+    7. DO NOT schedule tasks before ${scheduleData.preferences.wakeup} or after ${scheduleData.preferences.sleep}
+    8. Keep task categories as: "routine", "meal", "break", or "goal"
+    9. Update preferences.wakeup/sleep only if specified in explanation
+    10. Keep createdAt if it exists in the original schedule
+    11. Keep the schedule id exactly as provided
+    12. Ensure all JSON strings are properly escaped`;
 
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-2024-08-06',
+      model: 'gpt-4',
       messages: [{ role: 'user', content: updatePrompt }],
       max_tokens: 2000,
       temperature: 0.3,
     });
 
     const content = completion.choices[0].message.content;
-    const cleanContent = content.replace(/^```(?:json)?\n?|\n?```$/g, '');
-
+    console.log("🚀 ~ file: route.js:62 ~ content:", content)
+    
     let updatedSchedule;
     try {
+      // Remove any potential markdown or code block formatting
+      const cleanContent = content.replace(/^```(?:json)?\s*|\s*```$/g, '').trim();
+      console.log("Cleaned content:", cleanContent);
+      
       updatedSchedule = JSON.parse(cleanContent);
     } catch (error) {
       console.error('Parse error:', error);
-      throw new Error('Failed to parse schedule update');
+      console.error('Content received:', content);
+      throw new Error(`Failed to parse schedule update: ${error.message}`);
     }
 
     if (!Array.isArray(updatedSchedule.schedule)) {
@@ -81,11 +85,6 @@ export async function POST(request) {
           throw new Error(`Task missing required field: ${field}`);
         }
       });
-
-      // Validate category
-      // if (!['routine', 'meal', 'break', 'goal'].includes(task.category)) {
-      //   throw new Error(`Invalid category: ${task.category}`);
-      // }
 
       // Validate time format
       const timeRegex = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/;

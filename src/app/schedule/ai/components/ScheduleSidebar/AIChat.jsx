@@ -28,6 +28,7 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
     };
 
     useEffect(() => {
+        saveChat()
         scrollToBottom();
     }, [chat]);
 
@@ -55,6 +56,12 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
         } catch (error) {
             console.error('Failed to send message:', error);
         };
+    }
+
+    async function saveChat() {
+        if (schedule?._id && Array.isArray(chat)) {
+            await scheduleService.saveChat(schedule._id, chat);
+        }
     }
     const handleAIResponse = async (userMessage) => {
         try {
@@ -99,16 +106,14 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
                 if (editedScheduleResponse) {
                     onScheduleEdit(editedScheduleResponse);
                 }
-                setIsLoading(false)
             }
 
             // Save the updated chat
-            if (schedule?._id && Array.isArray(chat)) {
-                await scheduleService.saveChat(schedule._id, chat);
-            }
         } catch (error) {
             console.error('Failed to get AI response:', error);
             addMessageToChat(createAIMessage('Sorry, I encountered an error. Please try again.'));
+        } finally {
+            setIsLoading(false)
         }
     };
 
