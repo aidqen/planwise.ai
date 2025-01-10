@@ -32,26 +32,36 @@ export async function POST(req) {
     }
 
     // Parse request body
-    const { aiSchedule, date, timezone } = await req.json();
+    const { schedule, date, timezone } = await req.json();
+    console.log("🚀 ~ file: route.js:36 ~ timezone:", timezone)
+    console.log("🚀 ~ file: route.js:36 ~ date:", date)
 
     // Validate input
-    if (!Array.isArray(aiSchedule) || !date || !timezone) {
+    if (!Array.isArray(schedule) || !date || !timezone) {
       return new Response(
         JSON.stringify({ error: "Invalid input: Missing required fields" }),
         { status: 400 }
       );
     }
 
-
-    // Initialize OAuth2 client
-    const oauth2Client = new google.auth.OAuth2();
-    oauth2Client.setCredentials({ access_token: session.accessToken });
+    // Initialize OAuth2 client with credentials
+    const oauth2Client = new google.auth.OAuth2(
+      process.env.GOOGLE_CLIENT_ID,
+      process.env.GOOGLE_CLIENT_SECRET,
+      process.env.NEXTAUTH_URL
+    );
+    
+    oauth2Client.setCredentials({
+      access_token: session.accessToken,
+      refresh_token: session.refreshToken,
+      expiry_date: session.expiresAt * 1000
+    });
 
     const calendar = google.calendar({ version: "v3", auth: oauth2Client });
 
     // Insert tasks into Google Calendar
     const taskResults = await Promise.all(
-      aiSchedule.map(async (task) => {
+      schedule.map(async (task) => {
         try {
           const startTime = convertToGoogleTimestamp(date, task.start, timezone);
           const endTime = convertToGoogleTimestamp(date, task.end, timezone);
