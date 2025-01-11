@@ -111,10 +111,17 @@ async function sendTasksToCalendar(schedule, date, timezone) {
 
 async function streamScheduleChanges(message, schedule) {
   try {
-    // Convert the message and schedule to URL-safe strings
+    // Only include essential schedule data
+    const minimalSchedule = {
+      _id: schedule._id,
+      preferences: schedule.preferences,
+      schedule: schedule.schedule
+    };
+
+    // Convert the message and minimal schedule to URL-safe strings
     const params = new URLSearchParams({
       message: message,
-      schedule: JSON.stringify(schedule)
+      schedule: JSON.stringify(minimalSchedule)
     });
 
     const response = await fetch(`/api/schedule/chat/stream?${params}`, {

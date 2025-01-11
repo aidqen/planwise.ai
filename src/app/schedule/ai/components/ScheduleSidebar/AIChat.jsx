@@ -3,26 +3,22 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { scheduleService } from "@/services/scheduleService";
 import { makeId } from "@/services/util.service";
-import { AnimatePresence, motion } from "framer-motion";
+import { TOGGLE_SCHEDULE_SIDEBAR } from "@/store/reducers/system.reducer";
 import { Send } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import ReactMarkdown from 'react-markdown';
+import { useDispatch } from "react-redux";
 import remarkGfm from 'remark-gfm';
 
 export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading, setIsLoading }) {
+    const dispatch = useDispatch()
     const [message, setMessage] = useState('');
     // const [messages, setMessages] = useState(chat || []);
     const messagesEndRef = useRef(null);
     const textareaRef = useRef(null);
 
     const scrollToBottom = () => {
-        const chatContainer = messagesEndRef.current?.parentElement;
-        if (chatContainer) {
-            chatContainer.scroll({
-                top: chatContainer.scrollHeight,
-                behavior: "smooth"
-            });
-        }
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
     const adjustTextareaHeight = () => {
@@ -36,7 +32,7 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
     useEffect(() => {
         // saveChat()
         scrollToBottom();
-    }, [chat.length]);
+    }, [chat]);
 
     useEffect(() => {
         adjustTextareaHeight();
@@ -75,7 +71,8 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
             const minimalSchedule = {
                 _id: schedule._id,
                 preferences: schedule.preferences,
-                schedule: schedule.schedule
+                schedule: schedule.schedule,
+
             };
 
             const { stream, decoder } = await scheduleService.streamScheduleChanges(userMessage, minimalSchedule);
@@ -112,8 +109,9 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
             }
 
             if (messageType === 'schedule_edit') {
+                dispatch({ type: TOGGLE_SCHEDULE_SIDEBAR, isOpen: false })
                 setIsLoading(true)
-                const editedScheduleResponse = await scheduleService.getEditedSchedule(schedule, aiResponse);
+                const editedScheduleResponse = await scheduleService.getEditedSchedule(minimalSchedule, aiResponse);
                 if (editedScheduleResponse) {
                     onScheduleEdit(editedScheduleResponse);
                 }
@@ -146,21 +144,11 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
     const MessageBubble = ({ message }) => {
         const isUser = message.type === 'user';
         return (
-            <motion.div
-                initial={false}
-                animate={{ opacity: 1, scale: 1, x: 0 }}
-                exit={{ opacity: 0, scale: 0.8, x: isUser ? 100 : -100 }}
-                transition={{
-                    type: "spring",
-                    stiffness: 200,
-                    damping: 20
-                }}
-                className={`flex flex-col gap-1 max-w-[85%] ${isUser ? 'ml-auto' : 'mr-auto'}`}
+            <div
+                className={`flex flex-col gap-1 max-w-[85%] transition-all duration-300 ease-out transform ${isUser ? 'ml-auto translate-x-0 opacity-100' : 'mr-auto translate-x-0 opacity-100'}`}
             >
-                <motion.div
-                    initial={false}
-                    animate={{ opacity: 1 }}
-                    className={`px-4 py-2 ${isUser
+                <div
+                    className={`px-4 py-2 transition-opacity duration-300 ${isUser
                         ? 'text-white bg-blue-500 rounded-2xl rounded-tr-sm'
                         : 'text-gray-800 bg-gray-100 rounded-xl'
                         }`}
@@ -197,8 +185,8 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
                             {message.timestamp}
                         </span>
                     )}
-                </motion.div>
-            </motion.div>
+                </div>
+            </div>
         );
     };
 
@@ -206,34 +194,23 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
         <div className="flex flex-col h-[calc(100vh-15.5rem)]">
             <div className="overflow-y-auto scrollbar flex-grow px-2">
                 {!chat?.length ? (
-                    <motion.div
-                        initial={false}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="p-4 text-sm text-gray-500 text-start"
+                    <div
+                        className="p-4 text-sm text-gray-500 text-start transition-all duration-300 ease-out transform translate-y-0 opacity-100"
                     >
                         Chat with AI to modify your schedule
-                    </motion.div>
+                    </div>
                 ) : (
                     <div className="flex flex-col gap-3 py-4">
-                        <AnimatePresence
-                            mode="popLayout"
-                            initial={false}
-                            presenceAffectsLayout
-                        >
-                            {chat?.map((msg) => (
-                                <MessageBubble key={msg.id} message={msg} />
-                            ))}
-                        </AnimatePresence>
+                        {chat?.map((msg) => (
+                            <MessageBubble key={msg.id} message={msg} />
+                        ))}
                         <div ref={messagesEndRef} />
                     </div>
                 )}
             </div>
-            <motion.form
+            <form
                 onSubmit={handleSendMessage}
-                className="relative p-4 mt-auto border-t backdrop-blur-sm bg-white/50"
-                initial={false}
-                animate={{ opacity: 1 }}
-                transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                className="relative p-4 mt-auto border-t backdrop-blur-sm bg-white/50 transition-opacity duration-300"
             >
                 <div className="flex gap-2 items-end">
                     <Textarea
@@ -264,7 +241,7 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
                         <Send className="w-4 h-4" />
                     </Button>
                 </div>
-            </motion.form>
+            </form>
         </div>
     );
 }

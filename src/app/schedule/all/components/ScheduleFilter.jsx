@@ -10,7 +10,7 @@ export function ScheduleFilter({ tabs, setSelectedTab, selectedTab }) {
     }
     return (
         <>
-            <div className="flex relative flex-row justify-between items-center mb-6 w-full border-b border-gray-200 max-sm:mb-16">
+            <div className="flex relative flex-row justify-between max-sm:pt-10 items-center mb-6 w-full border-b border-gray-200 max-sm:mb-4">
                 {/* Invisible range input */}
                 <input
                     type="range"
@@ -39,7 +39,7 @@ export function ScheduleFilter({ tabs, setSelectedTab, selectedTab }) {
                     ))}
                 </nav>
                 <button
-                    className="absolute right-2 bottom-2 px-4 py-2 font-medium text-white bg-blue-500 rounded-lg shadow-md transition-colors max-sm:-bottom-[3.2rem] hover:bg-blue-600"
+                    className="absolute right-2 bottom-2 px-4 py-2 font-medium text-white bg-blue-500 rounded-lg shadow-md transition-colors max-sm:left-1 max-sm:w-max max-sm:bottom-[3.2rem] hover:bg-blue-600"
                     onClick={navigateToScheduleMaker}
                 >
                     + New Schedule

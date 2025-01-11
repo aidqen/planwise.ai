@@ -56,11 +56,11 @@ export default function AllSchedules() {
                 {/* Navigation UI */}
                 <ScheduleFilter tabs={tabs} setSelectedTab={setSelectedTab} selectedTab={selectedTab} />
                 {/* Schedules Grid */}
-                <div className="space-y-6">
+                <div className="space-y-3 md:space-y-6">
                     <div>
                         <h2 className="mb-3 text-sm font-medium text-gray-600">Favorite Schedules</h2>
                         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                            {user?.schedules?.filter(schedule => schedule.isFavorite)?.map((schedule) => (
+                            {user?.schedules?.filter(schedule => schedule.isStarred)?.map((schedule) => (
                                 <SchedulePreview key={schedule.id} schedule={schedule} />
                             ))}
                         </div>

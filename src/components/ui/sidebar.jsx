@@ -23,14 +23,26 @@ export const SidebarProvider = ({
   animate = true
 }) => {
   const [openState, setOpenState] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const open = openProp !== undefined ? openProp : openState;
   const setOpen = setOpenProp !== undefined ? setOpenProp : setOpenState;
 
   return (
-    (<SidebarContext.Provider value={{ open, setOpen, animate: animate }}>
+    <SidebarContext.Provider value={{ open, setOpen, animate, isMobile }}>
       {children}
-    </SidebarContext.Provider>)
+    </SidebarContext.Provider>
   );
 };
 
@@ -48,9 +60,9 @@ export const Sidebar = ({
 };
 
 export const SidebarBody = (props) => {
+  const { isMobile } = useSidebar();
   return (<>
-    <DesktopSidebar {...props} />
-    <MobileSidebar {...(props)} />
+    {isMobile ? <MobileSidebar {...props} /> : <DesktopSidebar {...(props)} />}
   </>);
 };
 
@@ -60,21 +72,19 @@ export const DesktopSidebar = ({
   ...props
 }) => {
   const { open, setOpen, animate } = useSidebar();
-  return (<>
+  return (
     <motion.div
       className={cn(
-        "hidden flex-shrink-0 px-4 py-4 h-full md:flex md:flex-col bg-neutral-100 dark:bg-neutral-800 w-[300px]",
+        "hidden md:flex flex-shrink-0 px-4 py-4 h-full flex-col bg-neutral-100 dark:bg-neutral-800 w-[300px]",
         className
       )}
       animate={{
         width: animate ? (open ? "250px" : "75px") : "300px",
       }}
-      // onMouseEnter={() => setOpen(true)}
-      // onMouseLeave={() => setOpen(false)}
       {...props}>
       {children}
     </motion.div>
-  </>);
+  );
 };
 
 export const MobileSidebar = ({
@@ -83,43 +93,50 @@ export const MobileSidebar = ({
   ...props
 }) => {
   const { open, setOpen } = useSidebar();
-  return (<>
-    <div
-      className={cn(
-        "flex flex-row justify-between items-center px-4 py-4 w-full h-10 md:hidden bg-neutral-100 dark:bg-neutral-800",
-        // open ? 'opacity-100' : 'opacity-0' 
-      )}
-      {...props}>
-      {/* <div className="flex z-20 justify-end w-full">
-        <IconMenu2
-          className="text-neutral-800 dark:text-neutral-200"
-          onClick={() => setOpen(!open)} />
-      </div> */}
+  
+  return (
+    <div className="block md:hidden">
+
       <AnimatePresence>
         {open && (
-          <motion.div
-            initial={{ x: "-100%", opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: "-100%", opacity: 0 }}
-            transition={{
-              duration: 0.3,
-              ease: "easeInOut",
-            }}
-            className={cn(
-              "flex fixed inset-0 flex-col justify-between p-10 w-full h-full bg-white dark:bg-neutral-900 z-[100]",
-              className
-            )}>
-            <div
-              className="absolute top-10 right-10 z-50 text-neutral-800 dark:text-neutral-200"
-              onClick={() => setOpen(!open)}>
-              <IconX />
-            </div>
-            {children}
-          </motion.div>
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-white z-[75]"
+              onClick={() => setOpen(false)}
+            />
+            
+            <motion.div
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{
+                type: "spring",
+                damping: 25,
+                stiffness: 200,
+              }}
+              className={cn(
+                "fixed top-0 left-0 bottom-0 bg-white w-full bg-neutral-100 dark:bg-neutral-800 shadow-xl z-[80] overflow-y-auto",
+                className
+              )}
+            >
+              <div className="sticky top-0 right-0 flex justify-end p-4 bg-neutral-100 dark:bg-neutral-800">
+                <IconX
+                  className="text-neutral-800 dark:text-neutral-200 cursor-pointer w-6 h-6"
+                  onClick={() => setOpen(false)}
+                />
+              </div>
+              <div className="flex flex-col px-4 pt-4 bg-white h-full">
+                {children}
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </div>
-  </>);
+  );
 };
 
 export const SidebarLink = ({
