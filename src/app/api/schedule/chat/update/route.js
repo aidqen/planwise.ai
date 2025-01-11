@@ -17,15 +17,12 @@ export async function POST(request) {
     Return a JSON object that follows EXACTLY this structure, with no additional text or formatting:
     {
       "id": "${scheduleData._id}",
-      "name": "${scheduleData.name}",
       "schedule": [ array of tasks with id, summary, description, start, end, category ],
       "preferences": {
         "wakeup": "HH:mm",
         "sleep": "HH:mm",
         "intensity": "low|moderate|high"
-      },
-      "routines": [ array of routines with name, startTime, endTime, id ],
-      "goals": [ array of goals with id, name, importance ]
+      }
     }
     
     Original schedule details:
