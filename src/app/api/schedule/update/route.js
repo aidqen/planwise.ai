@@ -8,7 +8,7 @@ export async function PUT(req) {
         
         const schedulesCollection = await dbService.getCollection('schedules')
         const result = await schedulesCollection.updateOne(
-            { _id: ObjectId.createFromHexString(scheduleToSave.id) },
+            { _id: ObjectId.createFromHexString(scheduleToSave?.id ? scheduleToSave.id : scheduleToSave._id) },
             { 
                 $set: {
                     name: scheduleToSave.name,

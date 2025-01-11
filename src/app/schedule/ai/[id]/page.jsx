@@ -73,11 +73,14 @@ export default function DailySchedule() {
 
   const handleAcceptChanges = async () => {
     try {
-      const chat = schedule?.chat
-      setSchedule({...editedSchedule, chat})
-      console.log("🚀 ~ file: page.jsx:101 ~ editedSchedule:", editedSchedule)
-      // dispatch({type: SET_SCHEDULE, schedule: updatedSchedule})
-      await scheduleService.updateSchedule(editedSchedule)
+      // Create a merged schedule with all original fields and AI updates
+      const updatedSchedule = {
+        ...schedule,  // Keep all original schedule fields (routines, goals, etc)
+        ...editedSchedule,  // Override with AI's changes (preferences, schedule array)
+      };
+
+      setSchedule(updatedSchedule)
+      await scheduleService.updateSchedule(updatedSchedule)
       setEditedSchedule(null)
     } catch (error) {
       console.error('Failed to accept changes:', error)
@@ -134,6 +137,7 @@ export default function DailySchedule() {
         setSchedule={setSchedule}
         multiStepForm={multiStepForm}
         onScheduleEdit={handleScheduleEdit}
+        isEditedSchedule={!!editedSchedule}
       />
       {(isLoading || !schedule?.schedule?.length) ? (
         <Loading />
@@ -177,23 +181,23 @@ export default function DailySchedule() {
               </div>
 
               {editedSchedule && (
-                <div className="flex sticky bottom-4 z-50 justify-center">
-                  <div className="flex gap-4 p-4 rounded-lg">
+                <div className="flex md:sticky fixed w-full gap-3 left-0 bottom-4 z-50 justify-center">
+                  {/* <div className="flex gap-2 md:gap-4 px-0 rounded-lg"> */}
                     <Button
                       onClick={handleRejectChanges}
-                      className="flex gap-2 items-center text-white bg-red-500 shadow-md hover:bg-red-600"
+                      className="flex gap-2 px-2 text-xs py-1 md:py-2 md:px-4 items-center text-white bg-red-500 shadow-md hover:bg-red-600"
                     >
                       <X className="w-4 h-4" />
                       Reject Changes
                     </Button>
                     <Button
                       onClick={handleAcceptChanges}
-                      className="flex gap-2 items-center text-white bg-green-500 shadow-md hover:bg-green-600"
+                      className="flex gap-2 px-2 text-xs py-1 md:py-2 md:px-4 items-center text-white bg-green-500 shadow-md hover:bg-green-600"
                     >
                       <Check className="w-4 h-4" />
                       Accept Changes
                     </Button>
-                  </div>
+                  {/* </div> */}
                 </div>
               )}
             </CardContent>
