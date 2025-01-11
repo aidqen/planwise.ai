@@ -16,7 +16,13 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
     const textareaRef = useRef(null);
 
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        const chatContainer = messagesEndRef.current?.parentElement;
+        if (chatContainer) {
+            chatContainer.scroll({
+                top: chatContainer.scrollHeight,
+                behavior: "smooth"
+            });
+        }
     };
 
     const adjustTextareaHeight = () => {
@@ -28,9 +34,9 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
     };
 
     useEffect(() => {
-        saveChat()
+        // saveChat()
         scrollToBottom();
-    }, [chat]);
+    }, [chat.length]);
 
     useEffect(() => {
         adjustTextareaHeight();
@@ -39,7 +45,7 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
     function addMessageToChat(message) {
         setSchedule(schedule => ({
             ...schedule,
-            chat: [...(Array.isArray(schedule?.chat) ? schedule?.chat : []), message]
+            chat: [...schedule.chat, message]
         }));
     }
 
@@ -65,7 +71,14 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
     }
     const handleAIResponse = async (userMessage) => {
         try {
-            const { stream, decoder } = await scheduleService.streamScheduleChanges(userMessage, schedule);
+            // Create minimal schedule object for the request
+            const minimalSchedule = {
+                _id: schedule._id,
+                preferences: schedule.preferences,
+                schedule: schedule.schedule
+            };
+
+            const { stream, decoder } = await scheduleService.streamScheduleChanges(userMessage, minimalSchedule);
             let aiResponse = '';
             let messageType = null;
 
@@ -98,17 +111,13 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
                 }));
             }
 
-            // Only get edited schedule if it's a schedule_edit message
             if (messageType === 'schedule_edit') {
                 setIsLoading(true)
                 const editedScheduleResponse = await scheduleService.getEditedSchedule(schedule, aiResponse);
-                console.log("🚀 ~ file: AIChat.jsx:96 ~ editedScheduleResponse:", editedScheduleResponse)
                 if (editedScheduleResponse) {
                     onScheduleEdit(editedScheduleResponse);
                 }
             }
-
-            // Save the updated chat
         } catch (error) {
             console.error('Failed to get AI response:', error);
             addMessageToChat(createAIMessage('Sorry, I encountered an error. Please try again.'));
@@ -194,8 +203,8 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
     };
 
     return (
-        <div className="flex flex-col h-[calc(100vh-15.5rem)] overflow-hidden">
-            <div className={cn(!chat?.length ? "overflow-y-hidden" : "overflow-y-auto", "scrollbar overflow-x-hidden flex-grow px-2")}>
+        <div className="flex flex-col h-[calc(100vh-15.5rem)]">
+            <div className="overflow-y-auto scrollbar flex-grow px-2">
                 {!chat?.length ? (
                     <motion.div
                         initial={false}
@@ -205,7 +214,7 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
                         Chat with AI to modify your schedule
                     </motion.div>
                 ) : (
-                    <div className="flex overflow-x-hidden overflow-y-hidden flex-col gap-3 py-4">
+                    <div className="flex flex-col gap-3 py-4">
                         <AnimatePresence
                             mode="popLayout"
                             initial={false}

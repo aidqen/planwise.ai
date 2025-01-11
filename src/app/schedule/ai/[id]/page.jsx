@@ -30,14 +30,12 @@ const DEFAULT_SCHEDULE = {
 }
 
 export default function DailySchedule() {
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   const params = useParams()
 
   const [calendarDialogOpen, setCalendarDialogOpen] = useState(false)
   const [selectedTask, setSelectedTask] = useState(null)
   const [isCreateTask, setIsCreateTask] = useState(false)
-  const [isVisible, setIsVisible] = useState(true)
-  const [lastMouseMove, setLastMouseMove] = useState(Date.now())
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [editedSchedule, setEditedSchedule] = useState(null)
@@ -53,28 +51,6 @@ export default function DailySchedule() {
       onFetchSchedule()
     }
   }, [params?.id])
-
-  useEffect(() => {
-    let timeoutId
-    clearTimeout(timeoutId)
-    const handleMouseMove = () => {
-      setLastMouseMove(Date.now())
-      setIsVisible(true)
-      clearTimeout(timeoutId)
-
-      timeoutId = setTimeout(() => {
-        if (Date.now() - lastMouseMove >= 3000) {
-          setIsVisible(false)
-        }
-      }, 2000)
-    }
-
-    window.addEventListener('mousemove', handleMouseMove)
-    // return () => {
-    //   window.removeEventListener('mousemove', handleMouseMove)
-    //   // clearTimeout(timeoutId)
-    // }
-  }, [lastMouseMove])
 
   const onFetchSchedule = async () => {
     try {
@@ -163,7 +139,7 @@ export default function DailySchedule() {
         <Loading />
       ) : (
         <Card className="overflow-y-auto relative w-full bg-transparent border-none md:pt-16 scrollbar">
-          <div className="mx-auto w-[80%] relative">
+          <div className="mx-auto ps-8 w-full md:w-[80%] relative">
             <CardHeader className="pt-0">
               <div className="flex justify-between items-center">
                 <div className="space-y-1">
@@ -225,7 +201,6 @@ export default function DailySchedule() {
 
           {!editedSchedule && <SaveToCalendarBtn
             toggleCalendarDialog={() => setCalendarDialogOpen(true)}
-            isVisible={isVisible}
           />}
         </Card>
       )}
