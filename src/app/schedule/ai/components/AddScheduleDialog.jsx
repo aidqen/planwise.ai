@@ -23,7 +23,6 @@ export function AddScheduleDialog({ open, onOpenChange: setOpen, schedule }) {
     return new Date(formattedDate);
   });
 
-  console.log("🚀 ~ file: AddScheduleDialog.jsx:16 ~ date:", date)
   const [isLoading, setIsLoading] = useState(false)
 
   async function saveScheduleToCalendar() {
