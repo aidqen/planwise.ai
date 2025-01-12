@@ -8,6 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useIsMobile } from '@/hooks/useMediaQuery'
 import { cn } from '@/lib/utils'
 import { getUser } from '@/store/actions/user.actions'
 import { TOGGLE_SIDEBAR } from '@/store/reducers/system.reducer'
@@ -22,6 +23,7 @@ export function AppHeader() {
   const user = useSelector(state => state.userModule.user)
   const pathname = usePathname()
   const dispatch = useDispatch()
+  const isMobile = useIsMobile()
   
   const [isVisible, setIsVisible] = useState(false)
   const isSchedulePage = pathname.includes('schedule/ai/')
@@ -50,15 +52,17 @@ export function AppHeader() {
     dispatch({ type: 'TOGGLE_SCHEDULE_SIDEBAR' })
   }
 
+  if (!isMobile) return null;
+
   return (
     <header
       className={cn(
-        isVisible ? '':'hidden', 
-        'flex flex-row justify-between items-center pb-3 w-full md:hidden md:justify-end ps-3 pe-6 max-sm:justify-between'
+        isVisible ? 'flex':'hidden', 
+        'flex-row justify-between items-center pb-3 w-full ps-3 pe-6 max-sm:justify-between'
       )}
     >
       <button 
-        className="flex justify-center items-center p-2 rounded-full shadow-md md:hidden bg-secondaryLight"
+        className="flex justify-center items-center p-2 rounded-full shadow-md bg-secondaryLight"
         onClick={onToggleSidebar}
       >
         <Component className="text-black" />
@@ -66,7 +70,7 @@ export function AppHeader() {
       <div className="flex flex-row gap-4 items-center">
         {isSchedulePage && (
           <button 
-            className="flex justify-center items-center p-2 rounded-full shadow-md bg-blue-500 hover:bg-blue-600 transition-colors text-white"
+            className="flex justify-center items-center p-2 text-white bg-blue-500 rounded-full shadow-md transition-colors hover:bg-blue-600"
             onClick={onToggleChat}
           >
             <MessageCircle className="w-5 h-5" />
@@ -88,7 +92,7 @@ export function AppHeader() {
           <DropdownMenuContent className="w-50">
             <DropdownMenuGroup>
               <DropdownMenuItem onClick={onLogout} className="cursor-pointer hover:text-black/60">
-                <LogOut className="mr-2 h-4 w-4" />
+                <LogOut className="mr-2 w-4 h-4" />
                 <span>Log out</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
