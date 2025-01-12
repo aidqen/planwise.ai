@@ -8,7 +8,7 @@ export const TOGGLE_SCHEDULE_SIDEBAR = 'TOGGLE_SCHEDULE_SIDEBAR'
 
 const initialState = {
   isLoading: false,
-  isSidebarOpen: true,
+  isSidebarOpen: false,
   isScheduleSidebarOpen: false,
   taskModalOpen: false,
   year: null,

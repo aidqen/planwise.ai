@@ -30,13 +30,13 @@ export function SidebarDemo() {
     }, [pathname, isVisible])
     // const [open, setOpen] = useState(false);
     const links = [
-        {
-            label: "Preferences",
-            href: "/preferences",
-            icon: (
-                <Repeat2 className="flex-shrink-0 w-5 h-5 text-neutral-700 dark:text-neutral-200" />
-            ),
-        },
+        // {
+        //     label: "Preferences",
+        //     href: "/preferences",
+        //     icon: (
+        //         <Repeat2 className="flex-shrink-0 w-5 h-5 text-neutral-700 dark:text-neutral-200" />
+        //     ),
+        // },
         {
             label: "Create New Schedule",
             href: "/schedule/new",
@@ -81,9 +81,9 @@ export function SidebarDemo() {
     return (
         (<div
             className={cn(
-                "overflow-hidden flex-1 pt-16 max-w-max h-screen bg-[#f3f4f6] rounded-md border max-sm:fixed z-[10] dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700",
+                "overflow-hidden flex-1 pt-16 max-w-max h-screen bg-[#f3f4f6] text-black rounded-md border max-sm:fixed z-[10] dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700",
                 open ? 'max-sm:max-w-full' : 'max-sm:max-w-0',
-                isVisible ? 'opacity-100' : 'opacity-0'
+                isVisible ? 'flex' : 'hidden'
             )}>
             <Sidebar open={open} setOpen={toggleSidebar}>
                 <SidebarBody className="flex flex-col gap-10 justify-between px-3 pt-0">

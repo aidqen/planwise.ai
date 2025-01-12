@@ -9,9 +9,12 @@ export const SET_INTENSITY = 'SET_INTENSITY'
 export const SET_SCHEDULE = 'SET_SCHEDULE'
 export const ADD_TASK_TO_AI_SCHEDULE = 'ADD_TASK_TO_AI_SCHEDULE'
 export const RESET_SCHEDULE = 'RESET_SCHEDULE'
+export const ADD_GOAL = 'ADD_GOAL'
+export const ADD_ROUTINE = 'ADD_ROUTINE'
+// export const ADD_GOAL = 'ADD_GOAL'
 
 const initialState = {
-    multiStepForm: { preferences: { wakeup: '7:00', sleep: '10:00 PM', intensity: 'moderate' }, goals: [], routines: [] },
+    multiStepForm: { preferences: { wakeup: '7:00', sleep: '22:00', intensity: 'moderate' }, goals: [], routines: [] },
     schedule: [],
 }
 
