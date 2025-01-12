@@ -59,9 +59,9 @@ export function AddGoals() {
   }
 
   return (
-    <Section>
+    <Section className={'py-6 w-full md:p-6'}>
       <Card className="overflow-y-auto mx-auto w-full max-w-2xl bg-transparent border-0 shadow-none">
-        <CardContent className="flex flex-col gap-7 p-6 w-full">
+        <CardContent className="flex flex-col gap-7 p-0 w-full md:p-6">
           <h3 className="w-full text-base font-medium text-center text-gray-900 md:text-xl">
             What would you like to accomplish today?
           </h3>

@@ -13,9 +13,9 @@ export function Preferences({ }) {
 
   return (
     <Section className="w-full">
-      <div className="flex flex-col gap-9 items-center mt-5 w-full h-full md:mt-10 max-sm:items-start">
-      <h3 className="w-full text-xl font-medium text-center text-gray-900 max-sm:text-base">
-        How's your day looking?
+      <div className="flex flex-col gap-9 items-center py-6 w-full h-full md:p-6 max-sm:items-start">
+      <h3 className="w-full text-lg font-semibold text-center text-gray-900 md:text-xl">
+        How&apos;s your day looking?
       </h3>
         <div className="flex flex-row justify-between items-center mb-3 w-full">
           {timeTypes.map(timeType => (

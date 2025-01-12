@@ -52,9 +52,9 @@ export function Routines({ }) {
   }
 
   return (
-    <Section className="">
-      <div className="flex flex-col gap-7 items-center pb-10 mt-7 w-full max-sm:items-start">
-        <h1 className="w-full text-xl font-medium text-center text-gray-900 max-sm:text-base">
+    <Section className="py-6 w-full md:p-6">
+      <div className="flex flex-col gap-7 items-center pb-10 w-full max-sm:items-start">
+        <h1 className="w-full text-lg font-semibold text-center text-gray-900 md:text-xl">
           Organize your day, boost your productivity
         </h1>
         <AddRoutine
@@ -65,7 +65,7 @@ export function Routines({ }) {
         />
       </div>
         <AnimatePresence>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-[11em] w-full">
+          <div className="grid grid-cols-1 gap-6 w-full md:grid-cols-2 h-max">
             {routines.map(routine => (
               <Routine
                 routine={routine}

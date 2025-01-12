@@ -60,7 +60,7 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
   }
 
   return (
-    <Card className="w-full rounded-xl border-0 shadow-none transition-all duration-300">
+    <Card className="w-full bg-transparent rounded-xl border-0 shadow-none transition-all duration-300">
       <CardContent className="p-0">
         <form onSubmit={handleSubmit} className="relative space-y-4">
           <div className="flex flex-col gap-2">

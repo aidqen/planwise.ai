@@ -23,9 +23,9 @@ export function StepsBreadcrumbs({ steps, currentStep }) {
                   )}
                 >
                   {step.id < currentStep ? (
-                    <Check className="w-5 h-5" />
+                    <Check className="w-5 h-5 text-white" />
                   ) : (
-                    <step.logo className="w-6 h-6"/>
+                    <step.logo className="w-6 h-6 text-white"/>
                   )}
                 </span>
                 <span

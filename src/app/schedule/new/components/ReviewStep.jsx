@@ -1,9 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import StepNavigation from '../test/components/StepNavigation';
-import { Activity, CalendarSync, Clock, Goal, Target, UserRoundPen } from 'lucide-react';
+import { CalendarSync, Goal, UserRoundPen } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import { Section } from '@/components/ui/section';
 
@@ -17,17 +14,11 @@ const formatTime = (time) => {
 };
 
 export default function ReviewStep({ }) {
-  const router = useRouter();
   const formData = useSelector(state => state.scheduleModule.multiStepForm);
 
-  const handleGenerateSchedule = () => {
-    // TODO: Implement schedule generation logic
-    router.push('/schedule/view');
-  };
 
   return (
     <Section className={"pt-6 w-full md:p-6"}>
-
       <div className="space-y-5 md:space-y-10">
         <div className="mb-8 text-center">
           <h2 className="text-lg font-semibold text-gray-900 md:text-xl dark:text-white">Review your schedule before submitting</h2>
@@ -130,12 +121,6 @@ export default function ReviewStep({ }) {
           </div>
         </div>
 
-        {/* <StepNavigation
-        onNext={handleGenerateSchedule}
-        onBack={onBack}
-        isFirstStep={isFirstStep}
-        isLastStep={true}
-        /> */}
       </div>
     </Section>
   );

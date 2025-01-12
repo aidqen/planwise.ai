@@ -18,11 +18,11 @@ export function GenerateScheduleBtn() {
 
   return (
     <button
-      className="flex flex-row items-center px-5 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-[1.02] bg-secondary hover:bg-secondary/80 text-white text-lg shadow-md border border-secondary whitespace-nowrap"
+      className="flex flex-row items-center px-2 md:px-5 py-3 rounded-lg font-medium w-[11em] transition-all duration-300 transform hover:scale-[1.02] bg-secondary hover:bg-secondary/80 text-white text-base md:text-lg shadow-md border border-secondary whitespace-nowrap"
       onClick={onGenerateAiSchedule}
     >
-      <Sparkles className="mr-2 w-6 h-6" />
-      Generate AI schedule
+      <Sparkles className="hidden mr-2 w-6 h-6 md:block" />
+      Generate Schedule
     </button>
   )
 }
