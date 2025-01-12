@@ -1,39 +1,38 @@
-import { GoogleSvg } from '@/svgs/GoogleSvg'
-import { AuthInputs } from './components/AuthInputs'
-import { getUserSession } from '@/lib/session'
-import { LogInWithGoogle } from './components/LogInWithGoogle'
-import Image from 'next/image'
+'use client'
+import { LoginForm } from "@/components/ui/login-form"
+import { GalleryVerticalEnd } from "lucide-react"
+import Image from "next/image"
 
-export default async function AuthPage() {
 
+export default function LoginPage() {
   return (
-    <div className="fixed left-0 top-0 grid grid-cols-[57%_43%] max-sm:grid-cols-1 p-[0.75em] max-sm:p-[0.2em] h-screen w-screen bg-white">
-      <div className="flex flex-col col-start-1 justify-center items-center">
-        <h1 className="mb-12 text-5xl font-bold text-center text-black/80 max-sm:text-3xl max-sm:mb-10">
-          Welcome back to <br /> Planwise AI 🍀
-        </h1>
-        <div className="flex flex-col w-[23rem] max-sm:w-[80%] justify-center items-center">
-          <p className="text-black text-[0.9em] mb-8">
-            Please enter your details.
-          </p>
-          <LogInWithGoogle />
-          <div className="flex flex-row gap-4 justify-between items-center my-7 w-full">
-            <div className="bg-black/30 w-full h-[1px]"></div>
-            <span className="text-black/30">or</span>
-            <div className="bg-black/30 w-full h-[1px]"></div>
+    <div className="grid absolute top-0 left-0 w-screen h-screen md:grid-cols-2 min-h-svh">
+      <div className="flex flex-col col-start-1 gap-4 p-6 md:p-10">
+        <div className="flex gap-2 justify-start md:justify-start">
+          <a href="#" className="flex gap-2 items-center font-medium">
+            <div className="flex justify-center items-center w-6 h-6 rounded-md bg-primary text-primary-foreground">
+             <Image  src="https://res.cloudinary.com/di6tqrg5y/image/upload/v1733917011/icon_hs6b1t.png" alt="view" width={30} height={30} />
+            </div>
+             Planwise AI
+          </a>
+        </div>
+        
+        <div className="flex flex-1 justify-center items-center">
+          <div className="w-full max-w-xs">
+            <LoginForm />
           </div>
-          <AuthInputs />
         </div>
       </div>
-
-      <div className="flex relative justify-center items-center w-full h-full max-sm:hidden">
+      <div className="hidden relative col-start-2 bg-muted lg:block">
         <Image
-          className="h-full w-full xl:h-[calc(100%-1rem)] xl:w-[calc(100%-1rem)] col-start-2 object-cover rounded-[30px]"
           src="https://res.cloudinary.com/di6tqrg5y/image/upload/v1733784472/ai-generated-8814121_1280_nbzs68.webp"
+          alt="Background Image"
           fill
-          alt="rice-fields-background"
+          priority
+          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
         />
       </div>
     </div>
   )
 }
+
