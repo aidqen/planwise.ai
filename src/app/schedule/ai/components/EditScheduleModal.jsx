@@ -99,7 +99,7 @@ export function EditScheduleModal({ schedule, setSchedule, onSaveEditSchedule, o
                 <DialogHeader>
                     <DialogTitle>Edit Schedule</DialogTitle>
                     <DialogDescription>
-                        Make changes to your schedule here. Click save when you're done.
+                        Make changes to your schedule here. Click save when you&apos;re done.
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSubmit}>
