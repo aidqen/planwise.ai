@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { dbService } from "@/services/dbService";
+import { dbService } from "@/app/api/services/db.service";
 
 export async function DELETE(req, { params }) {
     try {

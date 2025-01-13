@@ -5,6 +5,7 @@ import { Poppins } from 'next/font/google';
 import { SidebarDemo } from '@/components/MainSidebar';
 import { ToggleSidebarBtn } from '@/components/ToggleSidebarBtn';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata = {
   title: 'Planwise AI',
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
               </main>
             </TooltipProvider>
           </ReduxProvider>
+          <SpeedInsights />
         {/* </div> */}
       </body>
     </html>
