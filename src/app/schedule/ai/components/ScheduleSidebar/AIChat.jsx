@@ -191,11 +191,11 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
     };
 
     return (
-        <div className="flex flex-col h-[calc(100vh-15.5rem)]">
-            <div className="overflow-y-auto scrollbar flex-grow px-2">
+        <div className="flex flex-col h-full">
+            <div className="flex-1 overflow-y-auto px-2 scrollbar">
                 {!chat?.length ? (
                     <div
-                        className="p-4 text-sm text-gray-500 text-start transition-all duration-300 ease-out transform translate-y-0 opacity-100"
+                        className="p-4 text-sm text-gray-500 opacity-100 transition-all duration-300 ease-out transform translate-y-0 text-start"
                     >
                         Chat with AI to modify your schedule
                     </div>
@@ -210,7 +210,7 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
             </div>
             <form
                 onSubmit={handleSendMessage}
-                className="relative p-4 mt-auto border-t backdrop-blur-sm bg-white/50 transition-opacity duration-300"
+                className="sticky bottom-0 p-4 mt-auto border-t backdrop-blur-sm transition-opacity duration-300 bg-white/50"
             >
                 <div className="flex gap-2 items-end">
                     <Textarea

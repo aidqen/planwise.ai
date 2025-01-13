@@ -46,7 +46,7 @@ export function ScheduleSidebar({ schedule, setSchedule, onScheduleEdit, setIsLo
 
     const sidebarContent = (
         <>
-            <CardHeader className="flex flex-col gap-1.5 pt-0 pb-6 md:pb-8 space-y-0">
+            <CardHeader className="flex flex-col gap-1.5 pt-0 pb-6 md:pb-8 space-y-0 ">
                 <CardTitle className="text-lg font-semibold text-black dark:text-white">
                     Schedule Details
                 </CardTitle>
@@ -123,10 +123,10 @@ export function ScheduleSidebar({ schedule, setSchedule, onScheduleEdit, setIsLo
                                 animate={{ y: 0 }}
                                 exit={{ y: "100%" }}
                                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                                className="fixed bottom-0 left-0 right-0 z-[80] bg-white dark:bg-neutral-900 rounded-t-[20px] overflow-hidden shadow-xl"
-                                style={{ maxHeight: "85vh" }}
+                                className="fixed bottom-0 left-0 right-0 z-[80] bg-white dark:bg-neutral-900 rounded-t-[20px] overflow-hidden shadow-xl flex flex-col"
+                                style={{ height: "85vh" }}
                             >
-                                <div className="flex sticky top-0 flex-col pb-2 bg-white dark:bg-neutral-900">
+                                <div className="flex-shrink-0 sticky top-0 bg-white dark:bg-neutral-900 z-10 pb-2">
                                     <div className="mx-auto w-12 h-1.5 bg-gray-300 rounded-full my-3" />
                                     <button
                                         onClick={() => dispatch({ type: TOGGLE_SCHEDULE_SIDEBAR, isOpen: false })}
@@ -134,6 +134,8 @@ export function ScheduleSidebar({ schedule, setSchedule, onScheduleEdit, setIsLo
                                     >
                                         <X className="w-6 h-6" />
                                     </button>
+                                </div>
+                                <div className="flex-1 overflow-hidden">
                                     {sidebarContent}
                                 </div>
                             </motion.div>

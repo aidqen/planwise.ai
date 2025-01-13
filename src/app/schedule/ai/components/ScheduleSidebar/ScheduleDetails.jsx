@@ -5,7 +5,7 @@ import { RoutinesSection } from "./RoutinesSection";
 
 export function ScheduleDetails({ schedule, openSection, toggleSection }) {
     return (
-        <div className="space-y-4 px-5 overflow-y-auto max-h-[calc(100vh-16rem)] scrollbar scroll-container">
+        <div className="space-y-4 px-5 pb-20 overflow-y-auto max-h-[calc(100vh-16rem)] scrollbar scroll-container">
             <PreferencesSection 
                 preferences={schedule?.preferences} 
                 isOpen={openSection === 'preferences'}
