@@ -36,13 +36,13 @@ export const CasesSection = () => (
                 className="relative mx-auto mb-32 w-11/12 cursor-pointer xl:w-1/3 sm:w-5/12 sm:max-w-xs lg:mb-20 xl:max-w-sm lg:w-1/2 sm:mx-0 hover:scale-105"
               >
                 <div className="z-20 h-64">
-                  <img
+                  {/* <img
                     src={article.image}
                     alt={article.alt}
                     className="object-cover overflow-hidden w-full h-full rounded"
                     width={400}
                     height={300}
-                  />
+                  /> */}
                 </div>
                 <div className="relative z-30 p-4 mx-auto -mt-8 w-full bg-white rounded-b shadow-lg">
                   <p className="pb-1 text-sm text-center text-gray-700 uppercase">Case study</p>

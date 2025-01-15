@@ -51,8 +51,9 @@ export default function DailySchedule() {
       onFetchSchedule()
     }
   }, [params?.id])
-
+  
   const onFetchSchedule = async () => {
+    console.log("🚀 ~ file: page.jsx:54 ~ params?.id:", params?.id)
     try {
       setIsLoading(true)
       const fetchedSchedule = await scheduleService.getScheduleById(params.id)
@@ -181,18 +182,18 @@ export default function DailySchedule() {
               </div>
 
               {editedSchedule && (
-                <div className="flex md:sticky fixed w-full gap-3 left-0 bottom-4 z-50 justify-center">
-                  {/* <div className="flex gap-2 md:gap-4 px-0 rounded-lg"> */}
+                <div className="flex fixed left-0 bottom-4 z-50 gap-3 justify-center w-full md:sticky">
+                  {/* <div className="flex gap-2 px-0 rounded-lg md:gap-4"> */}
                     <Button
                       onClick={handleRejectChanges}
-                      className="flex gap-2 px-2 text-xs py-1 md:py-2 md:px-4 items-center text-white bg-red-500 shadow-md hover:bg-red-600"
+                      className="flex gap-2 items-center px-2 py-1 text-xs text-white bg-red-500 shadow-md md:py-2 md:px-4 hover:bg-red-600"
                     >
                       <X className="w-4 h-4" />
                       Reject Changes
                     </Button>
                     <Button
                       onClick={handleAcceptChanges}
-                      className="flex gap-2 px-2 text-xs py-1 md:py-2 md:px-4 items-center text-white bg-green-500 shadow-md hover:bg-green-600"
+                      className="flex gap-2 items-center px-2 py-1 text-xs text-white bg-green-500 shadow-md md:py-2 md:px-4 hover:bg-green-600"
                     >
                       <Check className="w-4 h-4" />
                       Accept Changes

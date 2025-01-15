@@ -60,7 +60,7 @@ export function SchedulePreview({ schedule }) {
                 <ul className="space-y-1">
                     {schedule?.goals?.length > 2 ?
                         <>
-                            {schedule?.goals?.slice(0, 2).map((goal, index) => (
+                            {schedule?.goals.length && schedule?.goals?.slice(0, 2).map((goal, index) => (
                                 <li
                                     key={index}
                                     className={"text-sm text-gray-600"}
@@ -75,7 +75,7 @@ export function SchedulePreview({ schedule }) {
                         !schedule?.goals?.length ?
                             <p className='text-sm text-gray-600'>None</p>
                             :
-                            schedule?.goals?.map(goal => (
+                            schedule?.goals?.map((goal, index) => (
                                 <li
                                     key={index}
                                     className={"text-sm font-medium text-blue-600"}

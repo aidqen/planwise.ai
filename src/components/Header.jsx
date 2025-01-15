@@ -9,8 +9,8 @@ import { Button } from './ui/button';
 export const Header = () => (
   <header className="min-h-[calc(100vh-6rem)] bg-white">
     <div className="px-14 py-16 mx-auto max-w-4xl sm:px-6 lg:px-8">
-      <h1 className="font-sans text-4xl font-bold leading-snug text-center text-gray-800 md:text-5xl lg:text-8xl">
-        Your website, beyond expectations
+      <h1 className="font-sans text-4xl font-bold leading-snug text-center text-gray-800 md:text-5xl lg:text-5xl">
+        Your Best Day Starts Here <br/> Create AI-Optimized Schedule In Minutes 
       </h1>
       <div className="mx-auto max-w-xl">
         <p className="mt-10 text-xl text-center text-gray-500 lg:text-2xl">
