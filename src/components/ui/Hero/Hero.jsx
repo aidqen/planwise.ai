@@ -23,7 +23,7 @@ const Hero = () => (
                             Simplify Your Life:<br/> AI-Powered Scheduling for the Busy and Ambitious
                         </h1>
                         <p className="mx-auto max-w-xl text-gray-300">
-                            Gain control of your business's growth with Mailgo's comprehensive marketing, automation, and email marketing platform.
+                            Gain control of your business's growth with Planwise's comprehensive marketing, automation, and email marketing platform.
                         </p>
                         <div className="flex justify-center text-sm font-medium">
                             <NavLink
@@ -37,7 +37,7 @@ const Hero = () => (
                             </NavLink>
                         </div>
                     </div>
-                    <GradientWrapper className="mt-16 sm:mt-28" wrapperClassName="max-w-3xl h-[250px] top-12 inset-0 sm:h-[300px] lg:h-[650px]">
+                    {/* <GradientWrapper className="mt-16 sm:mt-28" wrapperClassName="max-w-3xl h-[250px] top-12 inset-0 sm:h-[300px] lg:h-[650px]"> */}
                         {/* <div className="relative w-full h-full">
                             <Image
                                 src={'https://res.cloudinary.com/di6tqrg5y/image/upload/v1736951684/odzgtoygcdrjentn1mok.jpg'}
@@ -47,7 +47,7 @@ const Hero = () => (
                                 priority
                             />
                         </div> */}
-                    </GradientWrapper>
+                    {/* </GradientWrapper> */}
                 </div>
             </LayoutEffect>
         </div>

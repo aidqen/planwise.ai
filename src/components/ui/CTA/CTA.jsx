@@ -21,7 +21,7 @@ const CTA = () => (
                                 Unleash the Power of AI with Email Marketing
                             </h2>
                             <p className="mt-5 text-gray-300">
-                                Mailgo is the perfect answer! Our AI-based email marketing platform enables you to create highly targeted email campaigns that are tailored to each individual subscriber.
+                                Planwise is the perfect answer! Our AI-based email marketing platform enables you to create highly targeted email campaigns that are tailored to each individual subscriber.
                             </p>
                         </div>
                         <div className="flex justify-center mt-5 text-sm font-medium">

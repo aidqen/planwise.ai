@@ -22,10 +22,10 @@ const VisualFeatures = () => {
             <div className="text-gray-300 custom-screen">
                 <div className="mx-auto max-w-xl text-center">
                     <h2 className="text-3xl font-semibold text-gray-50 sm:text-4xl">
-                        Take your email marketing to the next level with Mailgo
+                        Take your email marketing to the next level with Planwise
                     </h2>
                     <p className="mt-3">
-                        With Mailgo's powerful features, you can easily create and send beautiful emails that will engage your customers and drive more sales.
+                        With Planwise's powerful features, you can easily create and send beautiful emails that will engage your customers and drive more sales.
                     </p>
                 </div>
                 <div className="mt-12">
