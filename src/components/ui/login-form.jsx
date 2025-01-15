@@ -39,7 +39,7 @@ export function LoginForm({ className, ...props }) {
             Or continue with
           </span>
         </div>
-        <Button onClick={() => signIn("google", {callbackUrl: "/"})} variant="outline" className="w-full">
+        <Button onClick={() => signIn("google", {callbackUrl: "/home"})} variant="outline" className="w-full">
         <GoogleSvg className="w-6 h-6" />
           Login with Google
         </Button>

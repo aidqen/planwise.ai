@@ -7,11 +7,13 @@ import { cn } from "@/lib/utils";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { CLOSE_SIDEBAR, TOGGLE_SIDEBAR } from "@/store/reducers/system.reducer";
-import { CalendarDays, CirclePlus, Ellipsis, Mail, Repeat2 } from "lucide-react";
+import { CalendarDays, CirclePlus, Ellipsis, LogOut, Mail, Repeat2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ToggleSidebarBtn } from "./ToggleSidebarBtn";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { signOut } from "next-auth/react";
 
 export function SidebarDemo() {
     const dispatch = useDispatch()
@@ -78,6 +80,11 @@ export function SidebarDemo() {
     // function closeSidebar() {
     //     return { type: CLOSE_SIDEBAR }
     // }
+
+    function onLogout() {
+        signOut({ callbackUrl: '/auth/login'})
+      }
+    
     return (
         (<div
             className={cn(
@@ -119,22 +126,35 @@ export function SidebarDemo() {
                     <div>
                         <ToggleSidebarBtn />
                         {user && (
-                            <SidebarLink
-                                className="capitalize"
-                                link={{
-                                    label: user?.name,
-                                    href: "#",
-                                    icon: (
-                                        <Image
-                                            src={user?.image || ""}
-                                            className="flex-shrink-0 w-7 h-7 rounded-full"
-                                            width={50}
-                                            height={50}
-                                            alt="Avatar"
-                                        />
-                                    ),
-                                }}
-                            />
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+
+                                    <SidebarLink
+                                        className="capitalize"
+                                        link={{
+                                            label: user?.name,
+                                            href: "#",
+                                            icon: (
+                                                <Image
+                                                    src={user?.image || ""}
+                                                    className="flex-shrink-0 w-7 h-7 rounded-full"
+                                                    width={50}
+                                                    height={50}
+                                                    alt="Avatar"
+                                                />
+                                            ),
+                                        }}
+                                    />
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="w-50">
+                                    <DropdownMenuGroup>
+                                        <DropdownMenuItem onClick={onLogout} className="cursor-pointer hover:text-black/60">
+                                            <LogOut className="mr-2 w-4 h-4" />
+                                            <span>Log out</span>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuGroup>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                         )}
                     </div>
                 </SidebarBody>
