@@ -75,7 +75,7 @@ export const DesktopSidebar = ({
   return (
     <motion.div
       className={cn(
-        "hidden md:flex flex-shrink-0 px-4 py-4 h-full flex-col bg-neutral-100 dark:bg-neutral-800 w-[300px]",
+        "hidden flex-col flex-shrink-0 px-4 py-4 h-full md:flex bg-neutral-100 dark:bg-neutral-800 w-[300px]",
         className
       )}
       animate={{
@@ -95,8 +95,7 @@ export const MobileSidebar = ({
   const { open, setOpen } = useSidebar();
   
   return (
-    <div className="block md:hidden">
-
+    <div className="block md:hidden dark:bg-black/40">
       <AnimatePresence>
         {open && (
           <>
@@ -104,7 +103,7 @@ export const MobileSidebar = ({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-white z-[75]"
+              className="fixed inset-0 bg-black/20 dark:bg-black/40 z-[75]"
               onClick={() => setOpen(false)}
             />
             
@@ -118,17 +117,17 @@ export const MobileSidebar = ({
                 stiffness: 200,
               }}
               className={cn(
-                "fixed top-0 left-0 bottom-0 bg-white w-full bg-neutral-100 dark:bg-neutral-800 shadow-xl z-[80] overflow-y-auto",
+                "overflow-y-auto fixed top-0 bottom-0 left-0 w-full bg-white shadow-xl dark:bg-gray-900 z-[80]",
                 className
               )}
             >
-              <div className="sticky top-0 right-0 flex justify-end p-4 bg-neutral-100 dark:bg-neutral-800">
+              <div className="flex sticky top-0 right-0 justify-end p-4 bg-gray-50 border-b border-gray-100 dark:bg-gray-800 dark:border-gray-800">
                 <IconX
-                  className="text-neutral-800 dark:text-neutral-200 cursor-pointer w-6 h-6"
+                  className="w-6 h-6 text-gray-600 cursor-pointer hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
                   onClick={() => setOpen(false)}
                 />
               </div>
-              <div className="flex flex-col px-4 pt-4 bg-white h-full">
+              <div className="flex flex-col px-4 pt-4 h-full bg-white dark:bg-gray-900">
                 {children}
               </div>
             </motion.div>
@@ -157,7 +156,7 @@ export const SidebarLink = ({
   return (
     (<Link
       href={link.href}
-      className={cn("flex gap-2 justify-start items-center hover:bg-green-100 group/sidebar p-3 transition-colors duration-150", isActive && 'bg-green-300 hover:bg-green-400 text-black', className)}
+      className={cn("flex gap-2 justify-start items-center hover:bg-green-100 group/sidebar p-3 transition-colors duration-150", isActive && 'bg-green-400 dark:bg-gray-800 hover:bg-green-400', className)}
       {...props}>
       {link.icon}
       <motion.span

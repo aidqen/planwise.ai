@@ -19,8 +19,6 @@ import { EditScheduleModal } from '../components/EditScheduleModal'
 import { getMinutesFromMidnight } from '@/services/util.service'
 import { Button } from '@/components/ui/button'
 import { Check, X } from 'lucide-react'
-import { SET_SCHEDULE } from '@/store/reducers/schedule.reducer'
-import { useDispatch } from 'react-redux'
 
 const DEFAULT_SCHEDULE = {
   schedule: [],
@@ -40,11 +38,16 @@ export default function DailySchedule() {
   const [isLoading, setIsLoading] = useState(false)
   const [editedSchedule, setEditedSchedule] = useState(null)
   const [schedule, setSchedule] = useState(DEFAULT_SCHEDULE)
+  const [mounted, setMounted] = useState(false)
   // console.log("🚀 ~ file: page.jsx:45 ~ schedule:", schedule)
   // const schedule = useSelector(state => state.scheduleModule.schedule)
   const wakeupTime = schedule?.preferences?.wakeup || '04:00'
   const wakeupMinutes = getMinutesFromMidnight(wakeupTime)
   const multiStepForm = useSelector(state => state.scheduleModule.multiStepForm)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     if (params?.id) {
@@ -77,7 +80,7 @@ export default function DailySchedule() {
       // Create a merged schedule with all original fields and AI updates
       const updatedSchedule = {
         ...schedule,  // Keep all original schedule fields (routines, goals, etc)
-        ...editedSchedule,  // Override with AI's changes (preferences, schedule array)
+        ...editedSchedule,  // Override with AI's changes (preferences, schedule array),
       };
 
       setSchedule(updatedSchedule)
@@ -148,9 +151,9 @@ export default function DailySchedule() {
             <CardHeader className="pt-0">
               <div className="flex justify-between items-center">
                 <div className="space-y-1">
-                  <CardTitle>Daily Schedule</CardTitle>
-                  <CardDescription className="text-gray-600">
-                    {format(new Date(), 'EEEE, MMMM do yyyy')}
+                  <CardTitle >{mounted ? schedule?.name : ''}</CardTitle>
+                  <CardDescription className="text-gray-600 dark:text-gray-400">
+                    {mounted ? format(new Date(), 'EEEE, MMMM do yyyy') : ''}
                   </CardDescription>
                 </div>
                 <div className="hidden gap-4 md:flex">
@@ -172,7 +175,7 @@ export default function DailySchedule() {
             </CardHeader>
 
             <CardContent>
-              <div className="relative h-[1640px] w-full border-l-2 border-gray-300 pl-8 pr-4">
+              <div className="relative h-[1640px] w-full border-l-2 border-gray-300 dark:border-gray-600 pl-8 pr-4">
                 <ScheduleStructure wakeupMinutes={wakeupMinutes} />
                 <TaskList
                   tasks={editedSchedule?.schedule || schedule.schedule}

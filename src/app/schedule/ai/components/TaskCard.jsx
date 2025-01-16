@@ -1,6 +1,7 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Clock, Coffee, Repeat, Target, Utensils } from "lucide-react";
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 export function TaskCard({ task, wakeupMinutes, handleTaskClick, columnIndex, totalColumns }) {
   const [isDescVisible, setIsDescVisible] = useState(false);
@@ -24,7 +25,7 @@ export function TaskCard({ task, wakeupMinutes, handleTaskClick, columnIndex, to
 
   // Calculate width and position based on columnIndex and totalColumns
   const width = 100 / totalColumns;
-  const left = columnIndex * width ;
+  const left = columnIndex * width;
 
   // Dynamic z-index based on columnIndex (higher index = lower priority)
   const zIndex = totalColumns - columnIndex;
@@ -49,21 +50,6 @@ export function TaskCard({ task, wakeupMinutes, handleTaskClick, columnIndex, to
     return null;
   }
 
-  function handleTaskColor(category) {
-    switch (category) {
-      case 'break':
-        return '#3b82f6';
-      case 'goal':
-        return '#06b6d4';
-      case 'routine':
-        return '#0284c7';
-      case 'meal':
-        return '#22c55e';
-      default:
-        return '#94A3B8';
-    }
-  }
-
   const getCategoryIcon = (category) => {
     switch (category) {
       case 'break':
@@ -81,30 +67,42 @@ export function TaskCard({ task, wakeupMinutes, handleTaskClick, columnIndex, to
 
   const CategoryIcon = getCategoryIcon(task?.category);
 
+  const getTaskClasses = (category) => {
+    const baseClasses = "absolute px-2 py-0 text-white rounded-lg shadow-sm transition-all duration-100 ease-in-out cursor-pointer hover:scale-[1.01] hover:z-[80] hover:shadow-md dark:shadow-black/20 dark:hover:shadow-black/40 border border-white/10 dark:border-black/10";
+    
+    const categoryClasses = {
+      break: "bg-blue-500 dark:bg-blue-600",
+      goal: "bg-cyan-500 dark:bg-cyan-600",
+      routine: "bg-sky-600 dark:bg-sky-700",
+      meal: "bg-green-500 dark:bg-green-600",
+      default: "bg-gray-400 dark:bg-gray-500"
+    };
+
+    return cn(baseClasses, categoryClasses[category] || categoryClasses.default);
+  };
+
   return (
     <Card
       onClick={() => handleTaskClick(task)}
-      className="absolute px-2 py-0 text-white rounded-lg shadow-sm transition-all duration-100 ease-in-out cursor-pointer hover:scale-[1.01] hover:z-[80] hover:shadow-md"
+      className={getTaskClasses(task?.category)}
       style={{
         top: `${top}%`,
         height: `${height}%`,
         width: `${width}%`,
         left: `${left}%`,
-        backgroundColor: handleTaskColor(task?.category),
-        zIndex, // Dynamic z-index for click priority
+        zIndex,
       }}
     >
       <CardHeader className={`flex p-0 space-y-0 ${rowOrColumn}`}>
         <div className="flex items-center gap-1.5">
-          <CategoryIcon className="w-3 h-3 text-white/80" />
-          <CardTitle className="text-xs font-semibold truncate">{task?.summary}</CardTitle>
+          <CategoryIcon className="w-3 h-3 text-white/90" />
+          <CardTitle className="text-xs font-semibold truncate text-white/95">{task?.summary}</CardTitle>
         </div>
-        {isDescVisible && <CardDescription className="mt-0 text-xs truncate text-white/90">{task?.description}</CardDescription>}
-        <CardDescription className="mt-0 text-xs truncate text-white/90">
+        {isDescVisible && <CardDescription className="mt-0 text-xs truncate text-white/80">{task?.description}</CardDescription>}
+        <CardDescription className="mt-0 text-xs truncate text-white/80">
           {task.start} - {task.end}
         </CardDescription>
       </CardHeader>
     </Card>
   );
 }
-

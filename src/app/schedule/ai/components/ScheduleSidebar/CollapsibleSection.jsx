@@ -14,24 +14,24 @@ export function CollapsibleSection({ title, icon: Icon, isOpen, onToggle, childr
     }, [isOpen])
 
     return (
-        <div className="overflow-hidden bg-white rounded-lg">
+        <div className="overflow-hidden bg-white dark:bg-gray-900 rounded-lg">
             <div
-                className="flex justify-between items-center p-3 cursor-pointer hover:bg-gray-50"
+                className="flex justify-between items-center p-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200"
                 onClick={onToggle}
             >
                 <div className="flex gap-2 items-center">
                     <div className="flex justify-center items-center w-7 h-7 rounded-lg" style={{ backgroundColor: iconColor }}>
                         <Icon className="w-4 h-4 text-white" />
                     </div>
-                    <span className="text-sm font-medium text-gray-900">{title}</span>
+                    <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{title}</span>
                 </div>
                 <div className='flex flex-row gap-5 justify-end'>
-                    {length && <span className="ml-2 px-2 py-0.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
+                    {length && <span className="ml-2 px-2 py-0.5 text-xs font-medium text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 rounded-full">
                         {length}
                     </span>}
                     <div className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
 
-                        <ChevronDown className="w-5 h-5 text-gray-400" />
+                        <ChevronDown className="w-5 h-5 text-gray-400 dark:text-gray-500" />
                     </div>
                 </div>
             </div>

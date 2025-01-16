@@ -14,7 +14,7 @@ export default function Home() {
         <p className="flex mt-12 xl:mt-5 mb-4 text-[#B6BBC3] max-sm:text-base text-xl w-max capitalize">
           Hello {user?.name?.split(' ').slice(0, 1)} 👋
         </p>
-        <h1 className="flex flex-col mb-14 w-full text-5xl font-bold text-center max-sm:text-3xl text-black/80">
+        <h1 className="flex flex-col mb-14 w-full text-5xl font-bold text-center max-sm:text-3xl dark:text-white text-black/80">
           Own your day.
           <br /> Plan with purpose, achieve with{' '}
           <span className="text-green-500 underline">ease.</span>

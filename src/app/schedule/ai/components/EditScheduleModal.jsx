@@ -95,41 +95,41 @@ export function EditScheduleModal({ schedule, setSchedule, onSaveEditSchedule, o
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px] bg-white dark:bg-gray-900 border dark:border-gray-800">
                 <DialogHeader>
-                    <DialogTitle>Edit Schedule</DialogTitle>
-                    <DialogDescription>
+                    <DialogTitle className="text-gray-900 dark:text-gray-100">Edit Schedule</DialogTitle>
+                    <DialogDescription className="text-gray-500 dark:text-gray-400">
                         Make changes to your schedule here. Click save when you&apos;re done.
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSubmit}>
                     <div className="grid gap-4 py-4">
                         <div className="grid grid-cols-4 gap-4 items-center">
-                            <Label htmlFor="name" className="text-right">
+                            <Label htmlFor="name" className="text-right text-gray-700 dark:text-gray-300">
                                 Name
                             </Label>
                             <Input
                                 id="name"
                                 value={schedule?.name || ''}
                                 onChange={(e) => handleInputChange('name', e.target.value)}
-                                className="col-span-3"
+                                className="col-span-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-200 dark:border-gray-700"
                                 placeholder="Enter schedule name"
                             />
                         </div>
                         <div className="grid grid-cols-4 gap-4 items-center">
-                            <Label htmlFor="wakeup" className="text-right">
+                            <Label htmlFor="wakeup" className="text-right text-gray-700 dark:text-gray-300">
                                 Wake Up
                             </Label>
                             <Select
                                 value={schedule?.preferences?.wakeup || '06:00'}
                                 onValueChange={(value) => handleInputChange('wakeup', value)}
                             >
-                                <SelectTrigger className="col-span-3">
+                                <SelectTrigger className="col-span-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-200 dark:border-gray-700">
                                     <SelectValue placeholder="Select time" />
                                 </SelectTrigger>
-                                <SelectContent>
+                                <SelectContent className="bg-white dark:bg-gray-800 border dark:border-gray-700">
                                     {morningTimeOptions.map((time) => (
-                                        <SelectItem key={time} value={time}>
+                                        <SelectItem key={time} value={time} className="text-gray-900 dark:text-gray-100">
                                             {time}
                                         </SelectItem>
                                     ))}
@@ -137,19 +137,19 @@ export function EditScheduleModal({ schedule, setSchedule, onSaveEditSchedule, o
                             </Select>
                         </div>
                         <div className="grid grid-cols-4 gap-4 items-center">
-                            <Label htmlFor="sleep" className="text-right">
+                            <Label htmlFor="sleep" className="text-right text-gray-700 dark:text-gray-300">
                                 Sleep
                             </Label>
                             <Select
                                 value={schedule?.preferences?.sleep || '22:00'}
                                 onValueChange={(value) => handleInputChange('sleep', value)}
                             >
-                                <SelectTrigger className="col-span-3">
+                                <SelectTrigger className="col-span-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-200 dark:border-gray-700">
                                     <SelectValue placeholder="Select time" />
                                 </SelectTrigger>
-                                <SelectContent>
+                                <SelectContent className="bg-white dark:bg-gray-800 border dark:border-gray-700">
                                     {nightTimeOptions.map((time) => (
-                                        <SelectItem key={time} value={time}>
+                                        <SelectItem key={time} value={time} className="text-gray-900 dark:text-gray-100">
                                             {time}
                                         </SelectItem>
                                     ))}
@@ -160,7 +160,7 @@ export function EditScheduleModal({ schedule, setSchedule, onSaveEditSchedule, o
                     <DialogFooter className="gap-2">
                         <Button
                             type="submit"
-                            className="w-full text-white bg-blue-500 hover:bg-blue-600 sm:w-auto"
+                            className="w-full text-white bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 sm:w-auto"
                             disabled={loading}
                         >
                             Save Changes
@@ -168,7 +168,7 @@ export function EditScheduleModal({ schedule, setSchedule, onSaveEditSchedule, o
                         <Button
                             type="button"
                             variant="destructive"
-                            className="w-full text-white sm:w-auto"
+                            className="w-full text-white bg-red-500 dark:bg-red-600 hover:bg-red-600 dark:hover:bg-red-700 sm:w-auto"
                             onClick={handleDelete}
                             disabled={loading}
                         >

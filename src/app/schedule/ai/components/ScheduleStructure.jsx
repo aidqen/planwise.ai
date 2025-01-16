@@ -31,7 +31,7 @@ export function ScheduleStructure({ wakeupMinutes }) {
                         <div className={`
                             absolute -left-14 w-12 text-right md:-left-16 
                             font-medium transition-all duration-200
-                            ${current ? 'text-blue-600 scale-110' : 'text-gray-500 group-hover:text-gray-800'}
+                            ${current ? 'text-blue-600 dark:text-blue-400 scale-110' : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-800 dark:group-hover:text-gray-200'}
                         `}>
                             <span className="text-sm">
                                 {format(new Date().setHours(hour, 0, 0, 0), 'h a')}
@@ -41,13 +41,13 @@ export function ScheduleStructure({ wakeupMinutes }) {
                             <div className={`
                                 h-[1px] w-full transition-all duration-200
                                 ${current 
-                                    ? 'bg-blue-200' 
-                                    : 'bg-gray-200 group-hover:bg-gray-300'
+                                    ? 'bg-blue-200 dark:bg-blue-800' 
+                                    : 'bg-gray-200 dark:bg-gray-700 group-hover:bg-gray-300 dark:group-hover:bg-gray-600'
                                 }
                             `} />
                             {current && (
                                 <motion.div 
-                                    className="absolute left-0 w-2 h-2 -mt-1 bg-blue-500 rounded-full"
+                                    className="absolute left-0 w-2 h-2 -mt-1 bg-blue-500 dark:bg-blue-400 rounded-full"
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
                                     transition={{
@@ -61,7 +61,7 @@ export function ScheduleStructure({ wakeupMinutes }) {
                             <div className={`
                                 absolute left-0 h-8 -mt-4 w-full opacity-0 
                                 group-hover:opacity-100 transition-opacity duration-200
-                                bg-gradient-to-r from-gray-50/50 to-transparent
+                                bg-gradient-to-r from-gray-50/50 dark:from-gray-900/50 to-transparent
                             `} />
                         </div>
                     </motion.div>

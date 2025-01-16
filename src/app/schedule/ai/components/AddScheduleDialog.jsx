@@ -66,8 +66,8 @@ export function AddScheduleDialog({ open, onOpenChange: setOpen, schedule }) {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="overflow-hidden p-6 w-full max-w-md text-left align-middle bg-white rounded-2xl shadow-xl transition-all transform">
-                <Dialog.Title className="w-full text-lg font-semibold leading-6 text-center text-gray-900 max-sm:text-lg">
+              <Dialog.Panel className="overflow-hidden p-6 w-full max-w-md text-left align-middle bg-white dark:bg-gray-900 rounded-2xl shadow-xl transition-all transform">
+                <Dialog.Title className="w-full text-lg font-semibold leading-6 text-center text-gray-900 dark:text-gray-100 max-sm:text-lg">
                   Add to Google Calendar
                 </Dialog.Title>
                 <div className="mt-4 space-y-4">
@@ -78,7 +78,7 @@ export function AddScheduleDialog({ open, onOpenChange: setOpen, schedule }) {
                         type="button"
                         variant="outline"
                         className={cn(
-                          "pl-3 w-full font-normal text-left border-gray-200",
+                          "pl-3 w-full font-normal text-left bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-200 dark:border-gray-700",
                           !date && "text-muted-foreground"
                         )}
                       >
@@ -86,7 +86,7 @@ export function AddScheduleDialog({ open, onOpenChange: setOpen, schedule }) {
                         <CalendarIcon className="ml-auto w-4 h-4 opacity-50" />
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="p-0 w-auto" align="start">
+                    <PopoverContent className="p-0 w-auto bg-white dark:bg-gray-800 border dark:border-gray-700" align="start">
                       <Calendar
                         mode="single"
                         selected={date}
@@ -95,15 +95,15 @@ export function AddScheduleDialog({ open, onOpenChange: setOpen, schedule }) {
                           setPopoverOpen(false);
                         }}
                         initialFocus
+                        className="text-gray-900 dark:text-gray-100"
                       />
                     </PopoverContent>
                   </Popover>
                   {/* Add to Calendar Button */}
                   <div className="grid grid-cols-[2fr_1fr] items-center gap-2 w-full">
-
                     <Button
                       onClick={saveScheduleToCalendar}
-                      className="w-full bg-[#1a73e8] col-start-1 shadow-md hover:bg-[#1557b0] text-white font-medium py-2"
+                      className="w-full bg-[#1a73e8] dark:bg-[#2b7de9] col-start-1 shadow-md hover:bg-[#1557b0] dark:hover:bg-[#1557b0] text-white font-medium py-2"
                     >
                       {isLoading ? (<>
                         <Sparkles className="mr-2" />
@@ -113,7 +113,7 @@ export function AddScheduleDialog({ open, onOpenChange: setOpen, schedule }) {
                     </Button>
                     <Button
                       onClick={() => setOpen(false)}
-                      className="w-full bg-white border col-start-2 border-gray-200 text-black shadow-md hover:bg-gray-100 transition-colors duration-200 font-medium py-2"
+                      className="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 shadow-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 font-medium py-2"
                     >
                       Cancel
                     </Button>

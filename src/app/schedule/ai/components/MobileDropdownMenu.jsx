@@ -12,17 +12,17 @@ export function MobileDropdownMenu({ onCreateTask, onEdit, handleSaveSchedule })
         <div className="flex md:hidden">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild className="md:hidden">
-                    <Button variant="ghost" className="p-0 w-8 h-8">
-                        <MoreVertical className="w-4 h-4" />
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-600 dark:text-gray-300">
+                        <MoreVertical className="h-4 w-4" />
                     </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                    <DropdownMenuItem onClick={onEdit} className="gap-2 cursor-pointer">
-                        <Edit className="mr-2 w-4 h-4" />
+                <DropdownMenuContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                    <DropdownMenuItem className="text-gray-700 dark:text-gray-200 dark:focus:bg-gray-700/50 dark:focus:text-gray-100" onClick={onEdit}>
+                        <Edit className="mr-2 h-4 w-4" />
                         <span>Edit Schedule</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={onCreateTask} className="gap-2 cursor-pointer">
-                        <Plus className="mr-2 w-4 h-4" />
+                    <DropdownMenuItem className="text-gray-700 dark:text-gray-200 dark:focus:bg-gray-700/50 dark:focus:text-gray-100" onClick={onCreateTask}>
+                        <Plus className="mr-2 h-4 w-4" />
                         <span>Add New Task</span>
                     </DropdownMenuItem>
                 </DropdownMenuContent>

@@ -6,7 +6,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { CLOSE_SIDEBAR, TOGGLE_SIDEBAR } from "@/store/reducers/system.reducer";
+import { TOGGLE_SIDEBAR } from "@/store/reducers/system.reducer";
 import { CalendarDays, CirclePlus, Ellipsis, LogOut, Mail, Repeat2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
@@ -14,6 +14,7 @@ import { ToggleSidebarBtn } from "./ToggleSidebarBtn";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { signOut } from "next-auth/react";
+import { LightModeToggle } from "./LightModeToggle";
 
 export function SidebarDemo() {
     const dispatch = useDispatch()
@@ -43,28 +44,28 @@ export function SidebarDemo() {
             label: "Create New Schedule",
             href: "/schedule/new",
             icon: (
-                <CirclePlus className="flex-shrink-0 w-6 h-6 text-neutral-700 dark:text-neutral-200" />
+                <CirclePlus className="flex-shrink-0 w-6 h-6 text-gray-700 dark:text-gray-200" />
             ),
         },
         {
             label: "Schedules",
             href: "/schedule/all",
             icon: (
-                <CalendarDays className="flex-shrink-0 w-6 h-6 text-neutral-700 dark:text-neutral-200" />
+                <CalendarDays className="flex-shrink-0 w-6 h-6 text-gray-700 dark:text-gray-200" />
             ),
         },
         {
             label: "Coming Soon",
             href: "#",
             icon: (
-                <Ellipsis className="flex-shrink-0 w-6 h-6 text-neutral-700 dark:text-neutral-200" />
+                <Ellipsis className="flex-shrink-0 w-6 h-6 text-gray-700 dark:text-gray-200" />
             ),
         },
         {
             label: "Contact Us",
             href: "#",
             icon: (
-                <Mail className="flex-shrink-0 w-6 h-6 text-neutral-700 dark:text-neutral-200" />
+                <Mail className="flex-shrink-0 w-6 h-6 text-gray-700 dark:text-gray-200" />
             ),
         },
     ];
@@ -88,7 +89,7 @@ export function SidebarDemo() {
     return (
         (<div
             className={cn(
-                "overflow-hidden flex-1 pt-16 max-w-max h-screen bg-[#f3f4f6] text-black rounded-md border max-sm:fixed z-[10] dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700",
+                "overflow-hidden flex-1 pt-16 max-w-max h-screen bg-[#f3f4f6] dark:bg-gray-900 text-gray-900 dark:text-gray-100 border max-sm:fixed z-[10] border-neutral-200 dark:border-gray-800 border-l-0 border-y-0 border-r",
                 open ? 'max-sm:max-w-full' : 'max-sm:max-w-0',
                 isVisible ? 'flex' : 'hidden'
             )}>
@@ -99,10 +100,10 @@ export function SidebarDemo() {
                             <TooltipTrigger asChild>
                                 <div className={cn("flex flex-row gap-3 items-center mt-0 cursor-pointer")} onClick={navigateHome}>
                                     <Image src="https://res.cloudinary.com/di6tqrg5y/image/upload/v1733918185/icon_1_ylom72.png" width={50} height={50} alt="Logo" />
-                                    {open && <span className={cn("min-w-max text-2xl font-medium capitalize whitespace-nowrap", open ? 'flex' : 'hidden')}>Planwise AI</span>}
+                                    {open && <span className={cn("min-w-max text-2xl font-medium text-gray-900 capitalize whitespace-nowrap dark:text-white", open ? 'flex' : 'hidden')}>Planwise AI</span>}
                                 </div>
                             </TooltipTrigger>
-                            <TooltipContent side="right">
+                            <TooltipContent side="right" className="bg-white border border-gray-600 dark:bg-gray-800">
                                 <p>Home</p>
                             </TooltipContent>
                         </Tooltip>
@@ -111,11 +112,11 @@ export function SidebarDemo() {
                                 <Tooltip key={idx}>
                                     <TooltipTrigger asChild>
                                         <div className="w-full">
-                                            <SidebarLink link={link} className="flex justify-start w-full max-h-10 rounded-[10px] min-h-10" />
+                                            <SidebarLink link={link} className="flex justify-start w-full max-h-10 rounded-[10px] min-h-10 hover:bg-gray-200 dark:hover:bg-gray-800" />
                                         </div>
                                     </TooltipTrigger>
                                     {!open && (
-                                        <TooltipContent side="right">
+                                        <TooltipContent side="right" className="bg-white border dark:border-gray-600 dark:bg-gray-800">
                                             <p>{link.label}</p>
                                         </TooltipContent>
                                     )}
@@ -124,13 +125,13 @@ export function SidebarDemo() {
                         </div>
                     </div>
                     <div>
-                        <ToggleSidebarBtn />
+                        <ToggleSidebarBtn/>
+                        <LightModeToggle />
                         {user && (
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-
                                     <SidebarLink
-                                        className="capitalize"
+                                        className="capitalize hover:bg-gray-200 dark:hover:bg-gray-800"
                                         link={{
                                             label: user?.name,
                                             href: "#",
@@ -146,9 +147,12 @@ export function SidebarDemo() {
                                         }}
                                     />
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent className="w-50">
+                                <DropdownMenuContent className="bg-white border-gray-200 w-50 dark:bg-gray-800 dark:border-gray-700">
                                     <DropdownMenuGroup>
-                                        <DropdownMenuItem onClick={onLogout} className="cursor-pointer hover:text-black/60">
+                                        <DropdownMenuItem 
+                                            onClick={onLogout} 
+                                            className="text-gray-700 cursor-pointer dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                        >
                                             <LogOut className="mr-2 w-4 h-4" />
                                             <span>Log out</span>
                                         </DropdownMenuItem>

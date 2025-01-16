@@ -35,7 +35,7 @@ export function CategoryDropdown({ schedule }) {
 
     return (
         <div>
-            <h3 className="mb-4 text-sm font-medium text-gray-600">Task Categories</h3>
+            <h3 className="mb-4 text-sm font-medium text-gray-600 dark:text-gray-400">Task Categories</h3>
             <div className="space-y-4">
                 {categories.map((category) => (
                     <CategoryItem

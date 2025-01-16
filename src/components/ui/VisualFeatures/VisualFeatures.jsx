@@ -45,13 +45,13 @@ const VisualFeatures = () => {
                                             {item.desc}
                                         </p>
                                     </div>
-                                    <div className="pl-8">
+                                    {/* <div className="pl-8">
                                         <Image
                                             src={item?.img}
                                             className="ml-auto w-full"
                                             alt={item.title}
                                         />
-                                    </div>
+                                    </div> */}
                                 </li>
                             ))
                         }

@@ -76,9 +76,9 @@ export function AppHeader() {
             <MessageCircle className="w-5 h-5" />
           </button>
         )}
-        <button className="flex justify-center items-center p-2 rounded-full border shadow-md bg-secondaryLight">
+        {/* <button className="flex justify-center items-center p-2 rounded-full border shadow-md bg-secondaryLight">
           <Search className="text-black" />
-        </button>
+        </button> */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Image
@@ -89,9 +89,9 @@ export function AppHeader() {
               className="rounded-full shadow-md cursor-pointer"
             />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-50">
+          <DropdownMenuContent className="bg-white border-gray-200 w-50 dark:bg-gray-800 dark:border-gray-700">
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={onLogout} className="cursor-pointer hover:text-black/60">
+              <DropdownMenuItem onClick={onLogout} className="text-gray-700 cursor-pointer dark:text-gray-200 hover:text-black/60 dark:hover:text-gray-100 dark:focus:bg-gray-700/50">
                 <LogOut className="mr-2 w-4 h-4" />
                 <span>Log out</span>
               </DropdownMenuItem>

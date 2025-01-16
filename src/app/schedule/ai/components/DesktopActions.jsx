@@ -11,18 +11,25 @@ export function DesktopActions({ onCreateTask, handleSaveSchedule, setIsEditModa
             
             <Button onClick={onEdit} 
             variant="outline"
-            className='px-3 py-2 w-full text-sm font-medium text-black rounded-xl shadow-md sm:w-auto hover:bg-gray-100'
+            className="px-3 py-2 w-full text-sm font-medium bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl shadow-md sm:w-auto hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600"
             >
-                {/* <Edit className="mr-1 w-4 h-4" />
-                Edit */}
                 <Pen className="mr-1 w-4 h-4" />
-                
+                Edit
             </Button>
-            <Button onClick={onCreateTask} className='px-3 py-2 w-full text-sm font-medium text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 sm:w-auto'>
+
+            <Button 
+                onClick={onCreateTask} 
+                className="px-3 py-2 w-full text-sm font-medium text-white bg-blue-600 dark:bg-blue-700 rounded-lg shadow-md hover:bg-blue-700 dark:hover:bg-blue-800 sm:w-auto"
+            >
                 <Plus className="mr-1 w-4 h-4" />
                 Add New Task
             </Button>
-            <Button onClick={handleSaveSchedule} variant="outline" className="w-full text-black shadow-md hover:bg-green-500 sm:w-auto">
+
+            <Button 
+                onClick={handleSaveSchedule} 
+                variant="outline" 
+                className="w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-md hover:bg-green-500 hover:text-white dark:hover:bg-green-600 sm:w-auto border border-gray-200 dark:border-gray-600"
+            >
                 <Save className="mr-2 w-4 h-4" />
                 Save
             </Button>

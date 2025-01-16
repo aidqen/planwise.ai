@@ -14,7 +14,7 @@ export function CategoryItem({ category, isOpen, onToggle, tasks }) {
     return (
         <div className="overflow-hidden mb-2">
             <div
-                className="flex items-center px-3 py-2.5 space-x-3 cursor-pointer hover:bg-gray-50 rounded-lg"
+                className="flex items-center px-3 py-2.5 space-x-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-lg transition-colors duration-200"
                 onClick={onToggle}
             >
                 <div
@@ -24,18 +24,17 @@ export function CategoryItem({ category, isOpen, onToggle, tasks }) {
                 />
                 <div className="flex-grow">
                     <div className="flex items-center">
-                        <h3 className="text-sm font-medium text-gray-900">{category.name}</h3>
+                        <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">{category.name}</h3>
                     </div>
                 </div>
                 <div className='flex flex-row gap-5 justify-end'>
-
-                    <span className="ml-2 px-2 py-0.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
+                    <span className="ml-2 px-2 py-0.5 text-xs font-medium text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 rounded-full">
                         {tasks?.length}
                     </span>
                     <div
                         className={`justify-center transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
                     >
-                        <ChevronDown className="w-5 h-5 text-gray-400" />
+                        <ChevronDown className="w-5 h-5 text-gray-400 dark:text-gray-500" />
                     </div>
                 </div>
             </div>
@@ -46,9 +45,9 @@ export function CategoryItem({ category, isOpen, onToggle, tasks }) {
             >
                 <div className="pl-[2.5rem] pr-3 py-1">
                     {tasks.map((task) => (
-                        <div key={task.id} className="py-2 border-b border-gray-100 last:border-0">
-                            <h4 className="text-sm font-medium text-gray-700">{task.summary}</h4>
-                            <p className="text-xs text-gray-500">
+                        <div key={task.id} className="py-2 border-b border-gray-100 dark:border-gray-700/50 last:border-0">
+                            <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">{task.summary}</h4>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
                                 {task.start} - {task.end}
                             </p>
                         </div>

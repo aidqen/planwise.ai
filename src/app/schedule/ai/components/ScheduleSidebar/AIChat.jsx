@@ -41,7 +41,7 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
     function addMessageToChat(message) {
         setSchedule(schedule => ({
             ...schedule,
-            chat: [...schedule.chat, message]
+            chat: schedule?.chat ? [...schedule.chat, message] : [message]
         }));
     }
 
@@ -149,8 +149,8 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
             >
                 <div
                     className={`px-4 py-2 transition-opacity duration-300 ${isUser
-                        ? 'text-white bg-blue-500 rounded-2xl rounded-tr-sm'
-                        : 'text-gray-800 bg-gray-100 rounded-xl'
+                        ? 'text-white bg-blue-500 rounded-2xl rounded-tr-sm dark:bg-blue-600'
+                        : 'text-gray-800 bg-gray-100 rounded-xl dark:text-gray-100 dark:bg-gray-800'
                         }`}
                 >
                     {isUser ? (
@@ -166,12 +166,12 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
                                     li: ({ children }) => <li className="mb-1">{children}</li>,
                                     code: ({ inline, children }) =>
                                         inline
-                                            ? <code className="px-1 bg-gray-200 rounded">{children}</code>
-                                            : <pre className="overflow-x-auto p-2 my-2 text-white bg-gray-800 rounded">
+                                            ? <code className="px-1 text-gray-800 bg-gray-200 rounded dark:bg-gray-700 dark:text-gray-200">{children}</code>
+                                            : <pre className="overflow-x-auto p-2 my-2 text-white bg-gray-800 rounded dark:bg-gray-900">
                                                 <code>{children}</code>
                                             </pre>,
                                     blockquote: ({ children }) =>
-                                        <blockquote className="pl-4 my-2 italic border-l-4 border-gray-300">
+                                        <blockquote className="pl-4 my-2 italic border-l-4 border-gray-300 dark:border-gray-600">
                                             {children}
                                         </blockquote>,
                                 }}
@@ -192,10 +192,10 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
 
     return (
         <div className="flex flex-col h-full">
-            <div className="flex-1 overflow-y-auto px-2 scrollbar">
+            <div className="overflow-y-auto flex-1 px-2 scrollbar">
                 {!chat?.length ? (
                     <div
-                        className="p-4 text-sm text-gray-500 opacity-100 transition-all duration-300 ease-out transform translate-y-0 text-start"
+                        className="p-4 text-sm text-gray-500 opacity-100 transition-all duration-300 ease-out transform translate-y-0 dark:text-gray-400 text-start"
                     >
                         Chat with AI to modify your schedule
                     </div>
@@ -210,7 +210,7 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
             </div>
             <form
                 onSubmit={handleSendMessage}
-                className="sticky bottom-0 p-4 mt-auto border-t backdrop-blur-sm transition-opacity duration-300 bg-white/50"
+                className="sticky bottom-0 p-4 mt-auto border-t border-gray-200 backdrop-blur-sm transition-opacity duration-300 bg-white/50 dark:bg-gray-900/50 dark:border-gray-700"
             >
                 <div className="flex gap-2 items-end">
                     <Textarea
@@ -218,7 +218,7 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         placeholder="Ask AI to modify your schedule..."
-                        className="flex-grow text-sm rounded-md border-gray-300 max-h-[20rem] min-h-[40px] px-3 py-2.5 transition-all duration-200 resize-none"
+                        className="flex-grow text-sm rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-400 max-h-[20rem] min-h-[40px] px-3 py-2.5 transition-all duration-200 resize-none focus:border-blue-500 dark:focus:border-blue-400"
                         style={{ height: 'auto', overflow: 'hidden' }}
                         disabled={isLoading}
                         onKeyDown={(e) => {
@@ -234,8 +234,8 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
                         size="icon"
                         disabled={isLoading || !message.trim()}
                         className={`transition-all duration-200 h-10 w-10 shrink-0 text-white ${message.trim()
-                            ? 'bg-blue-500 hover:bg-blue-600'
-                            : 'bg-gray-300 cursor-not-allowed'
+                            ? 'bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700'
+                            : 'bg-gray-300 dark:bg-gray-700 cursor-not-allowed'
                             }`}
                     >
                         <Send className="w-4 h-4" />

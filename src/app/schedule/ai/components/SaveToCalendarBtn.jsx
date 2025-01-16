@@ -9,17 +9,16 @@ export function SaveToCalendarBtn({ toggleCalendarDialog }) {
     const { colorSequence, duration } = useColorTransition()
 
     return <>
-        <div className="flex justify-center items-center sticky bottom-10 z-50 w-full">
-            <motion.button
+        <div className="flex sticky bottom-10 z-50 justify-center items-center w-full">
+            {/* <motion.button
                 onClick={toggleCalendarDialog}
-                className="relative overflow-hidden md:px-6 md:py-3 px-4 py-2 rounded-lg text-white font-semibold text-lg shadow-lg"
+                className="overflow-hidden relative px-4 py-2 text-lg font-semibold text-white rounded-lg shadow-lg md:px-6 md:py-3"
                 style={{
                     background: `linear-gradient(45deg, ${colorSequence})`,
                     backgroundSize: `${100 * colors.length}% 100%`,
                     animation: `moveGradient ${duration * colors.length}s linear infinite`,
                 }}
                 animate={{
-                    scale: isHovered ? 1.05 : 1,
                     boxShadow: isHovered
                         ? '0 10px 20px rgba(0, 0, 0, 0.2)'
                         : '0 4px 6px rgba(0, 0, 0, 0.1)',
@@ -29,9 +28,7 @@ export function SaveToCalendarBtn({ toggleCalendarDialog }) {
                 onHoverEnd={() => setIsHovered(false)}
             >
                 <motion.span
-                    className="relative z-10 md:text-base text-sm flex items-center"
-                    animate={{ y: isHovered ? -2 : 0 }}
-                    transition={{ duration: 0.2 }}
+                    className="flex relative z-10 items-center text-sm md:text-base"
                 >
                     <Sparkles className="mr-2 w-6 h-6" />
                     Add To Calendar
@@ -44,7 +41,7 @@ export function SaveToCalendarBtn({ toggleCalendarDialog }) {
                     animate={{ opacity: isHovered ? 0.6 : 0 }}
                     transition={{ duration: 0.3 }}
                 />
-            </motion.button>
+            </motion.button> */}
         </div>
     </>
 }
