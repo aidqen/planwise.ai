@@ -189,6 +189,10 @@ async function saveChat(scheduleId, chat) {
 
 async function getEditedSchedule(schedule, explanation) {
   try {
+    if (!schedule || !explanation) {
+      throw new Error('Missing required parameters: schedule or explanation');
+    }
+
     const response = await fetch('/api/schedule/chat/update', {
       method: 'POST',
       headers: {
@@ -201,13 +205,21 @@ async function getEditedSchedule(schedule, explanation) {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to get edited schedule');
+      const errorData = await response.text();
+      console.error('Server response:', errorData);
+      throw new Error(`Server error: ${response.status} - ${errorData || response.statusText}`);
     }
 
     const data = await response.json();
+    
+    if (!data || !data.schedule) {
+      throw new Error('Invalid response format from server');
+    }
+
     return data;
   } catch (error) {
     console.error('Error getting edited schedule:', error);
-    throw error;
+    // Return a more user-friendly error
+    throw new Error(`Failed to update schedule: ${error.message}`);
   }
 }
