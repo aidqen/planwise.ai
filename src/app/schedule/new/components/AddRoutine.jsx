@@ -66,7 +66,7 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
           <div className="flex flex-col gap-2">
             <Label
               htmlFor="routineName"
-              className="text-sm font-semibold text-gray-700 dark:text-gray-300"
+              className="text-sm font-semibold text-gray-700 dark:text-indigo-200"
             >
               Routine Name
             </Label>
@@ -76,7 +76,7 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
               value={newRoutine.name}
               onChange={e => setNewRoutine({ ...newRoutine, name: e.target.value })}
               required
-              className="px-4 py-2 h-11 rounded-lg border border-gray-200 shadow-sm transition-all duration-200 focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:border-blue-500 placeholder:text-gray-400"
+              className="px-4 py-2 h-11 rounded-lg border border-gray-200 dark:border-indigo-500/20 dark:bg-indigo-950/20 dark:text-indigo-100 shadow-sm transition-all duration-200 focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:border-blue-500 placeholder:text-gray-400 dark:placeholder:text-indigo-300/30"
             />
           </div>
 
@@ -85,7 +85,7 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
             <div className="flex flex-col gap-2">
               <Label
                 htmlFor="startTime"
-                className="text-sm font-semibold text-gray-700 dark:text-gray-300"
+                className="text-sm font-semibold text-gray-700 dark:text-indigo-200"
               >
                 Start Time
               </Label>
@@ -102,7 +102,8 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
                     focus-visible:ring-2 focus-visible:ring-blue-500/50
                     focus-visible:border-blue-500
                     transition-all duration-200
-                    ${startTimeError ? 'border-red-500 focus-within:ring-red-500' : 'border-gray-200'}`}
+                    dark:border-indigo-500/20 dark:bg-indigo-950/20 dark:text-indigo-100
+                    ${startTimeError ? 'border-red-500 dark:border-red-400/50 focus-within:ring-red-500' : 'border-gray-200'}`}
                 />
                 <AnimatePresence>
                   {startTimeError && (
@@ -111,7 +112,7 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
                       animate={{ opacity: 1, y: -10 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.3 }}
-                      className="absolute bottom-[120%] left-0 w-full bg-red-50 text-red-600 text-sm rounded-lg shadow-lg px-3 py-2 border border-red-200"
+                      className="absolute bottom-[120%] left-0 w-full bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-300 text-sm rounded-lg shadow-lg px-3 py-2 border border-red-200 dark:border-red-500/30"
                     >
                       Start time must be after wakeup time.
                     </motion.div>
@@ -124,7 +125,7 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
             <div className="flex flex-col gap-2">
               <Label
                 htmlFor="endTime"
-                className="text-sm font-semibold text-gray-700 dark:text-gray-300"
+                className="text-sm font-semibold text-gray-700 dark:text-indigo-200"
               >
                 End Time
               </Label>
@@ -141,7 +142,8 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
                     focus-visible:ring-2 focus-visible:ring-blue-500/50
                     focus-visible:border-blue-500
                     transition-all duration-200
-                    ${endTimeError ? 'border-red-500 focus-within:ring-red-500' : 'border-gray-200'}`}
+                    dark:border-indigo-500/20 dark:bg-indigo-950/20 dark:text-indigo-100
+                    ${endTimeError ? 'border-red-500 dark:border-red-400/50 focus-within:ring-red-500' : 'border-gray-200'}`}
                 />
                 <AnimatePresence>
                   {endTimeError && (
@@ -150,7 +152,7 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
                       animate={{ opacity: 1, y: -10 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.3 }}
-                      className="absolute bottom-[120%] left-0 w-full bg-red-50 text-red-600 text-sm rounded-lg shadow-lg px-3 py-2 border border-red-200"
+                      className="absolute bottom-[120%] left-0 w-full bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-300 text-sm rounded-lg shadow-lg px-3 py-2 border border-red-200 dark:border-red-500/30"
                     >
                       End time must be later than start time.
                     </motion.div>
@@ -163,7 +165,7 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
           {/* Submit Button */}
           <Button
             type="submit"
-            className="w-full h-11 font-medium text-white bg-blue-600 rounded-lg shadow-md transition-all duration-300 hover:bg-blue-700 hover:shadow-lg"
+            className="w-full h-11 font-medium text-white bg-blue-600 dark:bg-indigo-500 rounded-lg shadow-md transition-all duration-300 hover:bg-blue-700 dark:hover:bg-indigo-600 hover:shadow-lg dark:shadow-indigo-500/20"
           >
             <Plus className="mr-2 w-5 h-5" /> Add Routine
           </Button>
@@ -172,4 +174,3 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
     </Card>
   );
 }
-

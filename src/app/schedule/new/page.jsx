@@ -78,7 +78,7 @@ function ScheduleNewContent() {
         <div className="flex flex-row gap-20 justify-center items-center py-5 pt-7 w-full md:py-10 btns max-sm:justify-center max-sm:gap-5">
           <button
             onClick={goBackStep}
-            className="px-10 py-2.5 rounded-lg font-medium transition-all duration-300 transform hover:scale-[1.02] bg-white hover:bg-gray-50 text-gray-700 shadow-md border border-gray-200"
+            className="px-10 py-2.5 rounded-lg font-medium transition-all duration-300 transform hover:scale-[1.02] bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 shadow-md dark:shadow-gray-900/30 border border-gray-200 dark:border-gray-700"
           >
             Back
           </button>
@@ -95,7 +95,7 @@ function ScheduleNewContent() {
           ) : (
             <button
               onClick={goForwardStep}
-              className="px-8 py-2.5 rounded-lg font-medium transition-all w-[11em] duration-300 transform hover:scale-[1.02] bg-green-400 hover:bg-green-500 text-white shadow-md border border-green-300 whitespace-nowrap"
+              className="px-8 py-2.5 rounded-lg font-medium transition-all w-[11em] duration-300 transform hover:scale-[1.02] bg-green-400 dark:bg-green-500 hover:bg-green-500 dark:hover:bg-green-600 text-white shadow-md dark:shadow-gray-900/30 border border-green-300 dark:border-green-600 whitespace-nowrap"
             >
               Save and Next
             </button>

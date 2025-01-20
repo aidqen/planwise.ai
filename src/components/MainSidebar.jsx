@@ -6,7 +6,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { TOGGLE_SIDEBAR } from "@/store/reducers/system.reducer";
+import { CLOSE_SIDEBAR, TOGGLE_SIDEBAR } from "@/store/reducers/system.reducer";
 import { CalendarDays, CirclePlus, Ellipsis, LogOut, Mail, Repeat2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
@@ -78,9 +78,9 @@ export function SidebarDemo() {
         dispatch({ type: TOGGLE_SIDEBAR })
     }
 
-    // function closeSidebar() {
-    //     return { type: CLOSE_SIDEBAR }
-    // }
+    function closeSidebar() {
+        dispatch({ type: CLOSE_SIDEBAR })
+    }
 
     function onLogout() {
         signOut({ callbackUrl: '/auth/login'})
@@ -94,7 +94,7 @@ export function SidebarDemo() {
                 isVisible ? 'flex' : 'hidden'
             )}>
             <Sidebar open={open} setOpen={toggleSidebar}>
-                <SidebarBody className="flex flex-col gap-10 justify-between px-3 pt-0">
+                <SidebarBody className="flex flex-col gap-10 justify-between px-3 pt-0 h-full">
                     <div className="flex overflow-y-auto overflow-x-hidden flex-col items-start">
                         <Tooltip>
                             <TooltipTrigger asChild>
@@ -112,7 +112,7 @@ export function SidebarDemo() {
                                 <Tooltip key={idx}>
                                     <TooltipTrigger asChild>
                                         <div className="w-full">
-                                            <SidebarLink link={link} className="flex justify-start w-full max-h-10 rounded-[10px] min-h-10 hover:bg-gray-200 dark:hover:bg-gray-800" />
+                                            <SidebarLink link={link} onClick={closeSidebar} className="flex justify-start w-full max-h-10 rounded-[10px] min-h-10 hover:bg-gray-200 dark:hover:bg-gray-800" />
                                         </div>
                                     </TooltipTrigger>
                                     {!open && (

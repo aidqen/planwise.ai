@@ -6,7 +6,7 @@ import { Clock } from 'lucide-react'
 
 export function RoutineEdit({ routine, toggleEditing, saveEdit }) {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+    <div className="p-4 bg-white rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700 sm:p-6">
       <form
         onSubmit={e => {
           e.preventDefault()
@@ -32,13 +32,13 @@ export function RoutineEdit({ routine, toggleEditing, saveEdit }) {
                 name="routineName"
                 defaultValue={routine.name}
                 required
-                className="w-full pl-3 pr-10 py-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 focus:border-transparent"
+                className="py-2 pr-10 pl-3 w-full rounded-lg border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 focus:border-transparent"
                 placeholder="Enter routine name"
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <Label
                 htmlFor={`startTime-${routine.id}`}
@@ -53,9 +53,9 @@ export function RoutineEdit({ routine, toggleEditing, saveEdit }) {
                   type="time"
                   defaultValue={routine.startTime}
                   required
-                  className="w-full pl-9 pr-3 py-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 focus:border-transparent"
+                  className="py-2 pr-3 pl-9 w-full rounded-lg border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 focus:border-transparent"
                 />
-                <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Clock className="absolute left-3 top-1/2 w-4 h-4 text-gray-400 transform -translate-y-1/2" />
               </div>
             </div>
 
@@ -73,26 +73,26 @@ export function RoutineEdit({ routine, toggleEditing, saveEdit }) {
                   type="time"
                   defaultValue={routine.endTime}
                   required
-                  className="w-full pl-9 pr-3 py-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 focus:border-transparent"
+                  className="py-2 pr-3 pl-9 w-full rounded-lg border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 focus:border-transparent"
                 />
-                <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Clock className="absolute left-3 top-1/2 w-4 h-4 text-gray-400 transform -translate-y-1/2" />
               </div>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4 mt-6">
+        <div className="flex flex-col gap-3 justify-end mt-6 sm:flex-row sm:gap-4">
           <Button
             type="button"
             variant="outline"
             onClick={() => toggleEditing(routine.id, false)}
-            className="w-full sm:w-auto order-1 sm:order-none"
+            className="order-1 w-full sm:w-auto sm:order-none"
           >
             Cancel
           </Button>
           <Button 
             type="submit" 
-            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white"
+            className="w-full text-white bg-blue-600 sm:w-auto hover:bg-blue-700"
           >
             Save Changes
           </Button>

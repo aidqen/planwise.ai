@@ -95,7 +95,7 @@ export const MobileSidebar = ({
   const { open, setOpen } = useSidebar();
   
   return (
-    <div className="block md:hidden dark:bg-black/40">
+    <div className="block md:hidden dark:bg-black/40" {...props}>
       <AnimatePresence>
         {open && (
           <>
@@ -103,7 +103,7 @@ export const MobileSidebar = ({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/20 dark:bg-black/40 z-[75]"
+              className="fixed inset-0 bg-black/20 dark:bg-gray-900 z-[75]"
               onClick={() => setOpen(false)}
             />
             
@@ -121,13 +121,13 @@ export const MobileSidebar = ({
                 className
               )}
             >
-              <div className="flex sticky top-0 right-0 justify-end p-4 bg-gray-50 border-b border-gray-100 dark:bg-gray-800 dark:border-gray-800">
+              <div className="flex sticky top-0 right-0 justify-end p-4 border-b border-gray-100 dark:bg-gray-900 dark:border-gray-800">
                 <IconX
                   className="w-6 h-6 text-gray-600 cursor-pointer hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
                   onClick={() => setOpen(false)}
                 />
               </div>
-              <div className="flex flex-col px-4 pt-4 h-full bg-white dark:bg-gray-900">
+              <div className="flex flex-col justify-between px-4 pt-4 h-full bg-white dark:bg-gray-900">
                 {children}
               </div>
             </motion.div>

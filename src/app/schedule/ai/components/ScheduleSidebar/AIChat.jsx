@@ -30,7 +30,7 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
     };
 
     useEffect(() => {
-        // saveChat()
+        saveChat()
         scrollToBottom();
     }, [chat]);
 

@@ -62,7 +62,7 @@ export function AddGoals() {
     <Section className={'py-6 w-full md:p-6'}>
       <Card className="overflow-y-auto mx-auto w-full max-w-2xl bg-transparent border-0 shadow-none">
         <CardContent className="flex flex-col gap-7 p-0 w-full md:p-6">
-          <h3 className="w-full text-base font-medium text-center text-gray-900 md:text-xl">
+          <h3 className="w-full text-base font-medium text-center text-gray-900 dark:text-gray-100 md:text-xl">
             What would you like to accomplish today?
           </h3>
 
@@ -75,20 +75,20 @@ export function AddGoals() {
               value={currentGoal}
               onChange={e => setCurrentGoal(e.target.value)}
               placeholder="Enter your goal or task"
-              className="col-start-1 row-start-1 w-full text-base rounded-lg border-gray-200 shadow-sm focus:border-blue-500 focus-visible:ring-1 focus-visible:ring-blue-500 placeholder:text-gray-400"
+              className="col-start-1 row-start-1 w-full text-base rounded-lg border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 shadow-sm focus:border-blue-500 focus-visible:ring-1 focus-visible:ring-blue-500 placeholder:text-gray-400 dark:placeholder:text-gray-500"
             />
             <Select value={currentImportance} onValueChange={setCurrentImportance}>
-              <SelectTrigger className="col-start-1 row-start-2 w-full rounded-lg border-gray-200 focus:ring-1 focus:ring-blue-500">
+              <SelectTrigger className="col-start-1 row-start-2 w-full rounded-lg border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 focus:ring-1 focus:ring-blue-500">
                 <SelectValue placeholder="Set priority level" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="low" className="text-green-700">
+                <SelectItem value="low" className="text-green-700 dark:text-green-400">
                   Low Priority
                 </SelectItem>
-                <SelectItem value="medium" className="text-yellow-700">
+                <SelectItem value="medium" className="text-yellow-700 dark:text-yellow-400">
                   Medium Priority
                 </SelectItem>
-                <SelectItem value="high" className="text-red-700">
+                <SelectItem value="high" className="text-red-700 dark:text-red-400">
                   High Priority
                 </SelectItem>
               </SelectContent>
@@ -96,7 +96,7 @@ export function AddGoals() {
             <Button
               type="submit"
               size="icon"
-              className="flex col-start-2 row-span-2 justify-center items-center w-full h-full text-white bg-blue-600 rounded-lg shadow-md transition-all hover:bg-blue-700 hover:shadow-lg"
+              className="flex col-start-2 row-span-2 justify-center items-center w-full h-full text-white bg-blue-600 rounded-lg shadow-md transition-all hover:bg-blue-700 hover:shadow-lg dark:bg-blue-700 dark:hover:bg-blue-600"
             >
               <Plus className="w-6 h-6" />
             </Button>
@@ -106,7 +106,7 @@ export function AddGoals() {
             axis="y"
             values={goals}
             onReorder={saveGoals}
-            className=" space-y-3 max-h-[40%] h-[40%] overflow-y-auto"
+            className="space-y-3 max-h-[40%] h-[40%] overflow-y-auto"
           >
             <AnimatePresence>
               {goals.map(goal => (
@@ -121,12 +121,12 @@ export function AddGoals() {
                   <motion.div
                     className={`grid grid-cols-[2.5em_1fr_2.5em] grid-rows-2 justify-between px-4 py-3 rounded-lg shadow-sm border ${
                       importanceColors[goal.importance]
-                    } bg-opacity-10`}
+                    } bg-opacity-10 dark:bg-opacity-20`}
                   >
                     <div className="flex col-start-1 row-span-2 items-center space-x-3">
-                      <GripVertical className="w-5 h-5 text-gray-400 transition-colors duration-200 cursor-grab hover:text-gray-600 active:cursor-grabbing active:text-gray-700" />
+                      <GripVertical className="w-5 h-5 text-gray-400 transition-colors duration-200 cursor-grab hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400 active:cursor-grabbing active:text-gray-700" />
                     </div>
-                    <span className="flex col-start-2 items-center text-base font-medium text-gray-800 ps-2">
+                    <span className="flex col-start-2 items-center text-base font-medium text-gray-800 dark:text-gray-200 ps-2">
                       {goal.name}
                     </span>
                     <div className="flex col-start-2 row-start-2 items-center space-x-2">
@@ -135,20 +135,20 @@ export function AddGoals() {
                         onValueChange={value => updateGoalImportance(goal.id, value)}
                       >
                         <SelectTrigger
-                          className={`w-full border-0 bg-opacity-50 ${
+                          className={`w-full border-0 bg-opacity-50 dark:bg-opacity-30 ${
                             importanceColors[goal.importance]
                           }`}
                         >
                           <SelectValue placeholder="Priority" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="low" className="text-green-700">
+                          <SelectItem value="low" className="text-green-700 dark:text-green-400">
                             Low
                           </SelectItem>
-                          <SelectItem value="medium" className="text-yellow-700">
+                          <SelectItem value="medium" className="text-yellow-700 dark:text-yellow-400">
                             Medium
                           </SelectItem>
-                          <SelectItem value="high" className="text-red-700">
+                          <SelectItem value="high" className="text-red-700 dark:text-red-400">
                             High
                           </SelectItem>
                         </SelectContent>
@@ -159,7 +159,7 @@ export function AddGoals() {
                       variant="ghost"
                       size="icon"
                       onClick={() => removeGoal(goal.id)}
-                      className="flex col-start-3 row-start-1 justify-center items-center w-8 h-8 text-white rounded-full transition-all duration-200 hover:text-red-600 hover:bg-red-50 active:bg-red-100"
+                      className="flex col-start-3 row-start-1 justify-center items-center w-8 h-8 text-gray-400 dark:text-gray-500 rounded-full transition-all duration-200 hover:text-red-600 hover:bg-red-50 dark:hover:text-red-400 dark:hover:bg-red-900/50 active:bg-red-100"
                     >
                       <X className="w-4 h-4" />
                     </Button>

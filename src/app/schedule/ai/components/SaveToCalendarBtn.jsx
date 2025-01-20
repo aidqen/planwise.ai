@@ -10,7 +10,7 @@ export function SaveToCalendarBtn({ toggleCalendarDialog }) {
 
     return <>
         <div className="flex sticky bottom-10 z-50 justify-center items-center w-full">
-            {/* <motion.button
+            <motion.button
                 onClick={toggleCalendarDialog}
                 className="overflow-hidden relative px-4 py-2 text-lg font-semibold text-white rounded-lg shadow-lg md:px-6 md:py-3"
                 style={{
@@ -41,7 +41,7 @@ export function SaveToCalendarBtn({ toggleCalendarDialog }) {
                     animate={{ opacity: isHovered ? 0.6 : 0 }}
                     transition={{ duration: 0.3 }}
                 />
-            </motion.button> */}
+            </motion.button>
         </div>
     </>
 }

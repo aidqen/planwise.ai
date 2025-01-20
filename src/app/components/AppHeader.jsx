@@ -1,11 +1,9 @@
 'use client'
-import { ToggleSidebarBtn } from '@/components/ToggleSidebarBtn'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useIsMobile } from '@/hooks/useMediaQuery'
@@ -62,22 +60,22 @@ export function AppHeader() {
       )}
     >
       <button 
-        className="flex justify-center items-center p-2 rounded-full shadow-md bg-secondaryLight"
+        className="flex justify-center items-center p-2 rounded-full shadow-md bg-secondaryLight dark:bg-gray-800 dark:shadow-gray-900/30"
         onClick={onToggleSidebar}
       >
-        <Component className="text-black" />
+        <Component className="text-black dark:text-gray-200" />
       </button>
       <div className="flex flex-row gap-4 items-center">
         {isSchedulePage && (
           <button 
-            className="flex justify-center items-center p-2 text-white bg-blue-500 rounded-full shadow-md transition-colors hover:bg-blue-600"
+            className="flex justify-center items-center p-2 text-white bg-blue-500 rounded-full shadow-md transition-colors hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 dark:shadow-gray-900/30"
             onClick={onToggleChat}
           >
             <MessageCircle className="w-5 h-5" />
           </button>
         )}
-        {/* <button className="flex justify-center items-center p-2 rounded-full border shadow-md bg-secondaryLight">
-          <Search className="text-black" />
+        {/* <button className="flex justify-center items-center p-2 rounded-full border shadow-md bg-secondaryLight dark:bg-gray-800 dark:border-gray-700">
+          <Search className="text-black dark:text-gray-200" />
         </button> */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -86,12 +84,12 @@ export function AppHeader() {
               alt="User avatar"
               width={35}
               height={35}
-              className="rounded-full shadow-md cursor-pointer"
+              className="rounded-full shadow-md cursor-pointer dark:shadow-gray-900/30"
             />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="bg-white border-gray-200 w-50 dark:bg-gray-800 dark:border-gray-700">
+          <DropdownMenuContent className="bg-white border-gray-200 w-50 dark:bg-gray-800/95 dark:border-gray-700">
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={onLogout} className="text-gray-700 cursor-pointer dark:text-gray-200 hover:text-black/60 dark:hover:text-gray-100 dark:focus:bg-gray-700/50">
+              <DropdownMenuItem onClick={onLogout} className="text-gray-700 cursor-pointer dark:text-gray-200 hover:text-black/60 dark:hover:text-gray-100 dark:hover:bg-gray-700/50">
                 <LogOut className="mr-2 w-4 h-4" />
                 <span>Log out</span>
               </DropdownMenuItem>

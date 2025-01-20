@@ -1,7 +1,7 @@
 'use client'
 
 import { useSelector } from 'react-redux'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ScheduleStructure } from '../components/ScheduleStructure'
@@ -38,17 +38,18 @@ export default function DailySchedule() {
   const [isLoading, setIsLoading] = useState(false)
   const [editedSchedule, setEditedSchedule] = useState(null)
   const [schedule, setSchedule] = useState(DEFAULT_SCHEDULE)
+  console.log("🚀 ~ file: page.jsx:41 ~ schedule:", schedule)
   const [mounted, setMounted] = useState(false)
   // console.log("🚀 ~ file: page.jsx:45 ~ schedule:", schedule)
   // const schedule = useSelector(state => state.scheduleModule.schedule)
-  const wakeupTime = schedule?.preferences?.wakeup || '04:00'
+  const wakeupTime = editedSchedule?.preferences?.wakeup || schedule?.preferences?.wakeup || '04:00'
   const wakeupMinutes = getMinutesFromMidnight(wakeupTime)
   const multiStepForm = useSelector(state => state.scheduleModule.multiStepForm)
-
+  
   useEffect(() => {
     setMounted(true)
   }, [])
-
+  
   useEffect(() => {
     if (params?.id) {
       onFetchSchedule()
@@ -70,13 +71,14 @@ export default function DailySchedule() {
       setIsLoading(false)
     }
   }
-
+  
   const handleScheduleEdit = (newSchedule) => {
     setEditedSchedule(newSchedule)
   }
-
+  
   const handleAcceptChanges = async () => {
     try {
+      console.log("🚀 ~ file: page.jsx:40 ~ editedSchedule:", editedSchedule)
       // Create a merged schedule with all original fields and AI updates
       const updatedSchedule = {
         ...schedule,  // Keep all original schedule fields (routines, goals, etc)
@@ -133,7 +135,9 @@ export default function DailySchedule() {
 
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] overflow-y-hidden justify-between w-full">
+    <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] overflow-y-hidden justify-between w-full"
+    //  ref={pageRef}
+     >
       <ScheduleSidebar
         schedule={schedule}
         setIsLoading={setIsLoading}
@@ -203,7 +207,7 @@ export default function DailySchedule() {
                     </Button>
                   {/* </div> */}
                 </div>
-              )}
+               )} 
             </CardContent>
           </div>
 

@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { Router } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export function ScheduleFilter({ tabs, setSelectedTab, selectedTab }) {
+export function ScheduleFilter({ tabs, setSelectedTab, selectedTab, schedulesLength }) {
     const router = useRouter()
 
     function navigateToScheduleMaker() {
@@ -38,12 +38,12 @@ export function ScheduleFilter({ tabs, setSelectedTab, selectedTab }) {
                         </button>
                     ))}
                 </nav>
-                <button
+                {schedulesLength ? <button
                     className="absolute right-2 bottom-2 px-4 py-2 font-medium text-white bg-blue-500 dark:bg-blue-900 rounded-lg shadow-md transition-colors max-sm:left-1 max-sm:w-max max-sm:bottom-[3.2rem] hover:bg-blue-600"
                     onClick={navigateToScheduleMaker}
                 >
                     + New Schedule
-                </button>
+                </button> : ''}
 
             </div>
         </>

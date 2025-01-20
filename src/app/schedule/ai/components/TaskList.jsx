@@ -5,7 +5,7 @@ export function TaskList({ tasks, wakeupMinutes, handleTaskClick }) {
     const [groupedTasks, setGroupedTasks] = useState([]);
 
     useEffect(() => {
-        const sortedTasks = [...tasks].sort((a, b) => {
+        const sortedTasks = [...tasks]?.sort((a, b) => {
             const aStart = parseTimeToMinutes(a.start);
             const bStart = parseTimeToMinutes(b.start);
             return aStart - bStart;
@@ -32,7 +32,7 @@ export function TaskList({ tasks, wakeupMinutes, handleTaskClick }) {
     }, [tasks]);
 
     const parseTimeToMinutes = (time) => {
-        const [hours, minutes] = time.split(":").map(Number);
+        const [hours, minutes] = time?.split(":").map(Number);
         return hours * 60 + minutes;
     };
 

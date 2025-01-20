@@ -12,7 +12,7 @@ import { useIsMobile } from '@/hooks/useMediaQuery'
 
 export function ScheduleSidebar({ schedule, setSchedule, onScheduleEdit, setIsLoading, isLoading, multiStepForm, isEditedSchedule }) {
     const [openSection, setOpenSection] = useState(null)
-    const [activeView, setActiveView] = useState("details")
+    const [activeView, setActiveView] = useState("chat")
     const scheduleToShow = isLoading ? multiStepForm : schedule
     const isOpen = useSelector(state => state.systemModule.isScheduleSidebarOpen)
     const isMobile = useIsMobile()

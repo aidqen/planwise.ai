@@ -18,9 +18,9 @@ export function ScheduleIntensity({}) {
       title: 'Relaxed Schedule',
       description: 'More breaks, spread out tasks',
       icon: <Leaf size={24} />,
-      borderColor: 'border-[#B3E5FC]',
-      bgColor: 'bg-[#E6F7FF]',
-      textColor: 'text-[#29B6F6]',
+      borderColor: 'border-[#B3E5FC] dark:border-blue-500/30',
+      bgColor: 'bg-[#E6F7FF] dark:bg-blue-500/10',
+      textColor: 'text-[#29B6F6] dark:text-blue-400',
       ringColor: '#29B6F6'
     },
     {
@@ -29,9 +29,9 @@ export function ScheduleIntensity({}) {
       title: 'Moderate Pace',
       description: 'Balanced breaks and tasks',
       icon: <Clock size={24} />,
-      borderColor: 'border-yellow-200',
-      bgColor: 'bg-yellow-50',
-      textColor: 'text-yellow-500',
+      borderColor: 'border-yellow-200 dark:border-yellow-500/30',
+      bgColor: 'bg-yellow-50 dark:bg-yellow-500/10',
+      textColor: 'text-yellow-500 dark:text-yellow-400',
       ringColor: '#EAB308'
     },
     {
@@ -40,9 +40,9 @@ export function ScheduleIntensity({}) {
       title: 'Intense Schedule',
       description: 'Busy schedule, minimal breaks',
       icon: <Zap size={24} />,
-      borderColor: 'border-[#FFCDD2]',
-      bgColor: 'bg-[#FFEBEE]',
-      textColor: 'text-[#E53935]',
+      borderColor: 'border-[#FFCDD2] dark:border-red-500/30',
+      bgColor: 'bg-[#FFEBEE] dark:bg-red-500/10',
+      textColor: 'text-[#E53935] dark:text-red-400',
       ringColor: '#E53935'
     },
   ]
@@ -68,28 +68,28 @@ export function ScheduleIntensity({}) {
             }}
             className={`relative flex items-center px-4 py-3 max-sm:py-2 max-sm:px-2 rounded-xl border-2 w-full ${option.borderColor} ${
               intensity === option.value
-                ? `${option.bgColor} ${option.borderColor} ${option.textColor} ring-2 ring-offset-2 ring-[--ring-color]`
-                : `${option.bgColor} text-gray-300`
-            } transition-all duration-200 `}
+                ? `${option.bgColor} ${option.borderColor} ${option.textColor} ring-2 ring-offset-2 dark:ring-offset-gray-900 ring-[--ring-color]`
+                : `${option.bgColor} dark:bg-gray-800/50 text-gray-300 dark:text-gray-400`
+            } transition-all duration-200`}
           >
             <div
-              className={`flex items-center justify-center w-12 h-12 rounded-full ${option.textColor} `}
+              className={`flex items-center justify-center w-12 h-12 rounded-full ${option.textColor}`}
             >
               {option.icon}
             </div>
 
             <div className="flex-grow ml-4">
               <Label htmlFor={option.id} className="flex flex-col cursor-pointer">
-                <span className="text-base text-gray-900">
+                <span className="text-base text-gray-900 dark:text-gray-100">
                   {option.title}
                 </span>
-                <span className="mt-1 text-xs text-black/50">
+                <span className="mt-1 text-xs text-black/50 dark:text-gray-400">
                   {option.description}
                 </span>
               </Label>
             </div>
 
-            <RadioGroupItem value={option.value} id={option.id} className="mr-2 border-neutral/70" />
+            <RadioGroupItem value={option.value} id={option.id} className="mr-2 border-neutral/70 dark:border-gray-600" />
           </div>
         ))}
       </RadioGroup>
