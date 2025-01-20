@@ -7,13 +7,13 @@ const VisualFeatures = () => {
 
     const features = [
         {
-            title: "Send thousands of emails",
-            desc: "Send thousands of emails quickly and easily. You can customize the content of each email",
+            title: "Create Personalized Schedules",
+            desc: "Effortlessly plan your day with AI-powered schedules tailored to your goals, routines, and preferences.",
             // img: Feature1
         },
         {
-            title: "Write your email content using AI",
-            desc: "AI-powered email content writing is the perfect solution for busy professionals who need to quickly create engaging emails.",
+            title: "Seamless Google Calendar Integration",
+            desc: "Sync your schedules directly with Google Calendar and manage all your tasks in one place.",
             // img: Feature2
         },
     ]
@@ -22,10 +22,10 @@ const VisualFeatures = () => {
             <div className="text-gray-300 custom-screen">
                 <div className="mx-auto max-w-xl text-center">
                     <h2 className="text-3xl font-semibold text-gray-50 sm:text-4xl">
-                        Take your email marketing to the next level with Planwise
+                        Take your productivity to the next level with Planwise
                     </h2>
                     <p className="mt-3">
-                        With Planwise's powerful features, you can easily create and send beautiful emails that will engage your customers and drive more sales.
+                        With Planwise&apos;s powerful features, you can easily create and send beautiful emails that will engage your customers and drive more sales.
                     </p>
                 </div>
                 <div className="mt-12">

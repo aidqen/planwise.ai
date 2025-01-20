@@ -6,46 +6,29 @@ const Pricing = () => {
 
     const plans = [
         {
-            name: "Basic plan",
+            name: "Free Tier",
             desc: "For new creators building their list",
-            price: 0,
+            price: '0',
             isMostPop: false,
             features: [
-                "300 emails/day",
-                "Customizable Email Templates",
-                "Drag & Drop Editor",
-                "Transactional Emails",
-                "SMS & WhatsApp Campaigns",
-                "Phone support",
-
+                "5 Free Tokens upon signing up.",
+                "Free manual schedule editing",
+                "Sync with Google Calendar",
             ],
         },
         {
-            name: "Starter",
-            desc: "Ideal for growing businesses",
-            price: 12,
+            name: "Unlimited Monthly Plan",
+            desc: "Ideal for maximum productivity",
+            price: '14',
             isMostPop: true,
             features: [
-                "From 20k emails/month",
-                "Marketing Automation",
+                "Unlimited tokens",
+                "Sync with Google Calendar",
+                "Free AI ed",
                 "A/B testing",
                 "Advanced statistics",
                 "Multi-user access",
                 "Send time optimization",
-            ],
-        },
-        {
-            name: "Business",
-            desc: "Built for marketing managers",
-            price: 32,
-            isMostPop: false,
-            features: [
-                "Everything in Starter",
-                "Enterprise-grade Security",
-                "Advanced Integrations",
-                "Sub-account Management",
-                "Tailored Onboarding",
-                "Personalized support",
             ],
         },
     ];
@@ -56,7 +39,7 @@ const Pricing = () => {
         <SectionWrapper id="pricing" className='custom-screen'>
             <div className='relative mx-auto max-w-xl text-center'>
                 <h2 className='text-3xl font-semibold text-gray-50 sm:text-4xl'>
-                    Find a plan to power your business
+                    Choose a plan that works for you
                 </h2>
             </div>
             <LayoutEffect
@@ -66,7 +49,7 @@ const Pricing = () => {
                     falseState: "opacity-0"
                 }}
             >
-                <div className='gap-6 justify-center mt-16 sm:grid sm:grid-cols-2 sm:space-y-0 lg:grid-cols-3'>
+                <div className='gap-6 justify-center mt-16 sm:grid sm:grid-cols-2 sm:space-y-0 lg:grid-cols-2'>
                     {
                         plans.map((item, idx) => (
                             <div key={idx} className={`relative flex-1 flex items-stretch flex-col rounded-xl border border-gray-800 mt-6 sm:mt-0 ${item.isMostPop ? "border border-purple-500" : ""}`}

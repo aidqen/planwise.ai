@@ -3,9 +3,10 @@ import Image from "next/image"
 import NavLink from "../NavLink"
 // import HeroImg from "public/images/hero.svg"
 import LayoutEffect from "@/components/LayoutEffect"
+// import { ComputerMockup } from "@/components/ComputerMockup"
 
 const Hero = () => (
-    <section>
+    <section className="w-full">
         <div className="py-28 custom-screen">
             <LayoutEffect className="duration-1000 delay-300"
                 isInviewState={{
@@ -17,13 +18,13 @@ const Hero = () => (
                     <div className="z-50 mx-auto space-y-5 max-w-3xl text-center">
                         <h1 className="mx-auto text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r sm:text-5xl"
                             style={{
-                                backgroundImage: "linear-gradient(179.1deg, #FFFFFF 0.77%, rgba(255, 255, 255, 0) 182.09%)"
+                                backgroundImage: "linear-gradient(179.1deg, #FFFFFF 0%, #93C5FD 100%)"
                             }}
                         >
-                            Simplify Your Life:<br/> AI-Powered Scheduling for the Busy and Ambitious
+                            Simplify Your Life:<br /> AI-Powered Scheduling for the Busy and Ambitious
                         </h1>
                         <p className="mx-auto max-w-xl text-gray-300">
-                        Take control of your day with AI-designed schedules tailored to your goals, routines and preferences.
+                            Take control of your day with AI-designed schedules tailored to your goals, routines and preferences.
                         </p>
                         <div className="flex justify-center text-sm font-medium">
                             <NavLink
@@ -37,19 +38,17 @@ const Hero = () => (
                             </NavLink>
                         </div>
                     </div>
-                    <GradientWrapper className="mt-16 sm:mt-28" wrapperclassname="max-w-3xl h-[250px] top-12 inset-0 sm:h-[300px] lg:h-[650px]">
-                        <div className="overflow-hidden relative mx-auto max-w-6xl rounded-3xl" style={{ height: '600px', width: '100%' }}>
-                            <div className="overflow-hidden absolute inset-0 bg-white rounded-3xl dark:bg-gray-900">
-                                <Image
-                                    src={'https://res.cloudinary.com/di6tqrg5y/image/upload/v1737050901/n650si44d2xirtgliy1y.jpg'}
-                                    fill
-                                    className="object-contain"
-                                    alt="PlanWise.ai Dashboard"
-                                    priority
-                                    quality={100}
-                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 2560px"
-                                />
-                            </div>
+                    <GradientWrapper className="mt-16 sm:mt-28" wrapperclassname="max-w-full w-full h-[400px] top-12 inset-0 sm:h-[500px] lg:h-[750px]">
+                        <div className="relative w-full h-[400px] sm:h-[500px] lg:h-[680px]">
+                            <Image
+                                src={'https://res.cloudinary.com/di6tqrg5y/image/upload/v1737290927/rnujsqcf7abjg9xmgra6.png'}
+                                fill
+                                className="rounded-xl object-fit"
+                                alt="PlanWise.ai Dashboard"
+                                priority
+                                quality={100}
+                                sizes="100vw"
+                            />
                         </div>
                     </GradientWrapper>
                 </div>

@@ -58,7 +58,7 @@ const Testimonial = () => {
                         Planwise is loved by the best founders around the world
                     </h2>
                 </div>
-                <GradientWrapper wrapperClassName="max-w-sm h-40 top-12 inset-x-0" className="mt-12">
+                <GradientWrapper wrapperclassname="max-w-sm h-40 top-12 inset-x-0" className="mt-12">
                     <LayoutEffect
                         className="duration-1000 delay-300"
                         isInviewState={{
@@ -81,11 +81,11 @@ const Testimonial = () => {
                                                 </p>
                                             </blockquote>
                                             <div className="flex gap-x-4 items-center">
-                                                <Image
+                                                {/* <Image
                                                     src={item?.avatar}
                                                     alt={item.name}
                                                     className="object-cover w-14 h-14 rounded-full"
-                                                />
+                                                /> */}
                                                 <div>
                                                     <span className="block font-semibold text-gray-50">{item.name}</span>
                                                     <span className="block text-sm mt-0.5">{item.title}</span>
