@@ -6,6 +6,7 @@ import { SidebarDemo } from '@/components/MainSidebar';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { ThemeClientWrapper } from '@/components/ThemeClientWrapper';
+import { Toaster } from "@/components/ui/toaster"
 
 export const metadata = {
   title: 'Planwise AI',
@@ -24,7 +25,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`h-full ${poppins.className}`}>
       <body className={`grid flex-col grid-rows-1 h-full min-h-screen max-h-screen grid-cols-[auto_1fr] min-w-screen max-w-screen bg-mainLight dark:bg-gray-900 font-[poppins] max-sm:flex`}>
-        {/* <div className="overflow-y-auto w-full h-full"> */}
         <ReduxProvider>
           <TooltipProvider delayDuration={0}>
             <ThemeClientWrapper>
@@ -33,11 +33,11 @@ export default function RootLayout({ children }) {
                 <AppHeader />
                 {children}
               </main>
+              <Toaster />
             </ThemeClientWrapper>
           </TooltipProvider>
         </ReduxProvider>
         <SpeedInsights />
-        {/* </div> */}
       </body>
     </html>
   )

@@ -39,7 +39,7 @@ export function AppHeader() {
   }, [])
 
   function onLogout() {
-    signOut({ callbackUrl: '/auth/login'})
+    signOut({ callbackUrl: '/auth'})
   }
 
   function onToggleSidebar() {

@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { AnimatePresence, motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
+import TimePicker from "@/components/TimePicker";
 
 export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepForm }) {
   const [endTimeError, setEndTimeError] = useState(false);
@@ -23,13 +24,18 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
     return hours * 60 + minutes;
   }
 
+  // Helper function to extract hours from time string
+  function getHourFromTime(time) {
+    return parseInt(time?.split(':')[0]);
+  }
+
   function validateStartEndTime() {
-    
     if (!startTime || !endTime) return; // Skip validation if inputs are incomplete
 
     const startMinutes = timeToMinutes(startTime);
     const endMinutes = timeToMinutes(endTime);
     const wakeupMinutes = timeToMinutes(preferences.wakeup);
+    const sleepMinutes = timeToMinutes(preferences.sleep);
 
     // Check if startTime is before wakeup time
     if (startMinutes < wakeupMinutes) {
@@ -59,6 +65,9 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
     addRoutine(); // Submit routine if validations pass
   }
 
+  const wakeupHour = getHourFromTime(preferences.wakeup);
+  const sleepHour = getHourFromTime(preferences.sleep);
+
   return (
     <Card className="w-full bg-transparent rounded-xl border-0 shadow-none transition-all duration-300">
       <CardContent className="p-0">
@@ -66,7 +75,7 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
           <div className="flex flex-col gap-2">
             <Label
               htmlFor="routineName"
-              className="text-sm font-semibold text-gray-700 dark:text-indigo-200"
+              className="text-sm font-semibold text-gray-700 dark:text-white"
             >
               Routine Name
             </Label>
@@ -76,7 +85,7 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
               value={newRoutine.name}
               onChange={e => setNewRoutine({ ...newRoutine, name: e.target.value })}
               required
-              className="px-4 py-2 h-11 rounded-lg border border-gray-200 dark:border-indigo-500/20 dark:bg-indigo-950/20 dark:text-indigo-100 shadow-sm transition-all duration-200 focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:border-blue-500 placeholder:text-gray-400 dark:placeholder:text-indigo-300/30"
+              className="px-4 py-2 h-11 rounded-lg border border-gray-200 dark:border-indigo-500/20 dark:bg-gray-800 dark:border-gray-700 dark:text-indigo-100 shadow-sm transition-all duration-200 focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:border-blue-500 placeholder:text-gray-400 dark:placeholder:text-indigo-300/30"
             />
           </div>
 
@@ -85,25 +94,18 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
             <div className="flex flex-col gap-2">
               <Label
                 htmlFor="startTime"
-                className="text-sm font-semibold text-gray-700 dark:text-indigo-200"
+                className="text-sm font-semibold text-gray-700 dark:text-white"
               >
                 Start Time
               </Label>
               <div className="relative">
-                <Input
-                  id="startTime"
-                  type="time"
-                  value={newRoutine.startTime}
-                  onChange={e =>
-                    setNewRoutine({ ...newRoutine, startTime: e.target.value })
-                  }
-                  required
-                  className={`h-11 px-4 py-2 border rounded-lg shadow-sm
-                    focus-visible:ring-2 focus-visible:ring-blue-500/50
-                    focus-visible:border-blue-500
-                    transition-all duration-200
-                    dark:border-indigo-500/20 dark:bg-indigo-950/20 dark:text-indigo-100
-                    ${startTimeError ? 'border-red-500 dark:border-red-400/50 focus-within:ring-red-500' : 'border-gray-200'}`}
+                <TimePicker
+                  value={startTime}
+                  onChange={(value) => setNewRoutine({ ...newRoutine, startTime: value })}
+                  startHour={wakeupHour}
+                  endHour={sleepHour}
+                  placeholder="Select start time"
+                  className={startTimeError ? 'border-red-500 dark:border-red-400/50 focus-within:ring-red-500' : ''}
                 />
                 <AnimatePresence>
                   {startTimeError && (
@@ -125,25 +127,18 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
             <div className="flex flex-col gap-2">
               <Label
                 htmlFor="endTime"
-                className="text-sm font-semibold text-gray-700 dark:text-indigo-200"
+                className="text-sm font-semibold text-gray-700 dark:text-white"
               >
                 End Time
               </Label>
               <div className="relative">
-                <Input
-                  id="endTime"
-                  type="time"
-                  value={newRoutine.endTime}
-                  onChange={e =>
-                    setNewRoutine({ ...newRoutine, endTime: e.target.value })
-                  }
-                  required
-                  className={`h-11 px-4 py-2 border rounded-lg shadow-sm
-                    focus-visible:ring-2 focus-visible:ring-blue-500/50
-                    focus-visible:border-blue-500
-                    transition-all duration-200
-                    dark:border-indigo-500/20 dark:bg-indigo-950/20 dark:text-indigo-100
-                    ${endTimeError ? 'border-red-500 dark:border-red-400/50 focus-within:ring-red-500' : 'border-gray-200'}`}
+                <TimePicker
+                  value={endTime}
+                  onChange={(value) => setNewRoutine({ ...newRoutine, endTime: value })}
+                  startHour={startTime ? getHourFromTime(startTime) : wakeupHour}
+                  endHour={sleepHour}
+                  placeholder="Select end time"
+                  className={endTimeError ? 'border-red-500 dark:border-red-400/50 focus-within:ring-red-500' : ''}
                 />
                 <AnimatePresence>
                   {endTimeError && (
@@ -165,7 +160,7 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
           {/* Submit Button */}
           <Button
             type="submit"
-            className="w-full h-11 font-medium text-white bg-blue-600 dark:bg-indigo-500 rounded-lg shadow-md transition-all duration-300 hover:bg-blue-700 dark:hover:bg-indigo-600 hover:shadow-lg dark:shadow-indigo-500/20"
+            className="w-full h-11 font-medium text-white dark:bg-blue-700 bg-blue-500 hover:bg-blue-600 dark:hover:bg-blue-600 rounded-lg shadow-md transition-all duration-300 hover:bg-blue-700 hover:shadow-lg"
           >
             <Plus className="mr-2 w-5 h-5" /> Add Routine
           </Button>

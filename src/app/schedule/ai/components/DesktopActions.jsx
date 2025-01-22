@@ -25,14 +25,14 @@ export function DesktopActions({ onCreateTask, handleSaveSchedule, setIsEditModa
                 Add New Task
             </Button>
 
-            <Button 
+            {/* <Button 
                 onClick={handleSaveSchedule} 
                 variant="outline" 
                 className="w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-md hover:bg-green-500 hover:text-white dark:hover:bg-green-600 sm:w-auto border border-gray-200 dark:border-gray-600"
             >
                 <Save className="mr-2 w-4 h-4" />
                 Save
-            </Button>
+            </Button> */}
         </div>
     )
 }

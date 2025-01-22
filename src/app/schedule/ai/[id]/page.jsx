@@ -3,7 +3,7 @@
 import { useSelector } from 'react-redux'
 import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'next/navigation'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card'
 import { ScheduleStructure } from '../components/ScheduleStructure'
 import { SaveToCalendarBtn } from '../components/SaveToCalendarBtn'
 import { AddScheduleDialog } from '../components/AddScheduleDialog'
@@ -18,7 +18,9 @@ import { DesktopActions } from '../components/DesktopActions'
 import { EditScheduleModal } from '../components/EditScheduleModal'
 import { getMinutesFromMidnight } from '@/services/util.service'
 import { Button } from '@/components/ui/button'
-import { Check, X } from 'lucide-react'
+import { Check, Pen, X } from 'lucide-react'
+import { EditableTitle } from '../components/EditableTitle'
+import { useToast } from "@/components/hooks/use-toast"
 
 const DEFAULT_SCHEDULE = {
   schedule: [],
@@ -38,24 +40,25 @@ export default function DailySchedule() {
   const [isLoading, setIsLoading] = useState(false)
   const [editedSchedule, setEditedSchedule] = useState(null)
   const [schedule, setSchedule] = useState(DEFAULT_SCHEDULE)
-  console.log("🚀 ~ file: page.jsx:41 ~ schedule:", schedule)
+  console.log("🚀 ~ file: page.jsx:43 ~ schedule:", schedule)
   const [mounted, setMounted] = useState(false)
   // console.log("🚀 ~ file: page.jsx:45 ~ schedule:", schedule)
   // const schedule = useSelector(state => state.scheduleModule.schedule)
   const wakeupTime = editedSchedule?.preferences?.wakeup || schedule?.preferences?.wakeup || '04:00'
   const wakeupMinutes = getMinutesFromMidnight(wakeupTime)
   const multiStepForm = useSelector(state => state.scheduleModule.multiStepForm)
-  
+  const { toast } = useToast();
+
   useEffect(() => {
     setMounted(true)
   }, [])
-  
+
   useEffect(() => {
     if (params?.id) {
       onFetchSchedule()
     }
   }, [params?.id])
-  
+
   const onFetchSchedule = async () => {
     console.log("🚀 ~ file: page.jsx:54 ~ params?.id:", params?.id)
     try {
@@ -71,11 +74,11 @@ export default function DailySchedule() {
       setIsLoading(false)
     }
   }
-  
+
   const handleScheduleEdit = (newSchedule) => {
     setEditedSchedule(newSchedule)
   }
-  
+
   const handleAcceptChanges = async () => {
     try {
       console.log("🚀 ~ file: page.jsx:40 ~ editedSchedule:", editedSchedule)
@@ -133,11 +136,34 @@ export default function DailySchedule() {
     // dispatch({type: SET_SCHEDULE, schedule: scheduleToSave})
   }
 
+  async function onSaveSchedule(property, value) {
+    const oldSchedule = { ...schedule };
+    
+    try {
+      const newSchedule = { ...oldSchedule, [property]: value };
+      setSchedule(newSchedule);
+      await scheduleService.updateSchedule(newSchedule);
+      toast({
+        title: "Success",
+        description: "Changes saved successfully",
+      });
+    } catch (error) {
+      console.log("🚀 ~ file: page.jsx:141 ~ oldSchedule:", oldSchedule)
+      setSchedule(oldSchedule);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to save changes. Please try again.",
+      });
+      console.error('Failed to save schedule:', error);
+    }
+  }
+
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] overflow-y-hidden justify-between w-full"
     //  ref={pageRef}
-     >
+    >
       <ScheduleSidebar
         schedule={schedule}
         setIsLoading={setIsLoading}
@@ -155,10 +181,10 @@ export default function DailySchedule() {
             <CardHeader className="pt-0">
               <div className="flex justify-between items-center">
                 <div className="space-y-1">
-                  <CardTitle >{mounted ? schedule?.name : ''}</CardTitle>
-                  <CardDescription className="text-gray-600 dark:text-gray-400">
-                    {mounted ? format(new Date(), 'EEEE, MMMM do yyyy') : ''}
-                  </CardDescription>
+                  <EditableTitle
+                    title={mounted ? schedule?.name : ''}
+                    onSave={onSaveSchedule}
+                  />
                 </div>
                 <div className="hidden gap-4 md:flex">
                   <DesktopActions
@@ -191,23 +217,23 @@ export default function DailySchedule() {
               {editedSchedule && (
                 <div className="flex fixed left-0 bottom-4 z-50 gap-3 justify-center w-full md:sticky">
                   {/* <div className="flex gap-2 px-0 rounded-lg md:gap-4"> */}
-                    <Button
-                      onClick={handleRejectChanges}
-                      className="flex gap-2 items-center px-2 py-1 text-xs text-white bg-red-500 shadow-md md:py-2 md:px-4 hover:bg-red-600"
-                    >
-                      <X className="w-4 h-4" />
-                      Reject Changes
-                    </Button>
-                    <Button
-                      onClick={handleAcceptChanges}
-                      className="flex gap-2 items-center px-2 py-1 text-xs text-white bg-green-500 shadow-md md:py-2 md:px-4 hover:bg-green-600"
-                    >
-                      <Check className="w-4 h-4" />
-                      Accept Changes
-                    </Button>
+                  <Button
+                    onClick={handleRejectChanges}
+                    className="flex gap-2 items-center px-2 py-1 text-xs text-white bg-red-500 shadow-md md:py-2 md:px-4 hover:bg-red-600"
+                  >
+                    <X className="w-4 h-4" />
+                    Reject Changes
+                  </Button>
+                  <Button
+                    onClick={handleAcceptChanges}
+                    className="flex gap-2 items-center px-2 py-1 text-xs text-white bg-green-500 shadow-md md:py-2 md:px-4 hover:bg-green-600"
+                  >
+                    <Check className="w-4 h-4" />
+                    Accept Changes
+                  </Button>
                   {/* </div> */}
                 </div>
-               )} 
+              )}
             </CardContent>
           </div>
 

@@ -46,7 +46,7 @@ const Navbar = () => {
                                 }
                             </ul>
                         <div className="gap-x-6 justify-end items-center mt-6 space-y-6 md:flex md:space-y-0 md:mt-0 md:ml-auto">
-                            <Link href="/auth/login" className="block hover:text-gray-50">
+                            <Link href="/auth" className="block hover:text-gray-50">
                                 Sign in
                             </Link>
                             <NavLink href="/pricing" className="flex gap-x-1 justify-center items-center text-sm font-medium text-white border border-gray-500 custom-btn-bg active:bg-gray-900 md:inline-flex">

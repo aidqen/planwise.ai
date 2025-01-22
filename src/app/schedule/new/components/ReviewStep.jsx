@@ -16,106 +16,102 @@ const formatTime = (time) => {
 export default function ReviewStep({ }) {
   const formData = useSelector(state => state.scheduleModule.multiStepForm);
 
-
   return (
-    <Section className={"pt-6 w-full md:p-6"}>
-      <div className="space-y-5 md:space-y-10">
-        <div className="mb-8 text-center">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white md:text-xl">Review your schedule before submitting</h2>
+    <Section className="pt-6 w-full max-w-2xl mx-auto md:p-6">
+      <div className="space-y-6">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white md:text-2xl">
+            Review Your Schedule
+          </h2>
+          <p className="mt-2 text-sm md:text-base text-gray-600 dark:text-gray-400">
+            Check your preferences, goals, and routines before generating your AI schedule
+          </p>
         </div>
 
-        <div className="space-y-5 md:space-y-10">
+        <div className="space-y-4">
           {/* Preferences Section */}
-          <div className="p-3 text-sm bg-white rounded-lg shadow-md md:p-5 dark:bg-gray-800/50">
-            <h3 className="flex gap-2 items-center mb-4 text-base font-medium text-gray-900 dark:text-gray-100 md:text-lg">
-              <UserRoundPen className="w-5 h-5" />
+          <div className="p-4 md:p-5 bg-white rounded-xl shadow-sm dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700/50">
+            <h3 className="flex gap-2 items-center mb-5 text-base font-medium text-gray-900 dark:text-gray-100 md:text-lg">
+              <UserRoundPen className="w-5 h-5 text-blue-500 dark:text-blue-400" />
               Preferences
             </h3>
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-300">Wake-Up:</span>
-                <span className="font-medium text-gray-900 dark:text-gray-100">
-                  {formatTime(formData.preferences.wakeup)}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-300">Sleep:</span>
-                <span className="font-medium text-gray-900 dark:text-gray-100">
-                  {formatTime(formData.preferences.sleep)}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-300">Intensity:</span>
-                <span className="font-medium text-gray-900 dark:text-gray-100 capitalize">{formData.preferences.intensity || 'Not set'}</span>
-              </div>
+            <div className="space-y-3">
+              {[
+                { label: 'Wake-Up', value: formData.preferences.wakeup },
+                { label: 'Sleep', value: formData.preferences.sleep },
+                { label: 'Intensity', value: formData.preferences.intensity }
+              ].map((item) => (
+                <div key={item.label} className="flex justify-between items-center p-3 rounded-lg bg-gray-50/80 dark:bg-gray-800/80 hover:bg-gray-100/80 dark:hover:bg-gray-700/50 transition-colors duration-200">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">{item.label}</span>
+                  <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                    {item.label === 'Intensity' ? (item.value || 'Not set') : formatTime(item.value)}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Goals Section */}
-          <div className="p-3 bg-white rounded-lg shadow-md dark:bg-gray-800/50">
-            <h3 className="flex gap-2 items-center mb-4 text-base font-medium text-gray-900 dark:text-gray-100 md:text-lg">
-              <Goal className="w-5 h-5" />
+          <div className="p-4 md:p-5 bg-white rounded-xl shadow-sm dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700/50">
+            <h3 className="flex gap-2 items-center mb-5 text-base font-medium text-gray-900 dark:text-gray-100 md:text-lg">
+              <Goal className="w-5 h-5 text-green-500 dark:text-green-400" />
               Goals
             </h3>
             {formData.goals.length > 0 ? (
-              <div className="space-y-1.5 md:space-y-3 w-full">
-                {formData.goals.map((goal, index) => (
-                  <div key={goal.id}>
-                    <div
-                      className="flex justify-between items-center p-1 rounded-lg bg-gray-50/50 dark:bg-gray-700/30"
-                    >
-                      <span className="text-gray-900 dark:text-gray-100">{goal.name}</span>
-                      <span className={`
-                        text-sm px-2 py-1 rounded-full
-                        ${goal.importance === 'high'
-                          ? 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200'
-                          : goal.importance === 'medium'
-                            ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-200'
-                            : 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200'
-                        }
-                      `}>
-                        {goal.importance}
-                      </span>
-                    </div>
-                    {index < formData.goals.length - 1 && (
-                      <div className="h-[1px] w-full bg-gray-200 dark:bg-gray-700 my-1" />
-                    )}
+              <div className="space-y-2">
+                {formData.goals.map((goal) => (
+                  <div
+                    key={goal.id}
+                    className="flex justify-between items-center p-3 rounded-lg bg-gray-50/80 dark:bg-gray-800/80 hover:bg-gray-100/80 dark:hover:bg-gray-700/50 transition-colors duration-200"
+                  >
+                    <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{goal.name}</span>
+                    <span className={`
+                      text-xs px-3 py-1 rounded-full font-medium
+                      ${goal.importance === 'high'
+                        ? 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200'
+                        : goal.importance === 'medium'
+                          ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-200'
+                          : 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200'
+                      }
+                    `}>
+                      {goal.importance}
+                    </span>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-center text-gray-500 dark:text-gray-400">No goals added</p>
+              <div className="flex justify-center items-center p-8 rounded-lg bg-gray-50/80 dark:bg-gray-800/80">
+                <span className="text-sm text-gray-500 dark:text-gray-400">No goals added yet</span>
+              </div>
             )}
           </div>
 
           {/* Routines Section */}
-          <div className="p-3 bg-white rounded-lg shadow-md dark:bg-gray-800/50">
-            <h3 className="flex gap-2 items-center mb-4 text-base font-medium text-gray-900 dark:text-gray-100 md:text-lg">
-              <CalendarSync className="w-5 h-5" />
+          <div className="p-4 md:p-5 bg-white rounded-xl shadow-sm dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700/50">
+            <h3 className="flex gap-2 items-center mb-5 text-base font-medium text-gray-900 dark:text-gray-100 md:text-lg">
+              <CalendarSync className="w-5 h-5 text-purple-500 dark:text-purple-400" />
               Routines
             </h3>
             {formData.routines.length > 0 ? (
-              <div className="space-y-1.5 md:space-y-3 w-full">
-                {formData.routines.map((routine, index) => (
-                  <div key={routine.id}>
-                    <div
-                      className="flex justify-between items-center p-1 rounded-lg bg-gray-50/50 dark:bg-gray-700/30"
-                    >
-                      <span className="text-gray-900 dark:text-gray-100">{routine.name}</span>
-                      <span className="px-2 py-1 text-sm text-gray-600 dark:text-gray-300">
-                        {formatTime(routine.startTime)}
-                        {' - '}
-                        {formatTime(routine.endTime)}
-                      </span>
-                    </div>
-                    {index < formData.routines.length - 1 && (
-                      <div className="h-[1px] w-full bg-gray-200 dark:bg-gray-700 my-1" />
-                    )}
+              <div className="space-y-2">
+                {formData.routines.map((routine) => (
+                  <div
+                    key={routine.id}
+                    className="flex justify-between items-center p-3 rounded-lg bg-gray-50/80 dark:bg-gray-800/80 hover:bg-gray-100/80 dark:hover:bg-gray-700/50 transition-colors duration-200"
+                  >
+                    <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{routine.name}</span>
+                    <span className="text-xs font-medium text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700/80 px-3 py-1 rounded-full">
+                      {formatTime(routine.startTime)}
+                      {' - '}
+                      {formatTime(routine.endTime)}
+                    </span>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-center text-gray-500 dark:text-gray-400">No routines added</p>
+              <div className="flex justify-center items-center p-8 rounded-lg bg-gray-50/80 dark:bg-gray-800/80">
+                <span className="text-sm text-gray-500 dark:text-gray-400">No routines added yet</span>
+              </div>
             )}
           </div>
         </div>

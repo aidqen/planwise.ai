@@ -83,7 +83,7 @@ export function SidebarDemo() {
     }
 
     function onLogout() {
-        signOut({ callbackUrl: '/auth/login'})
+        signOut({ callbackUrl: '/auth'})
       }
     
     return (
@@ -115,11 +115,11 @@ export function SidebarDemo() {
                                             <SidebarLink link={link} onClick={closeSidebar} className="flex justify-start w-full max-h-10 rounded-[10px] min-h-10 hover:bg-gray-200 dark:hover:bg-gray-800" />
                                         </div>
                                     </TooltipTrigger>
-                                    {!open && (
+                                    {/* {!open && ( */}
                                         <TooltipContent side="right" className="bg-white border dark:border-gray-600 dark:bg-gray-800">
                                             <p>{link.label}</p>
                                         </TooltipContent>
-                                    )}
+                                    {/* )} */}
                                 </Tooltip>
                             ))}
                         </div>
@@ -137,7 +137,7 @@ export function SidebarDemo() {
                                             href: "#",
                                             icon: (
                                                 <Image
-                                                    src={user?.image || ""}
+                                                    src={user?.image || "https://res.cloudinary.com/di6tqrg5y/image/upload/v1733919613/random_person_vzka45.jpg"}
                                                     className="flex-shrink-0 w-7 h-7 rounded-full"
                                                     width={50}
                                                     height={50}

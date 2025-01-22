@@ -1,8 +1,12 @@
 import OpenAI from 'openai';
 
 // OpenAI configuration
+// const openai = new OpenAI({
+//   apiKey: process.env.OPENAI_API_KEY
+// });
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  baseURL: 'https://api.deepseek.com',
+  apiKey: process.env.DEEPSEEK_API_KEY
 });
 
 // Prompt templates
@@ -41,7 +45,7 @@ User Message: __MESSAGE__
 
 **Task Removal:**
 - You may remove tasks if necessary to improve the schedule or avoid conflicts, but only if they are not categorized as "routine".
-- Tasks with the category "routine" can only be removed if the user explicitly asks for it.
+- Tasks with the category "routine" can only be removed if the user explicitly asks for it or asks to make change over the time of the task with category of routine.
 
 **Wake-Up and Sleep Time:**
 - Change wake-up or sleep times only if the user asks for it.
@@ -49,8 +53,8 @@ User Message: __MESSAGE__
 
 **Task Modifications:**
 - Do not modify tasks with the category "routine". Unless the user specifically asks for it.
-- Be specific about changes, including exact times for tasks being moved, added, or modified (e.g., "Move the workout from 14:00→16:00").
-- If improving the schedule without a direct user request, explain why the changes make sense (e.g., "Switching your workout to the evening aligns better with your energy levels").
+- Make sure to always maintain Morning Routine from wakeup to 30 minutes after wakeup. Do not place tasks right after wakeup.
+- Before sleep, make sure to not have any goal task, maintain a night routine.
 
 **Formatting:**
 - Use 24-hour time format (HH:mm).
@@ -59,10 +63,8 @@ User Message: __MESSAGE__
 - Avoid mentioning tasks or routines that remain unchanged.
 
 **Explanation Style:**
-- Be concise yet friendly, providing only essential explanations for the user.
-- Ensure every change is justified briefly but effectively.
-- Explain the changes to the tasks the user asked for and afterwards the following changes that were made based on it.
-
+- When you explain the changes simply provide a summary of what happened.
+- Do not provide an explanation on why each task was changed, just list the changes.
 `,
 
   friendlyChat: `You are a friendly AI assistant engaging in conversation.
@@ -78,7 +80,7 @@ Rules:
 // Helper functions
 const createChatCompletion = async (prompt, { stream = false, maxTokens = 500, temperature = 0.7 } = {}) => {
   return await openai.chat.completions.create({
-    model: 'gpt-4o-2024-08-06',
+    model: 'deepseek-chat',
     messages: [{ role: 'user', content: prompt }],
     max_tokens: maxTokens,
     stream,

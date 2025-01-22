@@ -5,41 +5,32 @@ import { useColorTransition, colors } from "@/hooks/useColorTransition";
 import { useState } from "react";
 
 export function SaveToCalendarBtn({ toggleCalendarDialog }) {
-    const [isHovered, setIsHovered] = useState(false)
-    const { colorSequence, duration } = useColorTransition()
-
     return <>
         <div className="flex sticky bottom-10 z-50 justify-center items-center w-full">
             <motion.button
                 onClick={toggleCalendarDialog}
-                className="overflow-hidden relative px-4 py-2 text-lg font-semibold text-white rounded-lg shadow-lg md:px-6 md:py-3"
-                style={{
-                    background: `linear-gradient(45deg, ${colorSequence})`,
-                    backgroundSize: `${100 * colors.length}% 100%`,
-                    animation: `moveGradient ${duration * colors.length}s linear infinite`,
-                }}
-                animate={{
-                    boxShadow: isHovered
-                        ? '0 10px 20px rgba(0, 0, 0, 0.2)'
-                        : '0 4px 6px rgba(0, 0, 0, 0.1)',
-                }}
-                transition={{ duration: 0.3 }}
-                onHoverStart={() => setIsHovered(true)}
-                onHoverEnd={() => setIsHovered(false)}
+                className="group relative flex items-center gap-2 px-6 py-3 text-base font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-lg md:text-lg"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.2 }}
             >
-                <motion.span
-                    className="flex relative z-10 items-center text-sm md:text-base"
-                >
-                    <Sparkles className="mr-2 w-6 h-6" />
-                    Add To Calendar
+                <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300"
+                    style={{ filter: 'blur(20px)' }}
+                />
+                <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl"
+                />
+                <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-blue-600/50 to-indigo-600/50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                />
+                <motion.span className="relative flex items-center gap-2">
+                    <Sparkles className="w-5 h-5" />
+                    <span>Add to Calendar</span>
                 </motion.span>
                 <motion.div
-                    className="absolute inset-0 opacity-0"
-                    style={{
-                        background: 'radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)',
-                    }}
-                    animate={{ opacity: isHovered ? 0.6 : 0 }}
-                    transition={{ duration: 0.3 }}
+                    className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl opacity-0 group-hover:opacity-20 blur transition-all duration-300 animate-tilt"
+                    style={{ filter: 'blur(8px)' }}
                 />
             </motion.button>
         </div>

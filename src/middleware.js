@@ -29,6 +29,7 @@ export function middleware(request) {
 
 export const config = {
   matcher: [
+    "/",  // Protect the root route
     "/((?!api|_next|static|public).*)", // Protect all routes except `/api`, `/_next`, and assets
   ],
 };

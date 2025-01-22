@@ -75,13 +75,13 @@ function ScheduleNewContent() {
           {/* <div className="h-[1px] w-full bg-black/10"></div> */}
           {renderStepContent()}
         </div>
-        <div className="flex flex-row gap-20 justify-center items-center py-5 pt-7 w-full md:py-10 btns max-sm:justify-center max-sm:gap-5">
-          <button
+        <div className="flex flex-row gap-20 justify-center items-center py-4 pt-7 w-full md:py-3 btns max-sm:justify-center max-sm:gap-5">
+          {step > 0 && <button
             onClick={goBackStep}
             className="px-10 py-2.5 rounded-lg font-medium transition-all duration-300 transform hover:scale-[1.02] bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 shadow-md dark:shadow-gray-900/30 border border-gray-200 dark:border-gray-700"
           >
             Back
-          </button>
+          </button>}
           {step === steps.length - 1 ? (
             <GenerateScheduleBtn />
             // <ConfettiButton>
@@ -97,7 +97,7 @@ function ScheduleNewContent() {
               onClick={goForwardStep}
               className="px-8 py-2.5 rounded-lg font-medium transition-all w-[11em] duration-300 transform hover:scale-[1.02] bg-green-400 dark:bg-green-500 hover:bg-green-500 dark:hover:bg-green-600 text-white shadow-md dark:shadow-gray-900/30 border border-green-300 dark:border-green-600 whitespace-nowrap"
             >
-              Save and Next
+              Next
             </button>
           )}
         </div>

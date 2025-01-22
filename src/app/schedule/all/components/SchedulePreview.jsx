@@ -1,3 +1,4 @@
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar, Clock } from "lucide-react";
@@ -9,7 +10,7 @@ export function SchedulePreview({ schedule }) {
     function navigateToSchedule() {
         router.replace(`/schedule/ai/${schedule?.id}`)
     }
-    
+
     const getIntensityColor = (intensity) => {
         switch (intensity) {
             case "relaxed":
@@ -26,16 +27,17 @@ export function SchedulePreview({ schedule }) {
         <div
             key={schedule?.id}
             onClick={navigateToSchedule}
-            className="relative p-6 min-w-max bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm transition-shadow cursor-pointer hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/20 xl:min-w-md"
+            className="flex flex-col gap-3 relative p-6 min-w-max bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm transition-shadow cursor-pointer hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/20 xl:min-w-md"
         >
-            <div className="flex justify-between items-start mb-4">
+        {/* <div className="flex flex-col gap-6"> */}
+            <div className="flex justify-between items-start mb-0">
                 <div>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                         {schedule?.name}
                     </h3>
                     <p className="flex items-center my-1.5 text-sm text-gray-500 dark:text-gray-400">
                         <Calendar className="mr-1 w-4 h-4" />
-                        Updated {format(new Date(schedule.updatedAt), "MMM d, h:mm a")}
+                        Updated at: {format(new Date(schedule.updatedAt), "MMM d, h:mm a")}
                     </p>
                     <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
                         <Clock className="mr-2 w-4 h-4" />
@@ -54,36 +56,106 @@ export function SchedulePreview({ schedule }) {
                 </span>
             </div>
 
+                <div className="space-y-2">
+                    <h4 className="text-sm font-medium text-gray-900 dark:text-white">Routines:</h4>
+                    <ul className="space-y-1">
+                        {schedule?.routines?.length > 2 ?
+                            <>
+                                {schedule?.routines.length && schedule?.routines?.slice(0, 2).map((routine, index) => (
+                                    <li
+                                        key={index}
+                                        className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2"
+                                    >
+                                        <span>{routine?.name}</span>
+                                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                                            ({routine?.startTime} - {routine?.endTime})
+                                        </span>
+                                    </li>))}
 
-            <div className="space-y-2">
-                <h4 className="text-sm font-medium text-gray-900 dark:text-white">Goals:</h4>
-                <ul className="space-y-1">
-                    {schedule?.goals?.length > 2 ?
-                        <>
-                            {schedule?.goals.length && schedule?.goals?.slice(0, 2).map((goal, index) => (
-                                <li
-                                    key={index}
-                                    className="text-sm text-gray-600 dark:text-gray-300"
-                                >
-                                    {goal?.name}
-                                </li>))}
-                            <li className='text-sm text-blue-600 dark:text-blue-400'>
-                                {schedule?.goals?.length - 2} more...
-                            </li>
-                        </>
-                        :
-                        !schedule?.goals?.length ?
-                            <p className='text-sm text-gray-600 dark:text-gray-400'>None</p>
+                                <li className='text-sm text-blue-600 dark:text-blue-400'>
+                                    {schedule?.routines?.length - 2}
+                                    <Tooltip>
+                                        <TooltipTrigger className='ml-1.5'>
+                                            more...
+                                        </TooltipTrigger>
+                                        <TooltipContent className="bg-white border dark:border-gray-600 dark:bg-gray-800">
+                                            {schedule?.routines?.map((routine, index) => (
+                                                <li
+                                                    key={index}
+                                                    className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2"
+                                                >
+                                                    <span>{routine?.name}</span>
+                                                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                                                        ({routine?.startTime} - {routine?.endTime})
+                                                    </span>
+                                                </li>))}
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </li>
+                            </>
                             :
-                            schedule?.goals?.map((goal, index) => (
-                                <li
-                                    key={index}
-                                    className="text-sm font-medium text-blue-600 dark:text-blue-400"
-                                >
-                                    {goal?.name}
-                                </li>))
-                    }
-                </ul>
+                            !schedule?.routines?.length ?
+                                <p className='text-sm text-gray-600 dark:text-gray-400'>None</p>
+                                :
+                                schedule?.routines?.map((routine, index) => (
+                                    <li
+                                        key={index}
+                                        className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2"
+                                    >
+                                        <span>{routine?.name}</span>
+                                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                                            ({routine?.startTime} - {routine?.endTime})
+                                        </span>
+                                    </li>))
+                        }
+                    </ul>
+                </div>
+
+                <div className="space-y-2">
+                    <h4 className="text-sm font-medium text-gray-900 dark:text-white">Goals:</h4>
+                    <ul className="space-y-1">
+                        {schedule?.goals?.length > 2 ?
+                            <>
+                                {schedule?.goals.length && schedule?.goals?.slice(0, 2).map((goal, index) => (
+                                    <li
+                                        key={index}
+                                        className="text-sm text-gray-600 dark:text-gray-300"
+                                    >
+                                        {goal?.name}
+                                    </li>))}
+
+                                <li className='text-sm text-blue-600 dark:text-blue-400'>
+                                    {schedule?.goals?.length - 2}
+                                    <Tooltip>
+                                        <TooltipTrigger className='ml-1.5'>
+                                            more...
+                                        </TooltipTrigger>
+                                        <TooltipContent className="bg-white border dark:border-gray-600 dark:bg-gray-800">
+                                            {schedule?.goals?.map((goal, index) => (
+                                                <li
+                                                    key={index}
+                                                    className="text-sm text-gray-600 dark:text-gray-300"
+                                                >
+                                                    {goal?.name}
+                                                </li>))}
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </li>
+                            </>
+                            :
+                            !schedule?.goals?.length ?
+                                <p className='text-sm text-gray-600 dark:text-gray-400'>None</p>
+                                :
+                                schedule?.goals?.map((goal, index) => (
+                                    <li
+                                        key={index}
+                                        className="text-sm text-gray-600 dark:text-gray-300"
+                                    >
+                                        {goal?.name}
+                                    </li>))
+                        }
+                    </ul>
+                {/* </div> */}
             </div>
         </div>
     )
