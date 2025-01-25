@@ -146,6 +146,7 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const message = searchParams.get('message');
     const scheduleData = JSON.parse(searchParams.get('schedule'));
+    const messageHistory = JSON.parse(searchParams.get('messageHistory') || '[]');
 
     if (!message || !scheduleData) {
       return new Response('Missing message or schedule', { status: 400 });
@@ -161,21 +162,42 @@ export async function GET(request) {
     const messageType = classification.choices[0].message.content.trim().toLowerCase();
 
     // Step 2: Generate response based on message type
-    const responsePrompt = messageType === 'schedule_edit'
-      ? PROMPTS.scheduleEdit
-          .replace('__WAKEUP__', scheduleData.preferences?.wakeup || '')
-          .replace('__SLEEP__', scheduleData.preferences?.sleep || '')
-          .replace('__INTENSITY__', scheduleData.preferences?.intensity || '')
-          .replace('__SCHEDULE__', JSON.stringify(scheduleData.schedule || [], null, 2))
-          .replace('__ROUTINES__', JSON.stringify(scheduleData.routines || [], null, 2))
-          .replace('__GOALS__', JSON.stringify(scheduleData.goals || [], null, 2))
-          .replace('__MESSAGE__', message)
-      : PROMPTS.friendlyChat
-          .replace('__MESSAGE__', message);
+    const replacePromptVariables = (prompt) => {
+      return prompt
+        .replace('__WAKEUP__', scheduleData.preferences?.wakeup || '')
+        .replace('__SLEEP__', scheduleData.preferences?.sleep || '')
+        .replace('__INTENSITY__', scheduleData.preferences?.intensity || '')
+        .replace('__SCHEDULE__', JSON.stringify(scheduleData.schedule || [], null, 2))
+        .replace('__ROUTINES__', JSON.stringify(scheduleData.routines || [], null, 2))
+        .replace('__GOALS__', JSON.stringify(scheduleData.goals || [], null, 2))
+        .replace('__MESSAGE__', message);
+    };
 
-    // Step 3: Create streaming response
-    const response = await createChatCompletion(responsePrompt, {
-      stream: true
+    const getSystemPrompt = () => {
+      const promptMap = {
+        'schedule_edit': () => replacePromptVariables(PROMPTS.scheduleEdit),
+        'schedule_analysis': () => replacePromptVariables(PROMPTS.scheduleAnalysis),
+        'friendly_message': () => PROMPTS.friendlyChat
+      };
+
+      return promptMap[messageType]?.() || PROMPTS.friendlyChat;
+    };
+
+    const systemPrompt = getSystemPrompt();
+
+    let messages = [
+      { role: 'system', content: systemPrompt },
+      ...messageHistory.map(msg => ({ role: msg.role, content: msg.content })),
+      { role: 'user', content: message }
+    ];
+
+    // Step 3: Create streaming response with message history
+    const response = await openai.chat.completions.create({
+      model: 'deepseek-chat',
+      messages,
+      max_tokens: 2000,
+      stream: true,
+      temperature: 0.7,
     });
 
     const stream = createStreamResponse(response, messageType);
