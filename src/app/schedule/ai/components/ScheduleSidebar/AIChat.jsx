@@ -13,7 +13,7 @@ import remarkGfm from 'remark-gfm';
 export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading, setIsLoading }) {
     const dispatch = useDispatch()
     const [message, setMessage] = useState('');
-    // const [messages, setMessages] = useState(chat || []);
+    const [messageHistory, setMessageHistory] = useState([]);
     const messagesEndRef = useRef(null);
     const textareaRef = useRef(null);
 
@@ -72,10 +72,23 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
                 _id: schedule._id,
                 preferences: schedule.preferences,
                 schedule: schedule.schedule,
-
+                routines: schedule.routines,
+                goals: schedule.goals
             };
 
-            const { stream, decoder } = await scheduleService.streamScheduleChanges(userMessage, minimalSchedule);
+            // Get last 5 messages from chat history
+            const lastMessages = (schedule.chat || [])
+                .slice(-5)
+                .map(msg => ({
+                    role: msg.type === 'user' ? 'user' : 'assistant',
+                    content: msg.text
+                }));
+
+            const { stream, decoder } = await scheduleService.streamScheduleChanges(
+                userMessage,
+                minimalSchedule,
+                lastMessages
+            );
             let aiResponse = '';
             let messageType = null;
 
@@ -116,6 +129,8 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
                     onScheduleEdit(editedScheduleResponse);
                 }
             }
+            // For schedule_analysis and friendly_message, we just display the AI's response
+            // No additional action needed as the message is already shown in the chat
         } catch (error) {
             console.error('Failed to get AI response:', error);
             addMessageToChat(createAIMessage('Sorry, I encountered an error. Please try again.'));
