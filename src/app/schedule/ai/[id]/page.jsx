@@ -18,7 +18,7 @@ import { DesktopActions } from '../components/DesktopActions'
 import { EditScheduleModal } from '../components/EditScheduleModal'
 import { getMinutesFromMidnight } from '@/services/util.service'
 import { Button } from '@/components/ui/button'
-import { Check, Pen, X } from 'lucide-react'
+import { Check, Pen, X, Plus } from 'lucide-react'
 import { EditableTitle } from '../components/EditableTitle'
 import { useToast } from "@/components/hooks/use-toast"
 
@@ -194,13 +194,19 @@ export default function DailySchedule() {
                     setIsEditModalOpen={setIsEditModalOpen}
                   />
                 </div>
-                <div className="md:hidden">
+                <Button 
+                  onClick={onCreateTask}
+                  className="w-10 h-10 text-white bg-gradient-to-r from-blue-600 to-blue-500 rounded-full shadow-lg transition-all duration-200 md:hidden hover:shadow-blue-500/20 hover:scale-105 dark:from-blue-600 dark:to-blue-500 dark:hover:from-blue-500 dark:hover:to-blue-400"
+                >
+                  <Plus className="w-5 h-5" />
+                </Button>
+                {/* <div className="md:hidden">
                   <MobileDropdownMenu
                     schedule={schedule}
                     onOpenCalendarDialog={() => setCalendarDialogOpen(true)}
                     onCreateTask={onCreateTask}
                   />
-                </div>
+                </div> */}
               </div>
             </CardHeader>
 

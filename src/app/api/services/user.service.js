@@ -11,6 +11,15 @@ export async function upsertUser(profile) {
           name: profile.name,  // Fields to update or insert
           email: profile.email, // Ensures email is always set
         },
+        $setOnInsert: {  // Only set these fields when creating a new user
+          preferences: {
+            wakeup: "08:00",
+            sleep: "23:00",
+            intensity: "medium"
+          },
+          goals: [],
+          routines: []
+        }
       },
       { upsert: true } // Create a new document if none matches the filter
     );
@@ -25,4 +34,3 @@ export async function upsertUser(profile) {
     throw err;
   }
 }
-

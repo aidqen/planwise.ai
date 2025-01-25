@@ -9,17 +9,23 @@ export function AddButton({ title, children, compact = false }) {
                 <Button
                     variant="outline"
                     size="sm"
-                    className="my-2 w-full max-w-max h-8 text-xs text-white bg-blue-500 border-blue-200 hover:bg-blue-50 hover:text-blue-600"
+                    className="my-2 h-8 px-3 min-w-[80px] bg-gray-50/90 shadow-sm text-blue-500 hover:bg-gray-50 text-xs font-medium dark:text-white rounded-[10px] border-none hover:shadow transition-all duration-200 dark:bg-blue-600/90 dark:hover:bg-blue-700 py-4 "
                 >
                     <Plus className="mr-1 w-3 h-3" />
-                    {title}
+                    <span>{title}</span>
                 </Button>
             </DialogTrigger>
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>{title}</DialogTitle>
+            <DialogContent className="bg-white border-gray-200 shadow-lg sm:max-w-md dark:bg-gray-900 dark:border-gray-800 dark:shadow-gray-900/20">
+                <DialogHeader className="pb-4 border-b border-gray-100 dark:border-gray-800">
+                    <DialogTitle className="font-semibold text-gray-900 dark:text-white">
+                        {title}
+                    </DialogTitle>
                 </DialogHeader>
-                {children}
+                <div className="px-1 pt-4">
+                    <div className="relative bg-white rounded-lg dark:bg-gray-900">
+                        {children}
+                    </div>
+                </div>
             </DialogContent>
         </Dialog>
     )

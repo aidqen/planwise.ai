@@ -44,7 +44,7 @@ export default function TimePicker({
     return (
         <Select onValueChange={onChange}>
             <SelectTrigger 
-                className={`inline-flex justify-start items-center px-5 py-2 w-full text-sm bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm transition-all duration-200 me-2 max-sm:text-xs text-gray-700 dark:text-gray-200 focus:outline-none hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-2 focus:ring-green-500/20 dark:focus:ring-green-500/20 ${className}`}
+                className={`inline-flex justify-start items-center px-5 py-2 w-full text-sm text-gray-700 bg-white rounded-lg border border-gray-200 shadow-sm transition-all duration-200 dark:bg-gray-800 dark:border-gray-700 me-2 max-sm:text-xs dark:text-gray-200 focus:outline-none hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-2 focus:ring-green-500/20 dark:focus:ring-green-500/20 ${className}`}
             >
                 <Icon className="mr-2 w-5 h-5 text-gray-500 dark:text-gray-400" />
                 <SelectValue placeholder={placeholder || value}>{value}</SelectValue>
@@ -55,7 +55,7 @@ export default function TimePicker({
                         <SelectItem
                             key={slot.id}
                             value={slot.id}
-                            className="cursor-pointer text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50 focus:bg-gray-50 dark:focus:bg-gray-700/50"
+                            className="text-gray-700 cursor-pointer dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50 focus:bg-gray-50 dark:focus:bg-gray-700/50"
                         >
                             {slot.label}
                         </SelectItem>

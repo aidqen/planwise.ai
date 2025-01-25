@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 export function AppHeader() {
   const user = useSelector(state => state.userModule.user)
+  console.log("🚀 ~ file: AppHeader.jsx:22 ~ user:", user)
   const pathname = usePathname()
   const dispatch = useDispatch()
   const isMobile = useIsMobile()
@@ -56,7 +57,7 @@ export function AppHeader() {
     <header
       className={cn(
         isVisible ? 'flex':'hidden', 
-        'flex-row justify-between items-center pb-3 w-full ps-3 pe-6 max-sm:justify-between'
+        'flex-row justify-between items-center w-full ps-3 pe-6 max-sm:justify-between fixed top-0 left-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm py-3 z-50'
       )}
     >
       <button 

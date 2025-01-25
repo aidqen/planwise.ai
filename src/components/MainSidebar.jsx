@@ -33,13 +33,13 @@ export function SidebarDemo() {
     }, [pathname, isVisible])
     // const [open, setOpen] = useState(false);
     const links = [
-        // {
-        //     label: "Preferences",
-        //     href: "/preferences",
-        //     icon: (
-        //         <Repeat2 className="flex-shrink-0 w-5 h-5 text-neutral-700 dark:text-neutral-200" />
-        //     ),
-        // },
+        {
+            label: "Preferences",
+            href: "/preferences",
+            icon: (
+                <Repeat2 className="flex-shrink-0 w-5 h-5 text-neutral-700 dark:text-neutral-200" />
+            ),
+        },
         {
             label: "Create New Schedule",
             href: "/schedule/new",
@@ -71,7 +71,7 @@ export function SidebarDemo() {
     ];
 
     function navigateHome() {
-        router.replace('/')
+        router.replace('/home')
     }
 
     function toggleSidebar() {

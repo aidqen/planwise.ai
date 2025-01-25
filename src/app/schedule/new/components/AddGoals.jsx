@@ -62,12 +62,12 @@ export function AddGoals() {
     <Section className={'py-6 w-full md:p-6'}>
       <Card className="overflow-y-auto mx-auto w-full max-w-2xl bg-transparent border-0 shadow-none">
         <CardContent className="flex flex-col gap-7 p-0 w-full md:p-6">
-          <div className="text-center space-y-2">
+          <div className="space-y-2 text-center">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 md:text-2xl">
               Set Your Goals
             </h3>
-            <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 max-w-lg mx-auto">
-              Add goals or tasks you want to accomplish in your schedule. Prioritize them by importance to help us create a more effective schedule for you.
+            <p className="mx-auto max-w-lg text-xs text-gray-600 md:text-sm lg:text-base dark:text-gray-400">
+              Add goals want to work on in your schedule. Prioritize them by importance to help us create a more effective schedule for you.
             </p>
           </div>
 
@@ -81,7 +81,7 @@ export function AddGoals() {
                 value={currentGoal}
                 onChange={e => setCurrentGoal(e.target.value)}
                 placeholder="Enter your goal or task (e.g., 'Complete project proposal')"
-                className="w-full text-base rounded-lg border-gray-200 dark:border-gray-700 dark:bg-gray-800/50 dark:text-gray-100 shadow-sm focus:border-blue-500 focus-visible:ring-1 focus-visible:ring-blue-500 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                className="w-full text-base rounded-lg border-gray-200 shadow-sm dark:border-gray-700 dark:bg-gray-800/50 dark:text-gray-100 focus:border-blue-500 focus-visible:ring-1 focus-visible:ring-blue-500 placeholder:text-gray-400 dark:placeholder:text-gray-500"
               />
               
               <div className="space-y-2">
@@ -134,7 +134,7 @@ export function AddGoals() {
                 Your Goals {goals.length > 0 && `(${goals.length})`}
               </h4>
               {goals.length > 0 && (
-                <p className="text-xs text-gray-500 dark:text-gray-400 italic">
+                <p className="text-xs italic text-gray-500 dark:text-gray-400">
                   Drag to reorder
                 </p>
               )}
@@ -152,8 +152,8 @@ export function AddGoals() {
               </div>
             )}
             {goals.length === 0 && (
-              <div className="flex flex-col items-center justify-center p-8 text-center bg-gray-50 dark:bg-gray-800/30 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700">
-                <Info className="w-8 h-8 text-gray-400 dark:text-gray-500 mb-2" />
+              <div className="flex flex-col justify-center items-center p-8 text-center bg-gray-50 rounded-lg border-2 border-gray-200 border-dashed dark:bg-gray-800/30 dark:border-gray-700">
+                <Info className="mb-2 w-8 h-8 text-gray-400 dark:text-gray-500" />
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   No goals added yet. Start by adding your first goal above.
                 </p>
