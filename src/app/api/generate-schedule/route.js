@@ -5,6 +5,9 @@ const openai = new OpenAI({
   baseURL: 'https://api.deepseek.com',
   apiKey: process.env.DEEPSEEK_API_KEY
 });
+// const openai = new OpenAI({
+//   apiKey: process.env.OPENAI_API_KEY
+// });
 export async function POST(request) {
   try {
     const { preferences, routines, goals } = await request.json();
