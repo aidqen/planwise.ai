@@ -26,6 +26,12 @@ export async function generateAiSchedule(parameters) {
         throw err;
     }
 }
+export async function deleteSchedule(id) {
+    const user = getLocalUser()
+    console.log("🚀 ~ file: schedule.actions.js:32 ~ user:", user)
+    await scheduleService.deleteScheduleById(id, user?._id)
+    deleteScheduleFromUser(id)
+}
 
 async function saveScheduleToDB(schedule) {
     return await scheduleService.insertScheduleToDB(schedule)

@@ -18,6 +18,10 @@ export async function getUser() {
         return user
 }
 
+export function getLocalUser() {
+        return store.getState().userModule.user
+}
+
 export async function addScheduleToUser(schedule) {
         const { id, name, updatedAt, preferences, routines, goals } = schedule
         const user = store.getState().userModule.user
@@ -38,6 +42,13 @@ export async function updateScheduleInUser(schedule) {
         } catch (err) {
                 throw err
         }
+}
+
+export async function deleteScheduleFromUser(scheduleId) {
+        const user = getLocalUser()
+        user.schedules = user.schedules.filter(schedule => schedule.id !== scheduleId)
+        await userService.updateUser(user)
+        store.dispatch({ type: SET_USER, user })
 }
 // export async function loadUsers() {
 //     try {

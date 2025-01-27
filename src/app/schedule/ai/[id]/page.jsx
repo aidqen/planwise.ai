@@ -63,6 +63,8 @@ export default function DailySchedule() {
     console.log("🚀 ~ file: page.jsx:54 ~ params?.id:", params?.id)
     try {
       setIsLoading(true)
+      if (params?.id === 'loading') return
+      
       const fetchedSchedule = await scheduleService.getScheduleById(params.id)
       // dispatch({type: SET_SCHEDULE, schedule: fetchedSchedule })
       setSchedule(fetchedSchedule || DEFAULT_SCHEDULE)
@@ -159,9 +161,14 @@ export default function DailySchedule() {
     }
   }
 
+  async function onDeleteSchedule() {
+    await deleteSchedule(schedule._id)
+    router.replace('/schedule/all')
+  }
+
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] overflow-y-hidden justify-between w-full"
+    <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] pt-16 md:pt-0 overflow-y-hidden justify-between w-full"
     //  ref={pageRef}
     >
       <ScheduleSidebar

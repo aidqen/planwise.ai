@@ -10,7 +10,8 @@ export const scheduleService = {
   streamScheduleChanges,
   updateScheduleWithChanges,
   saveChat,
-  getEditedSchedule
+  getEditedSchedule,
+  deleteScheduleById,
 }
 
 async function getScheduleById(id) {
@@ -223,4 +224,13 @@ async function getEditedSchedule(schedule, explanation) {
     // Return a more user-friendly error
     throw new Error(`Failed to update schedule: ${error.message}`);
   }
+}
+
+async function deleteScheduleById(id, userId) {
+  await fetch(`/api/schedule/delete/${id}?userId=${userId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 }

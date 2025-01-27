@@ -5,33 +5,22 @@ import { dbService } from "@/app/api/services/db.service";
 
 export async function DELETE(req, { params }) {
     try {
-        const session = await getServerSession(authOptions);
-        
-        if (!session?.user) {
-            return new NextResponse("Unauthorized", { status: 401 });
-        }
 
         const { id } = params;
-        if (!id) {
-            return new NextResponse("Schedule ID is required", { status: 400 });
+        const { searchParams } = new URL(req.url);
+        const userId = searchParams.get('userId');
+
+        if (!id || !userId) {
+            return new NextResponse("Schedule ID and User ID are required", { status: 400 });
         }
 
         const scheduleCollection = await dbService.getCollection("schedules");
         
-        // Find the schedule and verify ownership
-        const schedule = await scheduleCollection.findOne({
-            _id: id,
-            userId: session.user.id
-        });
-
-        if (!schedule) {
-            return new NextResponse("Schedule not found or unauthorized", { status: 404 });
-        }
+        if (schedule?.creator?.id !== userId) NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
         // Delete the schedule
         await scheduleCollection.deleteOne({
             _id: id,
-            userId: session.user.id
         });
 
         return new NextResponse("Schedule deleted successfully", { status: 200 });
