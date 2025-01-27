@@ -178,7 +178,7 @@ export default function DailySchedule() {
       ) : (
         <Card className="overflow-y-auto relative w-full bg-transparent border-none md:pt-16 scrollbar">
           <div className="mx-auto ps-8 w-full md:w-[80%] relative">
-            <CardHeader className="pt-0">
+            <CardHeader className="pt-0 pe-1.5">
               <div className="flex justify-between items-center">
                 <div className="space-y-1">
                   <EditableTitle
@@ -188,10 +188,8 @@ export default function DailySchedule() {
                 </div>
                 <div className="hidden gap-4 md:flex">
                   <DesktopActions
-                    schedule={schedule}
-                    onOpenCalendarDialog={() => setCalendarDialogOpen(true)}
                     onCreateTask={onCreateTask}
-                    setIsEditModalOpen={setIsEditModalOpen}
+                    onDeleteSchedule={onDeleteSchedule}
                   />
                 </div>
                 <Button 
@@ -258,16 +256,9 @@ export default function DailySchedule() {
         deleteTask={deleteTask}
         schedule={schedule}
       />
-
       <AddScheduleDialog
         open={calendarDialogOpen}
         onOpenChange={setCalendarDialogOpen}
-        schedule={schedule}
-      />
-
-      <EditScheduleModal
-        open={isEditModalOpen}
-        onOpenChange={setIsEditModalOpen}
         schedule={schedule}
       />
     </div>
