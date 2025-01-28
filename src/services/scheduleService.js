@@ -35,11 +35,11 @@ async function updateSchedule(schedule) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(schedule),
     })
-    
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
-    
+
     const result = await response.json()
     return result
   } catch (error) {
@@ -213,7 +213,7 @@ async function getEditedSchedule(schedule, explanation) {
     }
 
     const data = await response.json();
-    
+
     if (!data || !data.schedule) {
       throw new Error('Invalid response format from server');
     }
@@ -227,10 +227,20 @@ async function getEditedSchedule(schedule, explanation) {
 }
 
 async function deleteScheduleById(id, userId) {
-  await fetch(`/api/schedule/delete/${id}?userId=${userId}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  try {
+    const response = await fetch(`/api/schedule/delete/${id}?userId=${userId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    throw error;
+  }
 }
