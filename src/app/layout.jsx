@@ -29,7 +29,7 @@ export default function RootLayout({ children }) {
           <TooltipProvider delayDuration={0}>
             <ThemeClientWrapper>
               <SidebarDemo />
-              <main className="flex overflow-y-auto flex-col col-start-2 row-start-1 items-center pt-4 h-full md:pt-0">
+              <main className="flex overflow-y-hidden flex-col col-start-2 row-start-1 items-center pt-4 h-full md:pt-0">
                 <div className="hidden absolute inset-0 bg-gradient-to-b to-transparent pointer-events-none dark:block from-blue-50/50 via-blue-50/25 dark:from-blue-950/20 dark:via-blue-950/10 dark:to-transparent" />
                 <AppHeader />
                 {children}

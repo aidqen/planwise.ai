@@ -19,7 +19,7 @@ export async function PUT(req) {
                     image: userToSave.image,
                     schedules: userToSave?.schedules ? [...userToSave.schedules] : [], // This is an array, spread it
                     updatedAt: new Date(),
-                    preferences: userToSave?.preferences ? [...userToSave.preferences] : [],
+                    preferences: userToSave?.preferences || {}, // Use object directly
                     routines: userToSave?.routines ? [...userToSave.routines] : [],
                     goals: userToSave?.goals ? [...userToSave.goals] : [],
                 } 

@@ -10,21 +10,20 @@ const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 // Helper function to refresh access token
 export async function refreshAccessToken(refreshToken) {
   const oauth2Client = new google.auth.OAuth2(
-    GOOGLE_CLIENT_ID,
-    GOOGLE_CLIENT_SECRET
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET
   );
-
   oauth2Client.setCredentials({ refresh_token: refreshToken });
 
   try {
     const { credentials } = await oauth2Client.refreshAccessToken();
     return {
       accessToken: credentials.access_token,
-      refreshToken: credentials.refresh_token || refreshToken, // Keep old refresh token if a new one isn't provided
-      expiresAt: Math.floor(Date.now() / 1000) + credentials.expiry_date / 1000, // Expiry time in seconds
+      refreshToken: credentials.refresh_token ?? refreshToken, // Fallback to existing
+      expiresAt: Math.floor(credentials.expiry_date / 1000), // Correct expiration
     };
   } catch (error) {
-    console.error("Error refreshing access token:", error.message);
+    console.error('Refresh token error:', error.message);
     return null;
   }
 }
@@ -67,32 +66,28 @@ export const authOptions = {
       }
     },
     async jwt({ token, account, profile, user }) {
-      // Save tokens and user data during initial sign-in
       if (account) {
+        // Initial sign-in: capture tokens from account
         token.accessToken = account.access_token;
-        token.refreshToken = account.refresh_token;
-        token.expiresAt = Math.floor(Date.now() / 1000) + account.expires_in; // Store token expiration time
-
-        // Attach the MongoDB user ID from the database
-        if (account.userId) {
-          token.id = account.userId;
-        }
+        token.refreshToken = account.refresh_token; // Ensure this is captured
+        token.expiresAt = Math.floor(Date.now() / 1000) + account.expires_in;
+        if (account.userId) token.id = account.userId;
       }
-
-      // Check if the token has expired and refresh it
+    
+      // Check and refresh expired token
       if (token.expiresAt && Date.now() / 1000 > token.expiresAt) {
-        const refreshedTokens = await refreshAccessToken(token.refreshToken);
-
-        if (refreshedTokens) {
-          token.accessToken = refreshedTokens.accessToken;
-          token.refreshToken = refreshedTokens.refreshToken; // Update refresh token if new one is provided
-          token.expiresAt = refreshedTokens.expiresAt;
+        if (!token.refreshToken) {
+          throw new Error('Missing refresh token');
+        }
+        const refreshed = await refreshAccessToken(token.refreshToken);
+        if (refreshed) {
+          token.accessToken = refreshed.accessToken;
+          token.refreshToken = refreshed.refreshToken ?? token.refreshToken;
+          token.expiresAt = refreshed.expiresAt;
         } else {
-          console.error("Failed to refresh access token");
-          throw new Error('Failed to refresh access token');
+          throw new Error('Failed to refresh token');
         }
       }
-
       return token;
     },
     async session({ session, token }) {
