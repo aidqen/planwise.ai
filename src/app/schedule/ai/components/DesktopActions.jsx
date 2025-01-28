@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
-import { Pen, Plus, Save, Edit, Star } from 'lucide-react'
+import {  Plus,  Trash } from 'lucide-react'
 
-export function DesktopActions({ onCreateTask }) {
+export function DesktopActions({ onCreateTask, onDeleteSchedule }) {
 
     return (
         <div className="hidden flex-row md:gap-1.5 lg:gap-2 xl:gap-3 justify-end w-max md:flex">
@@ -11,6 +11,13 @@ export function DesktopActions({ onCreateTask }) {
             >
                 <Plus className="mr-1 w-4 h-4" />
                 Add New Task
+            </Button>
+            <Button 
+                onClick={onDeleteSchedule} 
+                variant="destructive"
+                className="px-3 py-2 w-full text-sm font-medium text-white bg-red-600 rounded-lg shadow-md dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800 sm:w-auto"
+            >
+                <Trash className="h-4 -4" />
             </Button>
 
             {/* <Button 
