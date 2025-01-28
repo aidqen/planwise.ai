@@ -27,7 +27,7 @@ export function SchedulePreview({ schedule }) {
         <div
             key={schedule?.id}
             onClick={navigateToSchedule}
-            className="flex flex-col gap-3 relative p-6 min-w-max bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm transition-shadow cursor-pointer hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/20 xl:min-w-md"
+            className="flex relative flex-col gap-3 p-6 min-w-max bg-white rounded-lg border border-gray-200 shadow-sm transition-shadow cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/20 xl:min-w-md"
         >
         {/* <div className="flex flex-col gap-6"> */}
             <div className="flex justify-between items-start mb-0">
@@ -64,7 +64,7 @@ export function SchedulePreview({ schedule }) {
                                 {schedule?.routines.length && schedule?.routines?.slice(0, 2).map((routine, index) => (
                                     <li
                                         key={index}
-                                        className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2"
+                                        className="flex gap-2 items-center text-sm text-gray-600 dark:text-gray-300"
                                     >
                                         <span>{routine?.name}</span>
                                         <span className="text-xs text-gray-500 dark:text-gray-400">
@@ -80,15 +80,15 @@ export function SchedulePreview({ schedule }) {
                                         </TooltipTrigger>
                                         <TooltipContent className="bg-white border dark:border-gray-600 dark:bg-gray-800">
                                             {schedule?.routines?.map((routine, index) => (
-                                                <li
+                                                <span
                                                     key={index}
-                                                    className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2"
+                                                    className="flex gap-2 items-center text-sm text-gray-600 dark:text-gray-300"
                                                 >
                                                     <span>{routine?.name}</span>
                                                     <span className="text-xs text-gray-500 dark:text-gray-400">
                                                         ({routine?.startTime} - {routine?.endTime})
                                                     </span>
-                                                </li>))}
+                                                </span>))}
                                         </TooltipContent>
                                     </Tooltip>
                                 </li>
@@ -100,7 +100,7 @@ export function SchedulePreview({ schedule }) {
                                 schedule?.routines?.map((routine, index) => (
                                     <li
                                         key={index}
-                                        className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2"
+                                        className="flex gap-2 items-center text-sm text-gray-600 dark:text-gray-300"
                                     >
                                         <span>{routine?.name}</span>
                                         <span className="text-xs text-gray-500 dark:text-gray-400">
@@ -132,12 +132,12 @@ export function SchedulePreview({ schedule }) {
                                         </TooltipTrigger>
                                         <TooltipContent className="bg-white border dark:border-gray-600 dark:bg-gray-800">
                                             {schedule?.goals?.map((goal, index) => (
-                                                <li
+                                                <span
                                                     key={index}
                                                     className="text-sm text-gray-600 dark:text-gray-300"
                                                 >
                                                     {goal?.name}
-                                                </li>))}
+                                                </span>))}
                                         </TooltipContent>
                                     </Tooltip>
                                 </li>
