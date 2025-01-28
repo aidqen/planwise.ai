@@ -17,9 +17,22 @@ export async function POST(request) {
         status: 400,
       });
     }
-    
+
 
     const prompt = `You are an AI assistant that generates optimized daily schedules based on the user's preferences, routines, and goals. Your task is to create a daily schedule that strictly respects routines, includes meals and morning/night routines, and effectively allocates time to goals based on their importance. Every hour of the day must be accounted for, with no gaps left unscheduled.
+
+    **Preferences**:
+- Wake: ${preferences.wakeup}
+- Sleep: ${preferences.sleep}
+- Intensity: ${preferences.intensity}
+
+**Routines**:
+${routines?.map(r => `Routine: ${r.name}: Start: ${r.startTime}, End: ${r.endTime}`).join('\n')}
+
+**Goals**:
+${goals?.map(g => `Goal: ${g.name}, Importance: ${g.importance}`).join('\n')}
+
+---
 
 **Instructions**:
 - Always return a valid JSON array of objects.
@@ -79,21 +92,6 @@ export async function POST(request) {
      }
      
 
----
-
-**Preferences**:
-- Wake: ${preferences.wakeup}
-- Sleep: ${preferences.sleep}
-- Intensity: ${preferences.intensity}
-
-**Routines**:
-${routines?.map(r => `Routine: ${r.name}: Start: ${r.startTime}, End: ${r.endTime}`).join('\n')}
-
-**Goals**:
-${goals?.map(g => `Goal: ${g.name}, Importance: ${g.importance}`).join('\n')}
-
----
-
 **Output Example**:
 [
   {
@@ -125,10 +123,9 @@ ${goals?.map(g => `Goal: ${g.name}, Importance: ${g.importance}`).join('\n')}
     "end": "22:30",
   }
 ]
-
 `;
 
-    
+
     const completion = await openai.chat.completions.create({
       model: 'deepseek-chat',
       messages: [{ role: 'user', content: prompt }],

@@ -51,7 +51,8 @@ Reply with ONLY ONE WORD: either "schedule_edit", "schedule_analysis", or "frien
 5. **Schedule Requirements:**
    - Ensure no overlapping tasks.
    - Fill every minute from wake-up to sleep with planned activities or breaks. No gaps are allowed.
-   - Include exactly **three meals** (tasks labeled "meal") unless the user specifies otherwise.
+   - Include exactly **three meals** (tasks labeled "meal") unless the user specifies otherwise. 
+   - Each meal must be at least 30 minutes long.
 
 6. **Output Formatting:**
    - Respond by presenting the **revised schedule** only. Do not include explanations of changes unless requested by the user.

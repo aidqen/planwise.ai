@@ -12,7 +12,7 @@ export async function POST(request) {
     const { scheduleData, explanation } = await request.json();
     console.log("🚀 ~ file: route.js:11 ~ scheduleData:", scheduleData)
 
-    const updatePrompt = `You are an AI assistant that modifies daily schedules to make the user's life better. Based on this explanation of changes:
+    const updatePrompt = `You are an AI assistant that modifies daily schedules based on an explanation of the changes. You meticulously listen to the instructions you were given.
     ${explanation}
     
     Create an updated version of the schedule that implements these changes.
