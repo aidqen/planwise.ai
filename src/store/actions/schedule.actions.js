@@ -1,8 +1,8 @@
 import { scheduleService } from '@/services/scheduleService'
-import { ADD_TASK_TO_AI_SCHEDULE, RESET_SCHEDULE, SET_SCHEDULE } from '../reducers/schedule.reducer'
+import { ADD_TASK_TO_AI_SCHEDULE, REORDER_GOALS, RESET_SCHEDULE, SET_SCHEDULE } from '../reducers/schedule.reducer'
 import { store } from '../store'
 import { userService } from '@/services/user.service'
-import { addScheduleToUser } from './user.actions'
+import { addScheduleToUser, deleteScheduleFromUser, getLocalUser } from './user.actions'
 import { makeId } from '@/services/util.service'
 
 export async function saveScheduleToRedux(schedule) {
@@ -26,12 +26,33 @@ export async function generateAiSchedule(parameters) {
         throw err;
     }
 }
-export async function deleteSchedule(id) {
-    const user = getLocalUser()
-    console.log("🚀 ~ file: schedule.actions.js:32 ~ user:", user)
-    await scheduleService.deleteScheduleById(id, user?._id)
-    deleteScheduleFromUser(id)
+
+export async function updateSchedule(schedule) {
+    try {
+        scheduleService.updateSchedule(schedule)
+    } catch (err) {
+        throw err
+    }
 }
+
+export function reorderGoals(newOrder) {
+    return {
+        type: REORDER_GOALS,
+        payload: newOrder,
+    }
+}
+
+export async function deleteSchedule(id) {
+    try {
+        const user = getLocalUser()
+        console.log("🚀 ~ file: schedule.actions.js:32 ~ user:", user)
+        await scheduleService.deleteScheduleById(id, user?._id)
+        deleteScheduleFromUser(id)
+    } catch (error) {
+        throw error
+    }
+}
+
 
 async function saveScheduleToDB(schedule) {
     return await scheduleService.insertScheduleToDB(schedule)
@@ -41,7 +62,7 @@ function formatSchedule(schedule, preferences, routines, goals, user) {
     if (!schedule) return
     const now = new Date()
     const timestamp = now.getTime()
-    return { name: 'Daily Schedule', schedule: [...schedule], createdAt: timestamp, updatedAt: timestamp, preferences, routines, goals, creator: {id: user?._id, name: user?.name} , chat:[]}
+    return { name: 'Daily Schedule', schedule: [...schedule], createdAt: timestamp, updatedAt: timestamp, preferences, routines, goals, creator: { id: user?._id, name: user?.name }, chat: [] }
 }
 
 
