@@ -1,6 +1,6 @@
 'use client'
 
-export function IntensityBar({ label, value, total, color }) {
+export function StatisticsBar({ label, value, total, color }) {
   return (
     <div className="flex flex-row gap-3 items-center xl:gap-10">
       <div className="flex flex-1 gap-2 items-center">
