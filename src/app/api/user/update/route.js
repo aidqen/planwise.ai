@@ -5,19 +5,23 @@ import { ObjectId } from 'mongodb';
 export async function PUT(req) {
     try {
         const userToSave = await req.json();
+        console.log("🚀 ~ file: route.js:8 ~ userToSave:", userToSave)
 
         const usersCollection = await dbService.getCollection('User');
         
         // First let's check if the user exists
 
         const result = await usersCollection.updateOne(
-            { email: userToSave.email },
+            { _id: ObjectId.createFromHexString(userToSave._id) },
             { 
                 $set: { 
                     name: userToSave.name, 
                     image: userToSave.image,
                     schedules: userToSave?.schedules ? [...userToSave.schedules] : [], // This is an array, spread it
-                    updatedAt: new Date()
+                    updatedAt: new Date(),
+                    preferences: userToSave?.preferences ? [...userToSave.preferences] : [],
+                    routines: userToSave?.routines ? [...userToSave.routines] : [],
+                    goals: userToSave?.goals ? [...userToSave.goals] : [],
                 } 
             },
             { upsert: true } // This will create the document if it doesn't exist
@@ -29,7 +33,7 @@ export async function PUT(req) {
         }
 
         // Fetch and return the updated user
-        const updatedUser = await usersCollection.findOne({ email: userToSave.email });
+        const updatedUser = await usersCollection.findOne({ _id: ObjectId.createFromHexString(userToSave._id)});
         return NextResponse.json(updatedUser);
     } catch (error) {
         console.error("Error updating user:", error);

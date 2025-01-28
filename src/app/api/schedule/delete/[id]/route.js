@@ -5,7 +5,7 @@ import { dbService } from "@/app/api/services/db.service";
 
 export async function DELETE(req, { params }) {
     try {
-
+        
         const { id } = params;
         const { searchParams } = new URL(req.url);
         const userId = searchParams.get('userId');
