@@ -13,7 +13,6 @@ import remarkGfm from 'remark-gfm';
 export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading, setIsLoading }) {
     const dispatch = useDispatch()
     const [message, setMessage] = useState('');
-    const [messageHistory, setMessageHistory] = useState([]);
     const messagesEndRef = useRef(null);
     const textareaRef = useRef(null);
 
