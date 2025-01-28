@@ -11,6 +11,7 @@ export const ADD_TASK_TO_AI_SCHEDULE = 'ADD_TASK_TO_AI_SCHEDULE'
 export const RESET_SCHEDULE = 'RESET_SCHEDULE'
 export const ADD_GOAL = 'ADD_GOAL'
 export const ADD_ROUTINE = 'ADD_ROUTINE'
+export const REORDER_GOALS = 'REORDER_GOALS'
 // export const ADD_GOAL = 'ADD_GOAL'
 
 const initialState = {
@@ -52,6 +53,15 @@ export function scheduleReducer(state = initialState, action) {
                 ...state,
                 schedule: [...state.aiSchedule, action.task], // Append the new task
             };
+        case REORDER_GOALS:
+            newState = {
+                ...state,
+                multiStepForm: {
+                    ...state.multiStepForm,
+                    goals: action.payload, // Update the goals array with the new order
+                },
+            };
+            break;
         default:
     }
     return newState
