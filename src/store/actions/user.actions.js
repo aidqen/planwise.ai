@@ -33,12 +33,13 @@ export async function addScheduleToUser(schedule) {
 
 export async function updateScheduleInUser(schedule) {
         try {
-                const { id, name, updatedAt, preferences, routines, goals } = schedule
+                const { _id: id, name, updatedAt, preferences, routines, goals } = schedule
                 const user = store.getState().userModule.user
                 const scheduleToSave = { id, name, updatedAt, preferences, routines, goals }
                 const updatedSchedules = user?.schedules?.map(s => s.id === id ? scheduleToSave : s) || [scheduleToSave]
                 const userToSave = { ...user, schedules: updatedSchedules }
-                await userService.updateUser(userToSave)
+                const userAfterUpdate = await userService.updateUser(userToSave)
+                store.dispatch({ type: SET_USER, user: userAfterUpdate })
         } catch (err) {
                 throw err
         }
@@ -49,6 +50,15 @@ export async function deleteScheduleFromUser(scheduleId) {
         user.schedules = user.schedules.filter(schedule => schedule.id !== scheduleId)
         await userService.updateUser(user)
         store.dispatch({ type: SET_USER, user })
+}
+
+export async function updateUser(user) {
+        try {
+                await userService.updateUser(user)
+                store.dispatch({ type: SET_USER, user })
+        } catch (err) {
+                throw err
+        }
 }
 // export async function loadUsers() {
 //     try {
