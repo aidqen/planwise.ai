@@ -162,8 +162,16 @@ export default function DailySchedule() {
   }
 
   async function onDeleteSchedule() {
-    await deleteSchedule(schedule._id)
-    router.replace('/schedule/all')
+    try {
+      await deleteSchedule(schedule._id)
+      router.replace('/schedule/all')
+    } catch {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to delete schedule. Please try again.",
+      })
+    }
   }
 
 
