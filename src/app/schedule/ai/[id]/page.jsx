@@ -1,26 +1,25 @@
 'use client'
 
 import { useSelector } from 'react-redux'
-import { useEffect, useRef, useState } from 'react'
-import { useParams } from 'next/navigation'
-import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card'
+import { useEffect, useState } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { ScheduleStructure } from '../components/ScheduleStructure'
 import { SaveToCalendarBtn } from '../components/SaveToCalendarBtn'
 import { AddScheduleDialog } from '../components/AddScheduleDialog'
 import { TaskDialog } from '../components/TaskDialog'
 import { scheduleService } from '@/services/scheduleService'
 import { TaskList } from '../components/TaskList'
-import { format } from 'date-fns'
 import { ScheduleSidebar } from '../components/ScheduleSidebar/ScheduleSidebar'
 import { Loading } from '../components/Loading'
-import { MobileDropdownMenu } from '../components/MobileDropdownMenu'
 import { DesktopActions } from '../components/DesktopActions'
-import { EditScheduleModal } from '../components/EditScheduleModal'
 import { getMinutesFromMidnight } from '@/services/util.service'
 import { Button } from '@/components/ui/button'
-import { Check, Pen, X, Plus } from 'lucide-react'
+import { Check, X, Plus } from 'lucide-react'
 import { EditableTitle } from '../components/EditableTitle'
 import { useToast } from "@/components/hooks/use-toast"
+import { deleteSchedule, updateSchedule } from '@/store/actions/schedule.actions'
+import { updateScheduleInUser } from '@/store/actions/user.actions'
 
 const DEFAULT_SCHEDULE = {
   schedule: [],
@@ -32,11 +31,11 @@ const DEFAULT_SCHEDULE = {
 export default function DailySchedule() {
   // const dispatch = useDispatch()
   const params = useParams()
+  const router = useRouter()
 
   const [calendarDialogOpen, setCalendarDialogOpen] = useState(false)
   const [selectedTask, setSelectedTask] = useState(null)
   const [isCreateTask, setIsCreateTask] = useState(false)
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [editedSchedule, setEditedSchedule] = useState(null)
   const [schedule, setSchedule] = useState(DEFAULT_SCHEDULE)
@@ -64,7 +63,7 @@ export default function DailySchedule() {
     try {
       setIsLoading(true)
       if (params?.id === 'loading') return
-      
+
       const fetchedSchedule = await scheduleService.getScheduleById(params.id)
       // dispatch({type: SET_SCHEDULE, schedule: fetchedSchedule })
       setSchedule(fetchedSchedule || DEFAULT_SCHEDULE)
@@ -140,17 +139,16 @@ export default function DailySchedule() {
 
   async function onSaveSchedule(property, value) {
     const oldSchedule = { ...schedule };
-    
     try {
       const newSchedule = { ...oldSchedule, [property]: value };
       setSchedule(newSchedule);
-      await scheduleService.updateSchedule(newSchedule);
+      await updateSchedule(newSchedule);
+      await updateScheduleInUser(newSchedule)
       toast({
         title: "Success",
         description: "Changes saved successfully",
       });
     } catch (error) {
-      console.log("🚀 ~ file: page.jsx:141 ~ oldSchedule:", oldSchedule)
       setSchedule(oldSchedule);
       toast({
         variant: "destructive",
@@ -187,6 +185,7 @@ export default function DailySchedule() {
         multiStepForm={multiStepForm}
         onScheduleEdit={handleScheduleEdit}
         isEditedSchedule={!!editedSchedule}
+        onSaveSchedule={onSaveSchedule}
       />
       {(isLoading || !schedule?.schedule?.length) ? (
         <Loading />
@@ -195,31 +194,24 @@ export default function DailySchedule() {
           <div className="mx-auto ps-8 w-full md:w-[80%] relative">
             <CardHeader className="pt-0 pe-1.5">
               <div className="flex justify-between items-center">
-                <div className="space-y-1">
+                {/* <div className="space-y-1 w-max"> */}
                   <EditableTitle
                     title={mounted ? schedule?.name : ''}
                     onSave={onSaveSchedule}
                   />
-                </div>
+                {/* </div> */}
                 <div className="hidden gap-4 md:flex">
                   <DesktopActions
                     onCreateTask={onCreateTask}
                     onDeleteSchedule={onDeleteSchedule}
                   />
                 </div>
-                <Button 
+                <Button
                   onClick={onCreateTask}
                   className="w-10 h-10 text-white bg-gradient-to-r from-blue-600 to-blue-500 rounded-full shadow-lg transition-all duration-200 md:hidden hover:shadow-blue-500/20 hover:scale-105 dark:from-blue-600 dark:to-blue-500 dark:hover:from-blue-500 dark:hover:to-blue-400"
                 >
                   <Plus className="w-5 h-5" />
                 </Button>
-                {/* <div className="md:hidden">
-                  <MobileDropdownMenu
-                    schedule={schedule}
-                    onOpenCalendarDialog={() => setCalendarDialogOpen(true)}
-                    onCreateTask={onCreateTask}
-                  />
-                </div> */}
               </div>
             </CardHeader>
 
