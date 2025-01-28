@@ -3,12 +3,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { AnimatePresence, motion, Reorder } from "framer-motion";
 import { GripVertical, X } from "lucide-react";
 
-export function GoalList({ goals, saveGoals, updateGoalImportance, removeGoal, importanceColors }) {
+export function GoalList({ goals, saveGoals, updateGoalImportance, removeGoal, importanceColors, handleReorder }) {
   return (
     <Reorder.Group
       axis="y"
       values={goals}
-      onReorder={saveGoals}
+      onReorder={handleReorder}
       className="space-y-3 max-h-[400px] overflow-y-auto py-2 px-1"
     >
       <AnimatePresence>
@@ -23,9 +23,7 @@ export function GoalList({ goals, saveGoals, updateGoalImportance, removeGoal, i
             className="focus:outline-none"
           >
             <motion.div
-              className={`grid grid-cols-[auto_1fr_auto] gap-3 p-4 rounded-lg shadow-md 
-                dark:bg-gray-800/50
-                hover:bg-opacity-20 dark:hover:bg-opacity-30 transition-all duration-200`}
+              className={`grid gap-3 p-4 rounded-lg shadow-md transition-all duration-200 grid-cols-[auto_1fr_auto] dark:bg-gray-800/50 hover:bg-opacity-20 dark:hover:bg-opacity-30`}
             >
               <div className="flex items-center">
                 <GripVertical className="w-5 h-5 text-gray-400 transition-colors duration-200 cursor-grab hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400 active:cursor-grabbing active:text-gray-700" />
@@ -39,7 +37,7 @@ export function GoalList({ goals, saveGoals, updateGoalImportance, removeGoal, i
                   onValueChange={value => updateGoalImportance(goal.id, value)}
                 >
                   <SelectTrigger
-                    className={`w-[120px] border-0 bg-opacity-50 dark:bg-opacity-30 ${
+                    className={`w-[120px] border-0 bg-opacity-50 dark:bg-opacity-30 bg-gray-200 dark:bg-gray-700 ${
                       importanceColors[goal.importance]
                     }`}
                   >
@@ -63,7 +61,7 @@ export function GoalList({ goals, saveGoals, updateGoalImportance, removeGoal, i
                 variant="ghost"
                 size="icon"
                 onClick={() => removeGoal(goal.id)}
-                className="flex justify-center items-center w-8 h-8 text-gray-400 dark:text-gray-500 rounded-full transition-all duration-200 hover:text-red-600 hover:bg-red-50 dark:hover:text-red-400 dark:hover:bg-red-900/50 active:bg-red-100"
+                className="flex justify-center items-center w-8 h-8 text-gray-400 rounded-full transition-all duration-200 dark:text-gray-500 hover:text-red-600 hover:bg-red-50 dark:hover:text-red-400 dark:hover:bg-red-900/50 active:bg-red-100"
               >
                 <X className="w-4 h-4" />
               </Button>

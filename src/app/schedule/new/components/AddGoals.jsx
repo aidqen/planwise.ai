@@ -18,6 +18,7 @@ import { SAVE_GOALS } from '@/store/reducers/schedule.reducer'
 import { Card, CardContent } from '@/components/ui/card'
 import { Section } from '@/components/ui/section'
 import { GoalList } from './GoalList'
+import { reorderGoals } from '@/store/actions/schedule.actions'
 
 export function AddGoals() {
   const goals = useSelector(state => state.scheduleModule.multiStepForm.goals)
@@ -27,6 +28,10 @@ export function AddGoals() {
 
   function saveGoals() {
     dispatch({ type: SAVE_GOALS, goals:[{id:makeId(8), name:currentGoal, importance: currentImportance},...goals] })
+  }
+
+  function handleReorder(newOrder) {
+    dispatch(reorderGoals(newOrder))
   }
 
   function addGoal() {
@@ -53,9 +58,9 @@ export function AddGoals() {
   }
 
   const importanceColors = {
-    low: 'bg-green-100 text-green-800',
-    medium: 'bg-yellow-100 text-yellow-800',
-    high: 'bg-red-100 text-red-800',
+    low: 'text-green-800',
+    medium: 'text-yellow-800',
+    high: 'text-red-800',
   }
 
   return (
@@ -148,6 +153,7 @@ export function AddGoals() {
                   updateGoalImportance={updateGoalImportance}
                   removeGoal={removeGoal}
                   importanceColors={importanceColors}
+                  handleReorder={handleReorder}
                 />
               </div>
             )}
