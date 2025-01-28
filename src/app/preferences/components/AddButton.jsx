@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
 
-export function AddButton({ title, children, compact = false }) {
+export function AddButton({ title, children, description='', compact = false }) {
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -20,6 +20,7 @@ export function AddButton({ title, children, compact = false }) {
                     <DialogTitle className="font-semibold text-gray-900 dark:text-white">
                         {title}
                     </DialogTitle>
+                    {description && <DialogDescription className="text-gray-400">{description}</DialogDescription>}
                 </DialogHeader>
                 <div className="px-1 pt-4">
                     <div className="relative bg-white rounded-lg dark:bg-gray-900">
