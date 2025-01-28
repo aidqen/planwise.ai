@@ -10,10 +10,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import { TOGGLE_SCHEDULE_SIDEBAR } from '@/store/reducers/system.reducer'
 import { useIsMobile } from '@/hooks/useMediaQuery'
 
-export function ScheduleSidebar({ schedule, setSchedule, onScheduleEdit, setIsLoading, isLoading, multiStepForm, onSaveSchedule }) {
+export function ScheduleSidebar({ schedule, setSchedule, onScheduleEdit, setIsLoading, isLoading, onSaveSchedule }) {
     const [openSection, setOpenSection] = useState(null)
     const [activeView, setActiveView] = useState("chat")
-    const scheduleToShow = isLoading ? multiStepForm : schedule
     const isOpen = useSelector(state => state.systemModule.isScheduleSidebarOpen)
     const isMobile = useIsMobile()
     const dispatch = useDispatch()
@@ -74,7 +73,7 @@ export function ScheduleSidebar({ schedule, setSchedule, onScheduleEdit, setIsLo
                 <div className="overflow-hidden h-[calc(100vh-10rem)] md:h-[calc(100vh-14rem)] max-h-[75vh] md:max-h-none">
                     {activeView === "details" ? (
                         <ScheduleDetails
-                            schedule={scheduleToShow}
+                            schedule={schedule}
                             openSection={openSection}
                             toggleSection={toggleSection}
                             onSaveSchedule={onSaveSchedule}

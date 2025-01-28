@@ -4,6 +4,7 @@ import { PreferencesSection } from "./PreferencesSection";
 import { RoutinesSection } from "./RoutinesSection";
 
 export function ScheduleDetails({ schedule, openSection, toggleSection, onSaveSchedule }) {
+    console.log("🚀 ~ file: ScheduleDetails.jsx:7 ~ schedule:", schedule)
     return (
         <div className="space-y-4 px-5 pb-20 overflow-y-auto max-h-[calc(100vh-16rem)] scrollbar scroll-container">
             <PreferencesSection 

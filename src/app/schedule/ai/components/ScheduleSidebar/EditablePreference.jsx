@@ -10,7 +10,8 @@ export function EditablePreference({
     type = 'time',
     options = ['relaxed', 'moderate', 'intense'],
     handlePreferenceEdit,
-    keyName
+    keyName,
+    preferences
 }) {
     const [isHover, setIsHover] = useState(false)
     const [isEditing, setIsEditing] = useState(false)
@@ -28,7 +29,9 @@ export function EditablePreference({
         e.stopPropagation()
         // Here you would typically call a function to update the preference
         // For now, we'll just toggle editing
-        handlePreferenceEdit(keyName, editValue)
+        if (editValue !== preferences[keyName]) {
+            handlePreferenceEdit(keyName, editValue)
+        }
         setIsEditing(false)
     }
 
