@@ -3,13 +3,14 @@ import { GoalsSection } from "./GoalsSection";
 import { PreferencesSection } from "./PreferencesSection";
 import { RoutinesSection } from "./RoutinesSection";
 
-export function ScheduleDetails({ schedule, openSection, toggleSection }) {
+export function ScheduleDetails({ schedule, openSection, toggleSection, onSaveSchedule }) {
     return (
         <div className="space-y-4 px-5 pb-20 overflow-y-auto max-h-[calc(100vh-16rem)] scrollbar scroll-container">
             <PreferencesSection 
                 preferences={schedule?.preferences} 
                 isOpen={openSection === 'preferences'}
                 onToggle={() => toggleSection('preferences')}
+                onSaveSchedule={onSaveSchedule}
             />
             <GoalsSection 
                 goals={schedule?.goals} 

@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { TOGGLE_SCHEDULE_SIDEBAR } from '@/store/reducers/system.reducer'
 import { useIsMobile } from '@/hooks/useMediaQuery'
 
-export function ScheduleSidebar({ schedule, setSchedule, onScheduleEdit, setIsLoading, isLoading, multiStepForm, isEditedSchedule }) {
+export function ScheduleSidebar({ schedule, setSchedule, onScheduleEdit, setIsLoading, isLoading, multiStepForm, onSaveSchedule }) {
     const [openSection, setOpenSection] = useState(null)
     const [activeView, setActiveView] = useState("chat")
     const scheduleToShow = isLoading ? multiStepForm : schedule
@@ -46,16 +46,14 @@ export function ScheduleSidebar({ schedule, setSchedule, onScheduleEdit, setIsLo
 
     const sidebarContent = (
         <>
-            <CardHeader className="flex flex-col gap-1.5 pt-0 pb-6 md:pb-8 space-y-0">
+            <CardHeader className="flex flex-col gap-1.5 pt-0 pb-6 md:pb-8 space-y-0 min-h-[15%] max-h-[17%] z-[20]">
                 <CardTitle className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                     Schedule Details
                 </CardTitle>
                 <CardDescription className="mt-0 text-sm text-gray-600 font-regular dark:text-gray-400">
                     {activeView === "chat" ? "Ask AI to modify your schedule" : "View your preferences and tasks"}
                 </CardDescription>
-            </CardHeader>
-            <CardContent className="p-0">
-                <div className="grid grid-cols-[50%_50%] gap-1 p-2 mx-5 mb-4 rounded-lg backdrop-blur-sm bg-gray-100/80 dark:bg-gray-800/80">
+                <div className="grid grid-cols-[50%_50%] gap-1 p-2  mb-4 rounded-lg backdrop-blur-sm bg-gray-100/80 dark:bg-gray-800/80">
                     {views.map(view => (
                         <button
                             key={view.id}
@@ -71,12 +69,15 @@ export function ScheduleSidebar({ schedule, setSchedule, onScheduleEdit, setIsLo
                         </button>
                     ))}
                 </div>
-                <div className="overflow-hidden h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)] max-h-[60vh] md:max-h-none">
+            </CardHeader>
+            <CardContent className="p-0">
+                <div className="overflow-hidden h-[calc(100vh-10rem)] md:h-[calc(100vh-14rem)] max-h-[75vh] md:max-h-none">
                     {activeView === "details" ? (
                         <ScheduleDetails
                             schedule={scheduleToShow}
                             openSection={openSection}
                             toggleSection={toggleSection}
+                            onSaveSchedule={onSaveSchedule}
                         />
                     ) : (
                         <AIChat 
@@ -124,7 +125,7 @@ export function ScheduleSidebar({ schedule, setSchedule, onScheduleEdit, setIsLo
                                 exit={{ y: "100%" }}
                                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
                                 className="fixed bottom-0 left-0 right-0 z-[80] bg-white dark:bg-gray-900 rounded-t-[20px] overflow-hidden shadow-xl dark:shadow-black/20 flex flex-col"
-                                style={{ height: "85vh" }}
+                                style={{ height: "95vh" }}
                             >
                                 <div className="sticky top-0 z-10 flex-shrink-0 pb-2 bg-white dark:bg-gray-900">
                                     <div className="mx-auto w-12 h-1.5 bg-gray-300 dark:bg-gray-700 rounded-full my-3" />
