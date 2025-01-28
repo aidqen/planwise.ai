@@ -34,9 +34,9 @@ export default function AllSchedules() {
         <div className="px-4 py-8 w-full min-h-screen  md:pt-[4.1rem] sm:px-6 lg:px-8">
             {/* <div className="mx-auto max-w-7xl"> */}
             <div className="mb-8">
-                <h1 className="text-3xl font-semibold text-gray-900 dark:text-white max-sm:text-2xl">Your Schedules</h1>
+                <h1 className="text-3xl font-semibold text-gray-800 dark:text-white max-sm:text-2xl">Your Schedules</h1>
                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
-                    View and manage your daily schedules
+                    View and manage your schedules
                 </p>
             </div>
 

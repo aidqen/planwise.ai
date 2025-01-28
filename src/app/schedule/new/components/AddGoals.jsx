@@ -1,5 +1,4 @@
 'use client'
-
 import { useState } from 'react'
 import { GripVertical, Plus, X, Info } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -19,15 +18,19 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Section } from '@/components/ui/section'
 import { GoalList } from './GoalList'
 import { reorderGoals } from '@/store/actions/schedule.actions'
+import { PredefinedItemsDialog } from '@/components/PredefinedItemsDialog'
 
 export function AddGoals() {
   const goals = useSelector(state => state.scheduleModule.multiStepForm.goals)
   const [currentGoal, setCurrentGoal] = useState('')
   const [currentImportance, setCurrentImportance] = useState('medium')
+  const user = useSelector(state => state.userModule.user)
   const dispatch = useDispatch()
 
   function saveGoals() {
     dispatch({ type: SAVE_GOALS, goals:[{id:makeId(8), name:currentGoal, importance: currentImportance},...goals] })
+    setCurrentGoal('')
+    setCurrentImportance('medium')
   }
 
   function handleReorder(newOrder) {
@@ -61,6 +64,19 @@ export function AddGoals() {
     low: 'text-green-800',
     medium: 'text-yellow-800',
     high: 'text-red-800',
+  }
+
+  const handlePredefinedGoalsSelect = (selectedGoals) => {
+    const formattedGoals = selectedGoals.map(goal => ({
+      id: makeId(8), 
+      name: goal.name, 
+      importance: goal.importance || 'medium'
+    }))
+    
+    dispatch({ 
+      type: SAVE_GOALS, 
+      goals: [...formattedGoals, ...goals] 
+    })
   }
 
   return (
@@ -163,6 +179,15 @@ export function AddGoals() {
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   No goals added yet. Start by adding your first goal above.
                 </p>
+                {user?.goals?.length > 0 && (
+                  <PredefinedItemsDialog 
+                    items={user.goals} 
+                    type="Goals" 
+                    onSelect={handlePredefinedGoalsSelect}
+                    triggerClassName="mt-4"
+                    triggerChildren="Add from Predefined Goals"
+                  />
+                )}
               </div>
             )}
           </div>

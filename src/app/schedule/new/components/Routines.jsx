@@ -8,26 +8,23 @@ import { AddRoutine } from './AddRoutine'
 import { useDispatch, useSelector } from 'react-redux'
 import { SAVE_ROUTINES } from '@/store/reducers/schedule.reducer'
 import { Info } from 'lucide-react'
+import { PredefinedItemsDialog } from '@/components/PredefinedItemsDialog'
 
 export function Routines({ }) {
   const dispatch = useDispatch()
   const multiStepForm = useSelector(state => state.scheduleModule.multiStepForm)
+  const user = useSelector(state => state.userModule.user)
   const routines = multiStepForm.routines
   const [newRoutine, setNewRoutine] = useState({
     name: '',
     startTime: '',
     endTime: '',
   })
-  
-  function saveRoutines() {
-    if (routines.length) dispatch({ type: SAVE_ROUTINES, routines: [...routines] })
-  }
 
   function addRoutine() {
     if (newRoutine.name && newRoutine.startTime && newRoutine.endTime) {
       dispatch({ type: SAVE_ROUTINES, routines: [{ ...newRoutine, id: Date.now(), isEditing: false },...routines] })
       setNewRoutine({ name: '', startTime: '', endTime: '' })
-      saveRoutines()
     }
   }
 
@@ -52,27 +49,41 @@ export function Routines({ }) {
     dispatch({ type: SAVE_ROUTINES, routines: [...editedRoutines] })
   }
 
+  const handlePredefinedRoutinesSelect = (selectedRoutines) => {
+    const formattedRoutines = selectedRoutines.map(routine => ({
+      id: Date.now(), 
+      name: routine.name, 
+      startTime: routine.startTime || '09:00', 
+      endTime: routine.endTime || '10:00'
+    }))
+    
+    dispatch({ 
+      type: SAVE_ROUTINES, 
+      routines: [...formattedRoutines, ...routines] 
+    })
+  }
+
   return (
     <Section className="py-6 w-full md:p-6">
-      <div className="max-w-2xl mx-auto">
-        <div className="text-center space-y-2 mb-8">
-          <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100 md:text-2xl">
+      <div className="mx-auto max-w-2xl">
+        <div className="mb-4 space-y-2 text-center md:mb-8">
+          <h1 className="text-xl font-medium text-gray-900 dark:text-gray-100 md:text-2xl">
             Set Your Daily Routines
           </h1>
-          <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 max-w-lg mx-auto">
+          <p className="mx-auto max-w-lg text-sm text-gray-600 md:text-base dark:text-gray-400">
             Add your regular daily activities to help us create a schedule that works around your existing commitments.
           </p>
         </div>
 
-        <div className="space-y-8">
-          <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700/50 p-6">
+        <div className="space-y-3 md:space-y-8">
+          
             <AddRoutine
               newRoutine={newRoutine}
               setNewRoutine={setNewRoutine}
               addRoutine={addRoutine}
               multiStepForm={multiStepForm}
             />
-          </div>
+          
 
           <div className="space-y-4">
             <div className="flex justify-between items-center">
@@ -83,14 +94,23 @@ export function Routines({ }) {
 
             <AnimatePresence>
               {routines.length === 0 ? (
-                <div className="flex flex-col items-center justify-center p-8 text-center bg-gray-50 dark:bg-gray-800/30 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700">
-                  <Info className="w-8 h-8 text-gray-400 dark:text-gray-500 mb-2" />
+                <div className="flex flex-col justify-center items-center p-8 h-full text-center bg-gray-50 rounded-lg border-2 border-gray-200 border-dashed dark:bg-gray-800/30 dark:border-gray-700">
+                  <Info className="mb-2 w-8 h-8 text-gray-400 dark:text-gray-500" />
                   <p className="text-sm text-gray-500 dark:text-gray-400">
                     No routines added yet. Start by adding your first routine above.
                   </p>
+                  {user?.routines?.length > 0 && (
+                    <PredefinedItemsDialog 
+                      items={user.routines} 
+                      type="Routines" 
+                      onSelect={handlePredefinedRoutinesSelect}
+                      triggerClassName="mt-4"
+                      triggerChildren="Add from Predefined Routines"
+                    />
+                  )}
                 </div>
               ) : (
-                <div className="grid grid-cols-1 gap-4 w-full lg:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 w-full">
                   {routines.map(routine => (
                     <Routine
                       routine={routine}
