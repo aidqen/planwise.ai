@@ -45,7 +45,6 @@ export default function DailySchedule() {
   // const schedule = useSelector(state => state.scheduleModule.schedule)
   const wakeupTime = editedSchedule?.preferences?.wakeup || schedule?.preferences?.wakeup || '04:00'
   const wakeupMinutes = getMinutesFromMidnight(wakeupTime)
-  const multiStepForm = useSelector(state => state.scheduleModule.multiStepForm)
   const { toast } = useToast();
 
   useEffect(() => {
@@ -182,7 +181,6 @@ export default function DailySchedule() {
         setIsLoading={setIsLoading}
         isLoading={isLoading}
         setSchedule={setSchedule}
-        multiStepForm={multiStepForm}
         onScheduleEdit={handleScheduleEdit}
         isEditedSchedule={!!editedSchedule}
         onSaveSchedule={onSaveSchedule}

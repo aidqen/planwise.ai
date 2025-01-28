@@ -7,7 +7,6 @@ export function EditableTitle({ title, onSave }) {
   const [localTitle, setLocalTitle] = useState(title);
   const inputRef = useRef(null);
 
-  // Always sync with parent title
   useEffect(() => {
     setLocalTitle(title);
   }, [title]);
@@ -21,10 +20,10 @@ export function EditableTitle({ title, onSave }) {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      setIsEditing(false);
-      if (localTitle.trim() !== title) {
+      if (localTitle.trim() && localTitle !== title) {
         onSave?.('name', localTitle.trim());
       }
+      setIsEditing(false);
     }
     if (e.key === 'Escape') {
       setIsEditing(false);
@@ -33,14 +32,14 @@ export function EditableTitle({ title, onSave }) {
   };
 
   const handleBlur = () => {
-    setIsEditing(false);
-    if (localTitle.trim() !== title) {
+    if (localTitle.trim() && localTitle !== title) {
       onSave?.('name', localTitle.trim());
     }
+    setIsEditing(false);
   };
 
   return (
-    <div className="group relative flex items-center gap-2">
+    <div className="flex relative gap-2 w-max max-w-[70%] md:max-w-[50%] items-center group">
       {isEditing ? (
         <input
           ref={inputRef}
@@ -49,18 +48,19 @@ export function EditableTitle({ title, onSave }) {
           onChange={(e) => setLocalTitle(e.target.value)}
           onKeyDown={handleKeyDown}
           onBlur={handleBlur}
-          className="px-1 py-0.5 text-xl font-semibold bg-transparent border-b-2 border-blue-500 outline-none text-gray-900 dark:text-gray-100"
+          className="px-1 py-0.5 text-xl font-semibold bg-transparent border-b-2 border-blue-500 outline-none text-gray-900 dark:text-gray-100 w-full"
         />
       ) : (
-        <div className="flex items-center gap-2 group">
+        <div className="flex gap-2 items-center group w-full">
           <CardTitle
             onClick={() => setIsEditing(true)}
-            className="cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
+            className="transition-colors duration-200 cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis hover:text-blue-600 dark:hover:text-blue-400 w-full"
+            title={title} // Show full title on hover
           >
             {title}
           </CardTitle>
           <Pen 
-            className="w-4 h-4 text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200 cursor-pointer" 
+            className="absolute -right-4 w-4 h-4 text-gray-400 transition-colors duration-200 cursor-pointer hover:text-blue-500 dark:hover:text-blue-400" 
             onClick={() => setIsEditing(true)}
           />
         </div>
