@@ -37,6 +37,8 @@ export default function Home() {
       <div className="flex flex-col justify-center px-4 pt-[3em] md:pt-[5em] mx-auto w-full max-w-7xl sm:px-6 lg:px-8">
         <BackgroundDecoration />
         <WelcomeHero user={user} router={router} />
+        
+        <ConfigurationCTA user={user} />
 
         <div className="grid grid-cols-1 gap-6 mt-6 sm:gap-8 md:mt-16 md:grid-cols-2">
           <ScheduleStats user={user} scheduleStats={scheduleStats} />
