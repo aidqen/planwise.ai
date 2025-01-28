@@ -47,7 +47,7 @@ export default function TimePicker({
                 className={`inline-flex justify-start items-center px-5 py-2 w-full text-sm text-gray-700 bg-white rounded-lg border border-gray-200 shadow-sm transition-all duration-200 dark:bg-gray-800 dark:border-gray-700 me-2 max-sm:text-xs dark:text-gray-200 focus:outline-none hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-2 focus:ring-green-500/20 dark:focus:ring-green-500/20 ${className}`}
             >
                 <Icon className="mr-2 w-5 h-5 text-gray-500 dark:text-gray-400" />
-                <SelectValue placeholder={placeholder || value}>{value}</SelectValue>
+                <SelectValue placeholder={value ? value : placeholder}>{value}</SelectValue>
             </SelectTrigger>
             <SelectContent className="max-h-[20em] overflow-auto bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg">
                 <SelectGroup>

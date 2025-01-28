@@ -9,7 +9,7 @@ export function StepsBreadcrumbs({ steps, currentStep }) {
             <li
               key={step.name}
               className={cn(
-                "flex items-center",
+                "flex items-center cursor-pointer",
                 index !== steps.length - 1 && "flex-1 sm:justify-center"
               )}
             >

@@ -28,12 +28,12 @@ export function LightModeToggle() {
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="bg-gray-900 dark:bg-white">
+      <DropdownMenuContent align="end" className="bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
         {['light', 'dark', 'system'].map((theme) => (
           <DropdownMenuItem
             key={theme}
             onClick={() => setTheme(theme)}
-            className="text-white cursor-pointer dark:text-gray-900 dark:hover:bg-gray-100 hover:bg-gray-800"
+            className="text-gray-900 cursor-pointer dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
           >
             {theme.charAt(0).toUpperCase() + theme.slice(1)}
           </DropdownMenuItem>
