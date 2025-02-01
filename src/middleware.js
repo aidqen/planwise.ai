@@ -21,7 +21,7 @@ export function middleware(request) {
 
   // Redirect unauthenticated users to the auth page
   if (!authToken) {
-    return NextResponse.redirect(new URL("/auth/login", nextUrl));
+    return NextResponse.redirect(new URL("/auth", nextUrl));
   }
 
   return NextResponse.next();
