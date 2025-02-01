@@ -1,62 +1,91 @@
 'use client'
+
 import { useSelector } from 'react-redux';
-import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns';
-import { cn } from '@/lib/utils';
-import { Calendar, Clock } from 'lucide-react';
+import { compareAsc, compareDesc, subDays } from 'date-fns';
 import { useState, useMemo } from 'react';
-import { SchedulePreview } from './components/SchedulePreview';
 import { ScheduleFilter } from './components/ScheduleFilter';
-import { Plus } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { PageHeader } from './components/PageHeader';
+import { ScheduleSection } from './components/ScheduleSection';
 
 export default function AllSchedules() {
     const user = useSelector(state => state.userModule.user);
-    const [selectedTab, setSelectedTab] = useState('all'); // Use state to track the selected tab
+    const [selectedTab, setSelectedTab] = useState('all');
+    const [sortConfig, setSortConfig] = useState({ field: 'date', direction: 'desc' });
+    
     const tabs = [
         { id: "all", label: "All" },
-        { id: "this-week", label: "This Week" },
-        { id: "this-month", label: "This Month" },
-        { id: "archived", label: "Archived" },
+        { id: "last-7-days", label: "Last 7 Days" },
+        { id: "last-30-days", label: "Last 30 Days" },
+        { id: "last-90-days", label: "Last 90 Days" },
     ];
-    const router = useRouter();
 
     const filteredSchedules = useMemo(() => {
         if (!user?.schedules) return [];
 
         const now = new Date();
+        let filteredList = user.schedules;
+
+        // Filter by date range
         switch (selectedTab) {
-            case 'all':
-                return user.schedules;
-            case 'this-week':
-                const weekStart = startOfWeek(now);
-                const weekEnd = endOfWeek(now);
-                return user.schedules.filter(schedule => {
-                    const scheduleDate = new Date(schedule.updatedAt);
-                    return scheduleDate >= weekStart && scheduleDate <= weekEnd;
-                });
-            case 'this-month':
-                const monthStart = startOfMonth(now);
-                const monthEnd = endOfMonth(now);
-                return user.schedules.filter(schedule => {
-                    const scheduleDate = new Date(schedule.updatedAt);
-                    return scheduleDate >= monthStart && scheduleDate <= monthEnd;
-                });
-            case 'archived':
-                return user.schedules.filter(schedule => schedule.isArchived);
+            case 'last-7-days':
+                filteredList = filteredList.filter(schedule => 
+                    new Date(schedule.updatedAt) >= subDays(now, 7)
+                );
+                break;
+            case 'last-30-days':
+                filteredList = filteredList.filter(schedule => 
+                    new Date(schedule.updatedAt) >= subDays(now, 30)
+                );
+                break;
+            case 'last-90-days':
+                filteredList = filteredList.filter(schedule => 
+                    new Date(schedule.updatedAt) >= subDays(now, 90)
+                );
+                break;
             default:
-                return user.schedules;
+                // 'all' - no additional filtering
         }
-    }, [user?.schedules, selectedTab]);
+
+        // Sorting
+        switch (sortConfig.field) {
+            case 'date':
+                filteredList.sort((a, b) => 
+                    sortConfig.direction === 'desc' 
+                        ? compareDesc(new Date(a.updatedAt), new Date(b.updatedAt))
+                        : compareAsc(new Date(a.updatedAt), new Date(b.updatedAt))
+                );
+                break;
+            case 'name':
+                filteredList.sort((a, b) => {
+                    const comparison = a.name.localeCompare(b.name);
+                    return sortConfig.direction === 'desc' ? -comparison : comparison;
+                });
+                break;
+            case 'intensity':
+                const intensityOrder = { 'relaxed': 1, 'moderate': 2, 'intense': 3 };
+                filteredList.sort((a, b) => {
+                    const comparison = (intensityOrder[a.preferences?.intensity] || 0) - 
+                        (intensityOrder[b.preferences?.intensity] || 0);
+                    return sortConfig.direction === 'desc' ? -comparison : comparison;
+                });
+                break;
+            case 'wakeup':
+                filteredList.sort((a, b) => {
+                    const comparison = (a.preferences?.wakeup || '00:00').localeCompare(
+                        b.preferences?.wakeup || '00:00'
+                    );
+                    return sortConfig.direction === 'desc' ? -comparison : comparison;
+                });
+                break;
+        }
+
+        return filteredList;
+    }, [user?.schedules, selectedTab, sortConfig]);
 
     return (
         <div className="px-4 py-12 w-full min-h-screen md:pt-[4.1rem] sm:px-6 lg:px-8 overflow-y-auto">
-            <div className="mb-8">
-                <h1 className="text-3xl font-semibold text-gray-800 dark:text-white max-sm:text-2xl">Your Schedules</h1>
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
-                    View and manage your schedules
-                </p>
-            </div>
-
+            <PageHeader />
+            
             <ScheduleFilter 
                 tabs={tabs} 
                 setSelectedTab={setSelectedTab} 
@@ -64,33 +93,13 @@ export default function AllSchedules() {
                 schedulesLength={filteredSchedules.length}
             />
 
-            <div className="space-y-3 md:space-y-6">
-                {filteredSchedules.length ? (
-                    <div>
-                        <h2 className="mb-3 text-sm font-medium text-gray-600 dark:text-gray-300">
-                            {tabs.find(tab => tab.id === selectedTab)?.label} Schedules
-                        </h2>
-                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                            {filteredSchedules.map((schedule) => (
-                                <SchedulePreview key={schedule.id} schedule={schedule} />
-                            ))}
-                        </div>
-                    </div>
-                ) : (
-                    <div className="flex flex-col gap-4 justify-center items-start mt-8 w-full max-sm:mt-4">
-                        <p className="text-lg text-gray-600 max-sm:text-base dark:text-gray-300">
-                            No schedules found in {tabs.find(tab => tab.id === selectedTab)?.label} category
-                        </p>
-                        <button
-                            onClick={() => router.push('/schedule/new')}
-                            className="flex gap-2 items-center px-4 py-2 max-sm:px-3 max-sm:py-1.5 font-medium text-white bg-blue-500 rounded-lg shadow-md transition-colors dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700"
-                        >
-                            <span className="max-sm:text-sm">New Schedule</span>
-                            <Plus className="w-4 h-4 max-sm:w-3.5 max-sm:h-3.5" />
-                        </button>
-                    </div>
-                )}     
-            </div>
+            <ScheduleSection 
+                selectedTab={selectedTab}
+                tabs={tabs}
+                schedules={filteredSchedules}
+                sortConfig={sortConfig}
+                onSortChange={setSortConfig}
+            />
         </div>
     );
 }
