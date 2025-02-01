@@ -1,18 +1,45 @@
+'use client'
 import { ScheduleIntensity } from '@/components/ScheduleIntensity'
 import TimePicker from '@/components/TimePicker'
 import { Section } from '@/components/ui/section'
 import { SET_SLEEP, SET_WAKEUP } from '@/store/reducers/schedule.reducer'
 import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
 
-export function Preferences({ }) {
+export function Preferences() {
   const timeTypes = ['Wake Up', 'Sleep']
-  const preferences = useSelector(state => state.scheduleModule.multiStepForm.preferences)
   const dispatch = useDispatch()
+  const user = useSelector((state) => state.userModule.user)
+  const preferences = useSelector(
+    (state) => state.scheduleModule.multiStepForm.preferences
+  )
+
+  useEffect(() => {
+    // Set default values from user preferences if they exist and no values are set yet
+    if (user?.preferences) {
+      if (!preferences.wakeup && user.preferences.wakeup) {
+        dispatch({ type: SET_WAKEUP, wakeup: user.preferences.wakeup });
+      }
+      if (!preferences.sleep && user.preferences.sleep) {
+        dispatch({ type: SET_SLEEP, sleep: user.preferences.sleep });
+      }
+    }
+  }, [user]);
+
+  useEffect(() => {
+    // Set wakeup and sleep times from user preferences on first load
+    if (user?.preferences?.wakeup) {
+      dispatch({ type: SET_WAKEUP, wakeup: user.preferences.wakeup })
+    }
+    if (user?.preferences?.sleep) {
+      dispatch({ type: SET_SLEEP, sleep: user.preferences.sleep })
+    }
+  }, [user]) // Only run when user data changes
 
   return (
     <Section className="w-full">
       <div className="flex flex-col gap-8 items-center py-8 w-full h-full md:p-8 max-sm:items-start">
-        <div className="space-y-2 text-center max-sm:text-left w-full">
+        <div className="space-y-2 text-center w-full">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 md:text-2xl">
             Daily Schedule Preferences
           </h2>

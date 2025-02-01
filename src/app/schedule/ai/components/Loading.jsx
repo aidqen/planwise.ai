@@ -43,7 +43,7 @@ export function Loading() {
                 >
                     <div className="w-full h-full bg-gradient-to-tr from-blue-500 to-purple-500 rounded-lg dark:from-blue-600 dark:to-purple-600" />
                 </motion.div>
-                <motion.div
+                {/* <motion.div
                     className="absolute inset-0 mx-auto w-16 h-16"
                     initial={{ opacity: 0.5, scale: 1 }}
                     animate={{
@@ -57,7 +57,7 @@ export function Loading() {
                     }}
                 >
                     <div className="w-full h-full rounded-lg bg-blue-500/20 dark:bg-blue-500/30" />
-                </motion.div>
+                </motion.div> */}
             </div>
 
             <div className="space-y-4">

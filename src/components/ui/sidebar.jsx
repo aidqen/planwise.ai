@@ -156,7 +156,7 @@ export const SidebarLink = ({
   return (
     (<Link
       href={link.href}
-      className={cn("flex gap-2 justify-start items-center hover:bg-green-100 group/sidebar p-3 transition-colors duration-150", isActive && 'bg-green-400 dark:bg-gray-800 hover:bg-green-400', className)}
+      className={cn("flex gap-2 justify-start items-center hover:bg-green-100 group/sidebar p-2.5 transition-colors duration-150", isActive && 'bg-green-400 dark:bg-gray-800 hover:bg-green-400', className)}
       {...props}>
       {link.icon}
       <motion.span

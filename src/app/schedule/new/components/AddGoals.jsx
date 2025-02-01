@@ -80,7 +80,7 @@ export function AddGoals() {
   }
 
   return (
-    <Section className={'py-6 w-full md:p-6'}>
+    <Section className={'pt-6 w-full md:p-6 pb-0'}>
       <Card className="overflow-y-auto mx-auto w-full max-w-2xl bg-transparent border-0 shadow-none">
         <CardContent className="flex flex-col gap-7 p-0 w-full md:p-6">
           <div className="space-y-2 text-center">
@@ -174,7 +174,7 @@ export function AddGoals() {
               </div>
             )}
             {goals.length === 0 && (
-              <div className="flex flex-col justify-center items-center p-8 text-center bg-gray-50 rounded-lg border-2 border-gray-200 border-dashed dark:bg-gray-800/30 dark:border-gray-700">
+              <div className="flex flex-col justify-center items-center p-4 text-center bg-gray-50 rounded-lg border-2 border-gray-200 border-dashed dark:bg-gray-800/30 dark:border-gray-700">
                 <Info className="mb-2 w-8 h-8 text-gray-400 dark:text-gray-500" />
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   No goals added yet. Start by adding your first goal above.

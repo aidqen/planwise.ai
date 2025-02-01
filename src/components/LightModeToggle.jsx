@@ -21,19 +21,19 @@ export function LightModeToggle() {
         <Button 
           variant="outline" 
           size="icon" 
-          className="!w-9 !h-9 !p-1 bg-transparent border-none dark:text-white/80 ms-1.5 hover:bg-gray-200 dark:hover:bg-gray-800"
+          className="!w-9 !h-9 !p-1 bg-transparent border-none dark:text-white/80 ms-1.5 my-0 hover:bg-gray-200 dark:hover:bg-transparent hover:bg-transparent"
         >
           <Sun className="!w-6 !h-6 transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" />
           <Moon className="!w-6 !h-6 absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
+      <DropdownMenuContent align="end" className="dark:bg-gray-900 bg-white">
         {['light', 'dark', 'system'].map((theme) => (
           <DropdownMenuItem
             key={theme}
             onClick={() => setTheme(theme)}
-            className="text-gray-900 cursor-pointer dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="dark:text-white cursor-pointer text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800"
           >
             {theme.charAt(0).toUpperCase() + theme.slice(1)}
           </DropdownMenuItem>

@@ -1,11 +1,13 @@
 import OpenAI from 'openai';
 import { NextResponse } from 'next/server';
 
+// const openai = new OpenAI({
+//   baseURL: 'https://api.deepseek.com',
+//   apiKey: process.env.DEEPSEEK_API_KEY
+// });
 const openai = new OpenAI({
-  baseURL: 'https://api.deepseek.com',
-  apiKey: process.env.DEEPSEEK_API_KEY
+  apiKey: process.env.OPENAI_API_KEY
 });
-
 
 export async function POST(request) {
   try {
@@ -13,9 +15,9 @@ export async function POST(request) {
     console.log("🚀 ~ file: route.js:11 ~ scheduleData:", scheduleData)
 
     const updatePrompt = `You are an AI assistant that modifies daily schedules based on an explanation of the changes. You meticulously listen to the instructions you were given.
-    ${explanation}
+    **Explanation:** ${explanation}
     
-    Create an updated version of the schedule that implements these changes.
+    Create a new schedule exactly like it was provided in the explanation .
     Return a JSON object that follows EXACTLY this structure, with no additional text or formatting:
     {
       "id": "${scheduleData._id}",
@@ -44,13 +46,15 @@ export async function POST(request) {
     6. DO NOT modify tasks with category "routine" unless explicitly mentioned
     7. DO NOT schedule tasks before ${scheduleData.preferences.wakeup} or after ${scheduleData.preferences.sleep}
     8. Keep task categories as: "routine", "meal", "break", or "goal"
-    9. Update preferences.wakeup/sleep only if specified in explanation
+    9. Update preferences.wakeup/sleep if the first task is earlier than the wake-up time, or the last task is later than the sleep time.
+    Or if it is provided in the explanation.
     10. Keep createdAt if it exists in the original schedule
     11. Keep the schedule id exactly as provided
     12. Ensure all JSON strings are properly escaped`;
 
     const completion = await openai.chat.completions.create({
-      model: 'deepseek-chat',
+      // model: 'deepseek-chat',
+      model: 'gpt-4o',
       messages: [{ role: 'user', content: updatePrompt }],
       max_tokens: 2000,
       temperature: 0.3,

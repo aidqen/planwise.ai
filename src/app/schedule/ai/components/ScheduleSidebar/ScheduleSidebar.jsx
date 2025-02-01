@@ -45,7 +45,7 @@ export function ScheduleSidebar({ schedule, setSchedule, onScheduleEdit, setIsLo
 
     const sidebarContent = (
         <>
-            <CardHeader className="flex flex-col gap-1.5 pt-0 pb-6 md:pb-8 space-y-0 min-h-[15%] max-h-[17%] z-[20]">
+            <CardHeader className="flex flex-col gap-1.5 pt-0 pb-6 md:pb-8 space-y-0 min-h-[20%] max-h-[20%] z-[20]">
                 <CardTitle className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                     Schedule Details
                 </CardTitle>
@@ -70,7 +70,7 @@ export function ScheduleSidebar({ schedule, setSchedule, onScheduleEdit, setIsLo
                 </div>
             </CardHeader>
             <CardContent className="p-0">
-                <div className="overflow-hidden h-[calc(100vh-10rem)] md:h-[calc(100vh-14rem)] max-h-[75vh] md:max-h-none">
+                <div className="overflow-hidden h-[calc(100vh-10rem)] md:h-[calc(100vh-14rem)] max-h-[70vh] md:max-h-none">
                     {activeView === "details" ? (
                         <ScheduleDetails
                             schedule={schedule}
@@ -97,8 +97,9 @@ export function ScheduleSidebar({ schedule, setSchedule, onScheduleEdit, setIsLo
         <>
             {/* Desktop Sidebar */}
             {!isMobile && (
-                <Card className="overflow-y-auto overflow-x-hidden relative px-0 pt-16 mx-auto max-w-md h-full min-h-screen max-h-screen bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm transition-all duration-200 w-[25em] border-gray-200 dark:border-gray-800"
-                    style={{ width: '40em' }}>
+                <Card className="overflow-y-auto overflow-x-hidden relative px-0 pt-16 mx-auto max-w-md h-full min-h-screen max-h-screen bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm transition-all duration-200 xl:w-[25em] md:w-[20em] lg:w-[22em] border-gray-200 dark:border-gray-800"
+                    // style={{ width: '40em' }}
+                    >
                     {sidebarContent}
                 </Card>
             )}

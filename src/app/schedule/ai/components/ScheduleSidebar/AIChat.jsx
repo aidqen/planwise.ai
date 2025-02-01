@@ -168,9 +168,9 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
                         }`}
                 >
                     {isUser ? (
-                        <p className="text-sm whitespace-pre-wrap">{message.text}</p>
+                        <p className="max-sm:text-sm text-xs lg:text-sm whitespace-pre-wrap">{message.text}</p>
                     ) : (
-                        <div className="text-sm markdown-content">
+                        <div className="max-sm:text-sm text-xs lg:text-sm markdown-content">
                             <ReactMarkdown
                                 remarkPlugins={[remarkGfm]}
                                 components={{
@@ -232,7 +232,7 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         placeholder="Ask AI to modify your schedule..."
-                        className="flex-grow text-sm rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-400 max-h-[20rem] min-h-[40px] px-3 py-2.5 transition-all duration-200 resize-none focus:border-blue-500 dark:focus:border-blue-400"
+                        className="flex-grow md:text-xs lg:text-sm text-sm rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-400 max-h-[20rem] min-h-[40px] px-3 py-2.5 transition-all duration-200 resize-none focus:border-blue-500 dark:focus:border-blue-400"
                         style={{ height: 'auto', overflow: 'hidden' }}
                         disabled={isLoading}
                         onKeyDown={(e) => {

@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import { Leaf, Clock, Zap } from 'lucide-react'
@@ -10,7 +10,17 @@ export function ScheduleIntensity({}) {
   const intensity = useSelector(
     state => state.scheduleModule.multiStepForm.preferences.intensity
   )
+  const user = useSelector(state => state.userModule.user)
+  console.log("🚀 ~ file: ScheduleIntensity.jsx:14 ~ user:", user)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    // Set intensity from user preferences on first load
+    if (user?.preferences?.intensity) {
+      dispatch({ type: SET_INTENSITY, intensity: user.preferences.intensity })
+    }
+  }, [user]) // Only run when user data changes
+
   const scheduleOptions = [
     {
       id: 'relaxed',

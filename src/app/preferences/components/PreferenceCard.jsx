@@ -1,6 +1,6 @@
 export function PreferenceCard({ children, className = "" }) {
     return (
-        <div className={`group bg-white dark:bg-gray-800/50 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700/50 backdrop-blur-xl transition-all duration-200 hover:shadow-md hover:border-gray-200 dark:hover:border-gray-600/50 ${className}`}>
+        <div className={`group bg-white dark:bg-gray-800/50 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700/50 backdrop-blur-xl transition-all duration-200 hover:shadow-md hover:border-gray-200 dark:hover:border-gray-600/50  ${className}`}>
             <div className="p-4 sm:p-5 lg:p-6">
                 {children}
             </div>

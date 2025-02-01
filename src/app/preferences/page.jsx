@@ -60,7 +60,7 @@ export default function PlanwiseDashboard() {
 
     return (
         <div className="flex flex-col w-full min-h-screen md:h-full">
-            <div className="flex-1 md:flex md:items-center">
+            <div className="flex-1 md:flex md:items-center max-sm:pt-16 overflow-y-auto">
                 <div className="w-full">
                     <PreferencesHeader />
                     <div className="px-4 py-8 sm:px-6 md:px-8 lg:px-12">
