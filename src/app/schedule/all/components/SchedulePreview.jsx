@@ -1,5 +1,6 @@
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { getIntensityColor } from "@/services/util.service";
 import { format } from "date-fns";
 import { Calendar, Clock } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -11,35 +12,23 @@ export function SchedulePreview({ schedule }) {
         router.replace(`/schedule/ai/${schedule?.id}`)
     }
 
-    const getIntensityColor = (intensity) => {
-        switch (intensity) {
-            case "relaxed":
-                return "bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300";
-            case "moderate":
-                return "bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300";
-            case "intense":
-                return "bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300";
-            default:
-                return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300";
-        }
-    };
     return (
         <div
             key={schedule?.id}
             onClick={navigateToSchedule}
-            className="flex relative flex-col gap-3 p-4 sm:p-6 w-full min-w-0 bg-white rounded-lg border border-gray-200 shadow-sm transition-shadow cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/20"
+            className="flex relative flex-col gap-3 p-4 w-full min-w-0 bg-white rounded-lg border border-gray-200 shadow-sm transition-shadow cursor-pointer sm:p-6 dark:bg-gray-800 dark:border-gray-700 hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/20"
         >
-            <div className="flex justify-between items-start w-full gap-2">
-                <div className="flex-grow min-w-0 overflow-hidden">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate min-w-0">
+            <div className="flex gap-2 justify-between items-start w-full">
+                <div className="overflow-hidden flex-grow min-w-0">
+                    <h3 className="min-w-0 text-lg font-semibold text-gray-900 truncate dark:text-white">
                         {schedule?.name}
                     </h3>
                     <p className="flex items-center my-1.5 text-sm text-gray-500 dark:text-gray-400 truncate min-w-0">
-                        <Calendar className="mr-1 w-4 h-4 flex-shrink-0" />
+                        <Calendar className="flex-shrink-0 mr-1 w-4 h-4" />
                         <span className="truncate">Updated at: {format(new Date(schedule.updatedAt), "MMM d, h:mm a")}</span>
                     </p>
-                    <div className="flex items-center text-sm text-gray-600 dark:text-gray-300 truncate min-w-0">
-                        <Clock className="mr-2 w-4 h-4 flex-shrink-0" />
+                    <div className="flex items-center min-w-0 text-sm text-gray-600 truncate dark:text-gray-300">
+                        <Clock className="flex-shrink-0 mr-2 w-4 h-4" />
                         <span className="truncate">
                             {schedule?.preferences.wakeup} - {schedule?.preferences.sleep}
                         </span>
@@ -47,7 +36,7 @@ export function SchedulePreview({ schedule }) {
                 </div>
                 <span
                     className={cn(
-                        "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ml-2 flex-shrink-0 min-w-[60px] text-center",
+                        "inline-flex items-center px-2 py-0.5  rounded-full text-xs font-medium ml-2 flex-shrink-0 min-w-[60px] text-center",
                         getIntensityColor(schedule?.preferences.intensity)
                     )}
                 >
@@ -63,10 +52,10 @@ export function SchedulePreview({ schedule }) {
                             {schedule?.routines.length && schedule?.routines?.slice(0, 2).map((routine, index) => (
                                 <li
                                     key={index}
-                                    className="flex gap-2 items-center text-sm text-gray-600 dark:text-gray-300 truncate min-w-0"
+                                    className="flex gap-2 items-center min-w-0 text-sm text-gray-600 truncate dark:text-gray-300"
                                 >
-                                    <span className="truncate min-w-0 flex-grow">{routine?.name}</span>
-                                    <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap flex-shrink-0">
+                                    <span className="flex-grow min-w-0 truncate">{routine?.name}</span>
+                                    <span className="flex-shrink-0 text-xs text-gray-500 whitespace-nowrap dark:text-gray-400">
                                         ({routine?.startTime} - {routine?.endTime})
                                     </span>
                                 </li>))}
@@ -81,10 +70,10 @@ export function SchedulePreview({ schedule }) {
                                         {schedule?.routines?.map((routine, index) => (
                                             <span
                                                 key={index}
-                                                className="flex gap-2 items-center text-sm text-gray-600 dark:text-gray-300 truncate min-w-0"
+                                                className="flex gap-2 items-center min-w-0 text-sm text-gray-600 truncate dark:text-gray-300"
                                             >
-                                                <span className="truncate min-w-0 flex-grow">{routine?.name}</span>
-                                                <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap flex-shrink-0">
+                                                <span className="flex-grow min-w-0 truncate">{routine?.name}</span>
+                                                <span className="flex-shrink-0 text-xs text-gray-500 whitespace-nowrap dark:text-gray-400">
                                                     ({routine?.startTime} - {routine?.endTime})
                                                 </span>
                                             </span>))}
@@ -99,10 +88,10 @@ export function SchedulePreview({ schedule }) {
                             schedule?.routines?.map((routine, index) => (
                                 <li
                                     key={index}
-                                    className="flex gap-2 items-center text-sm text-gray-600 dark:text-gray-300 truncate min-w-0"
+                                    className="flex gap-2 items-center min-w-0 text-sm text-gray-600 truncate dark:text-gray-300"
                                 >
-                                    <span className="truncate min-w-0 flex-grow">{routine?.name}</span>
-                                    <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap flex-shrink-0">
+                                    <span className="flex-grow min-w-0 truncate">{routine?.name}</span>
+                                    <span className="flex-shrink-0 text-xs text-gray-500 whitespace-nowrap dark:text-gray-400">
                                         ({routine?.startTime} - {routine?.endTime})
                                     </span>
                                 </li>))
@@ -118,7 +107,7 @@ export function SchedulePreview({ schedule }) {
                             {schedule?.goals.length && schedule?.goals?.slice(0, 2).map((goal, index) => (
                                 <li
                                     key={index}
-                                    className="text-sm text-gray-600 dark:text-gray-300 truncate min-w-0"
+                                    className="min-w-0 text-sm text-gray-600 truncate dark:text-gray-300"
                                 >
                                     {goal?.name}
                                 </li>))}
@@ -133,7 +122,7 @@ export function SchedulePreview({ schedule }) {
                                         {schedule?.goals?.map((goal, index) => (
                                             <span
                                                 key={index}
-                                                className="text-sm text-gray-600 dark:text-gray-300 truncate min-w-0"
+                                                className="min-w-0 text-sm text-gray-600 truncate dark:text-gray-300"
                                             >
                                                 {goal?.name}
                                             </span>))}
@@ -148,7 +137,7 @@ export function SchedulePreview({ schedule }) {
                             schedule?.goals?.map((goal, index) => (
                                 <li
                                     key={index}
-                                    className="text-sm text-gray-600 dark:text-gray-300 truncate min-w-0"
+                                    className="min-w-0 text-sm text-gray-600 truncate dark:text-gray-300"
                                 >
                                     {goal?.name}
                                 </li>))
