@@ -49,7 +49,7 @@ export function WelcomeHero({ user, router }) {
           >
             <button
               onClick={() => router.push('/schedule/all')}
-              className="inline-flex gap-2 justify-center items-center px-4 py-2 text-sm font-medium text-gray-700 rounded-lg border border-gray-200 backdrop-blur-sm transition-all duration-200 bg-white/80 hover:bg-white hover:border-gray-300 dark:bg-gray-800/80 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:border-gray-600"
+              className="inline-flex gap-2 justify-center items-center px-4 py-2 text-sm font-medium text-gray-700 whitespace-nowrap rounded-lg border border-gray-200 backdrop-blur-sm transition-all duration-200 bg-white/80 hover:bg-white hover:border-gray-300 dark:bg-gray-800/80 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:border-gray-600"
               >
               <CalendarDays className="w-4 h-4" />
               <span>View Schedules</span>

@@ -83,13 +83,13 @@ export default function DailySchedule() {
     try {
       console.log("🚀 ~ file: page.jsx:40 ~ editedSchedule:", editedSchedule)
       // Create a merged schedule with all original fields and AI updates
-      const updatedSchedule = {
-        ...schedule,  // Keep all original schedule fields (routines, goals, etc)
-        ...editedSchedule,  // Override with AI's changes (preferences, schedule array),
-      };
+      // const updatedSchedule = {
+      //   ...schedule,  // Keep all original schedule fields (routines, goals, etc)
+      //   ...editedSchedule,  // Override with AI's changes (preferences, schedule array),
+      // };
 
-      setSchedule(updatedSchedule)
-      await scheduleService.updateSchedule(updatedSchedule)
+      setSchedule(editedSchedule)
+      await scheduleService.updateSchedule(editedSchedule)
       setEditedSchedule(null)
     } catch (error) {
       console.error('Failed to accept changes:', error)

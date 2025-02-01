@@ -14,6 +14,7 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
     const dispatch = useDispatch()
     const [message, setMessage] = useState('');
     const messagesEndRef = useRef(null);
+    const [streamingMessage, setStreamingMessage] = useState(null)
     const textareaRef = useRef(null);
 
     const scrollToBottom = () => {
@@ -66,7 +67,6 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
     }
     const handleAIResponse = async (userMessage) => {
         try {
-            // Create minimal schedule object for the request
             const minimalSchedule = {
                 _id: schedule._id,
                 preferences: schedule.preferences,
@@ -75,7 +75,6 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
                 goals: schedule.goals
             };
 
-            // Get last 5 messages from chat history
             const lastMessages = (schedule.chat || [])
                 .slice(-5)
                 .map(msg => ({
@@ -91,8 +90,7 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
             let aiResponse = '';
             let messageType = null;
 
-            const initialAiMessage = createAIMessage('');
-            addMessageToChat(initialAiMessage)
+            setStreamingMessage('');
 
             while (true) {
                 const { done, value } = await stream.read();
@@ -100,41 +98,49 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
 
                 const text = decoder.decode(value);
 
-                // Check for message type in the first chunk
                 if (text.startsWith('[TYPE:')) {
                     messageType = text.match(/\[TYPE:(.*?)\]/)[1];
                     continue;
                 }
 
                 aiResponse += text;
+                setStreamingMessage(aiResponse);
+                scrollToBottom();
+            }
 
-                setSchedule(prev => ({
-                    ...prev,
-                    chat: Array.isArray(prev.chat)
-                        ? prev.chat.map(msg =>
-                            msg.id === initialAiMessage.id
-                                ? { ...msg, text: aiResponse }
-                                : msg
-                        )
-                        : [initialAiMessage]
-                }));
+            // After streaming is complete, create and add the message to chat
+            if (aiResponse) {
+                const finalAiMessage = createAIMessage(aiResponse);
+                addMessageToChat(finalAiMessage);
+                setStreamingMessage(null);
             }
 
             if (messageType === 'schedule_edit') {
-                dispatch({ type: TOGGLE_SCHEDULE_SIDEBAR, isOpen: false })
-                setIsLoading(true)
-                const editedScheduleResponse = await scheduleService.getEditedSchedule(minimalSchedule, aiResponse);
-                if (editedScheduleResponse) {
-                    onScheduleEdit(editedScheduleResponse);
+                // First set loading and close sidebar
+                setIsLoading(true);
+                dispatch({ type: TOGGLE_SCHEDULE_SIDEBAR, isOpen: false });
+
+                try {
+                    const editedScheduleResponse = await scheduleService.getEditedSchedule(minimalSchedule, aiResponse);
+                    if (editedScheduleResponse) {
+                        // Create a new schedule object with the edited data
+                        const updatedSchedule = {
+                            ...schedule,
+                            ...editedScheduleResponse,
+                            // chat: schedule.chat // Preserve the chat history
+                        };
+                        onScheduleEdit(updatedSchedule);
+                    }
+                } catch (error) {
+                    console.error('Failed to edit schedule:', error);
+                    addMessageToChat(createAIMessage('Failed to apply schedule changes. Please try again.'));
                 }
             }
-            // For schedule_analysis and friendly_message, we just display the AI's response
-            // No additional action needed as the message is already shown in the chat
         } catch (error) {
             console.error('Failed to get AI response:', error);
             addMessageToChat(createAIMessage('Sorry, I encountered an error. Please try again.'));
         } finally {
-            setIsLoading(false)
+            setIsLoading(false);
         }
     };
 
@@ -155,8 +161,10 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
         };
     }
 
-    const MessageBubble = ({ message }) => {
-        const isUser = message.type === 'user';
+    const MessageBubble = ({ message, type = 'regular' }) => {
+        const isUser = type === 'regular' ? message.type === 'user' : false;
+        const messageText = type === 'regular' ? message.text : message;
+        
         return (
             <div
                 className={`flex flex-col gap-1 max-w-[85%] transition-all duration-300 ease-out transform ${isUser ? 'ml-auto translate-x-0 opacity-100' : 'mr-auto translate-x-0 opacity-100'}`}
@@ -165,12 +173,12 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
                     className={`px-4 py-2 transition-opacity duration-300 ${isUser
                         ? 'text-white bg-blue-500 rounded-2xl rounded-tr-sm dark:bg-blue-600'
                         : 'text-gray-800 bg-gray-100 rounded-xl dark:text-gray-100 dark:bg-gray-800'
-                        }`}
+                        } ${type === 'streaming' ? 'border-l-4 border-blue-500 dark:border-blue-400' : ''}`}
                 >
                     {isUser ? (
-                        <p className="max-sm:text-sm text-xs lg:text-sm whitespace-pre-wrap">{message.text}</p>
+                        <p className="text-xs whitespace-pre-wrap max-sm:text-sm lg:text-sm">{messageText}</p>
                     ) : (
-                        <div className="max-sm:text-sm text-xs lg:text-sm markdown-content">
+                        <div className="text-xs max-sm:text-sm lg:text-sm markdown-content">
                             <ReactMarkdown
                                 remarkPlugins={[remarkGfm]}
                                 components={{
@@ -190,11 +198,18 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
                                         </blockquote>,
                                 }}
                             >
-                                {message.text}
+                                {messageText}
                             </ReactMarkdown>
+                            {type === 'streaming' && (
+                                <div className="flex gap-1 items-center mt-1 text-blue-500 dark:text-blue-400">
+                                    <div className="w-1 h-1 bg-current rounded-full animate-pulse"></div>
+                                    <div className="w-1 h-1 bg-current rounded-full delay-75 animate-pulse"></div>
+                                    <div className="w-1 h-1 bg-current rounded-full delay-150 animate-pulse"></div>
+                                </div>
+                            )}
                         </div>
                     )}
-                    {isUser && (
+                    {isUser && type === 'regular' && (
                         <span className="self-end text-xs text-blue-100">
                             {message.timestamp}
                         </span>
@@ -216,8 +231,11 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
                 ) : (
                     <div className="flex flex-col gap-3 py-4">
                         {chat?.map((msg) => (
-                            <MessageBubble key={msg.id} message={msg} />
+                            <MessageBubble key={msg.id} message={msg} type="regular" />
                         ))}
+                        {streamingMessage && (
+                            <MessageBubble key="streaming" message={streamingMessage} type="streaming" />
+                        )}
                         <div ref={messagesEndRef} />
                     </div>
                 )}
