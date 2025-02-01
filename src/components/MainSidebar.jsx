@@ -121,7 +121,7 @@ export function SidebarDemo() {
                         {user && (
                             <>
                                 <TooltipTool content="Logout" side="top">
-                                    <SidebarLink link={{ label: "Logout", href: "#", icon: <LogOutIcon /> }} onClick={onLogout} className="my-0 capitalize dark:hover:bg-transparent hover:bg-transparent" />
+                                    <LogOutIcon onClick={onLogout} className="ms-3.5" />
                                 </TooltipTool>
                             </>
                             // <DropdownMenu>

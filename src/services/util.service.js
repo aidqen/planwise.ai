@@ -22,6 +22,31 @@ export function makeId(length) {
   return result;
 }
 
+export const getIntensityColor = (intensity) => {
+  switch (intensity) {
+    case "relaxed":
+      return "bg-blue-100 text-blue-800 dark:bg-blue-900/70 dark:text-blue-100";
+    case "moderate":
+      return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/70 dark:text-yellow-100";
+    case "intense":
+      return "bg-red-100 text-red-800 dark:bg-red-900/70 dark:text-red-100";
+    default:
+      return "bg-gray-100 text-gray-800 dark:bg-gray-900/70 dark:text-gray-100";
+  }
+};
+
+export const getImportanceColor = (importance) => {
+  switch (importance) {
+    case "low":
+      return "bg-green-100 text-green-800 dark:bg-green-900/70 dark:text-green-100";
+    case "medium":
+      return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/70 dark:text-yellow-100";
+    case "high":
+      return "bg-red-100 text-red-800 dark:bg-red-900/70 dark:text-red-100";
+    default:
+      return "bg-gray-100 text-gray-800 dark:bg-gray-900/70 dark:text-gray-100";
+  }
+};
 
 export function convertToGoogleTimestamp(date, time, timeZone) {
   try {

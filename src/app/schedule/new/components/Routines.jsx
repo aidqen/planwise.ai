@@ -71,7 +71,7 @@ export function Routines({ }) {
             Set Your Daily Routines
           </h1>
           <p className="mx-auto max-w-lg text-sm text-gray-600 md:text-base dark:text-gray-400">
-            Add the unchangeable activities to help us create a schedule that doesn&apos;t interfere with your existing commitments.
+            Add your unchangeable activities to help us create a schedule that doesn&apos;t interfere with your existing commitments.
           </p>
         </div>
 
