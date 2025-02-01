@@ -80,15 +80,15 @@ export function AddGoals() {
   }
 
   return (
-    <Section className={'pt-6 w-full md:p-6 pb-0'}>
+    <Section className={'pt-3 pb-0 w-full md:p-6'}>
       <Card className="overflow-y-auto mx-auto w-full max-w-2xl bg-transparent border-0 shadow-none">
         <CardContent className="flex flex-col gap-7 p-0 w-full md:p-6">
           <div className="space-y-2 text-center">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 md:text-2xl">
               Set Your Goals
             </h3>
-            <p className="mx-auto max-w-lg text-xs text-gray-600 md:text-sm lg:text-base dark:text-gray-400">
-              Add goals want to work on in your schedule. Prioritize them by importance to help us create a more effective schedule for you.
+            <p className="mx-auto max-w-lg text-sm text-gray-600 md:text-sm lg:text-base dark:text-gray-400">
+              Add the goals you want to work on in your schedule. Prioritize them by how much time each goal requires.
             </p>
           </div>
 

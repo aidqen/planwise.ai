@@ -77,7 +77,7 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
             <div className="flex flex-col gap-2">
               <Label
                 htmlFor="routineName"
-                className="text-xs font-semibold text-gray-700 md:text-sm dark:text-white"
+                className="text-xs text-gray-700 font-regular md:text-sm dark:text-white"
               >
                 Routine Name
               </Label>
@@ -96,7 +96,7 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
               <div className="flex flex-col gap-2">
                 <Label
                   htmlFor="startTime"
-                  className="text-xs font-semibold text-gray-700 md:text-sm dark:text-white"
+                  className="text-xs text-gray-700 font-regular md:text-sm dark:text-white"
                 >
                   Start Time
                 </Label>
@@ -129,7 +129,7 @@ export function AddRoutine({ newRoutine, setNewRoutine, addRoutine, multiStepFor
               <div className="flex flex-col gap-2">
                 <Label
                   htmlFor="endTime"
-                  className="text-xs font-semibold text-gray-700 md:text-sm dark:text-white"
+                  className="text-xs text-gray-700 font-regular md:text-sm dark:text-white"
                 >
                   End Time
                 </Label>

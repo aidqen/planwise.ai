@@ -39,12 +39,12 @@ export function Preferences() {
   return (
     <Section className="w-full">
       <div className="flex flex-col gap-8 items-center py-8 w-full h-full md:p-8 max-sm:items-start">
-        <div className="space-y-2 text-center w-full">
+        <div className="space-y-2 w-full text-center">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 md:text-2xl">
             Daily Schedule Preferences
           </h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400 md:text-base max-w-lg mx-auto max-sm:mx-0">
-            Set your daily wake-up and bedtime to help us create a schedule that matches your natural rhythm
+          <p className="mx-auto max-w-lg text-sm text-gray-600 dark:text-gray-400 md:text-base max-sm:mx-0">
+            Set your daily preferences to help us generate a schedule which fits you.
           </p>
         </div>
 
@@ -78,7 +78,7 @@ export function Preferences() {
           })}
         </div>
 
-        <div className="w-full max-w-xl pt-4">
+        <div className="pt-4 w-full max-w-xl">
           <ScheduleIntensity />
         </div>
       </div>

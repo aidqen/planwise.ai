@@ -64,14 +64,14 @@ export function Routines({ }) {
   }
 
   return (
-    <Section className="py-6 w-full md:p-6">
+    <Section className="py-3 w-full md:p-6">
       <div className="mx-auto max-w-2xl">
         <div className="mb-4 space-y-2 text-center md:mb-8">
           <h1 className="text-xl font-medium text-gray-900 dark:text-gray-100 md:text-2xl">
             Set Your Daily Routines
           </h1>
           <p className="mx-auto max-w-lg text-sm text-gray-600 md:text-base dark:text-gray-400">
-            Add your regular daily activities to help us create a schedule that works around your existing commitments.
+            Add the unchangeable activities to help us create a schedule that doesn&apos;t interfere with your existing commitments.
           </p>
         </div>
 
