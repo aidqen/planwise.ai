@@ -23,7 +23,7 @@ export function ConfigurationCTA({ user }) {
     // If all configurations are complete
     if (missingConfigurations.length === 0) {
         return (
-            <div className="flex flex-col justify-between items-start p-5 mb-6 space-y-4 w-full bg-green-50 rounded-xl border border-green-300 border-dashed md:p-6 dark:bg-green-900/50 dark:border-green-700 md:flex-row md:items-center md:space-y-0 md:space-x-4">
+            <div className="flex flex-col justify-between items-start p-5 mb-6 space-y-4 w-full bg-green-50 rounded-xl border border-green-300 border-dashed md:p-6 dark:bg-green-950/50 dark:border-green-700 md:flex-row md:items-center md:space-y-0 md:space-x-4">
                 <div className="grid grid-rows-[auto,auto] gap-2 w-full">
                     <div className="grid grid-cols-[auto,1fr] items-center gap-4">
                         <CheckCircle2 className="w-8 h-8 text-green-500 dark:text-green-400" />
@@ -31,7 +31,7 @@ export function ConfigurationCTA({ user }) {
                             You're All Set Up!
                         </h3>
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 pl-12">
+                    <p className="pl-12 text-sm text-gray-600 dark:text-gray-400">
                         You've completed all your configurations. You're ready to generate a new schedule.
                     </p>
                 </div>
@@ -56,7 +56,7 @@ export function ConfigurationCTA({ user }) {
                         Complete Your Setup
                     </h3>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400 pl-12">
+                <p className="pl-12 text-sm text-gray-600 dark:text-gray-400">
                     {missingConfigurations.length === 3 
                         ? "You haven't done your setup yet. Let's get started!" 
                         : `You're almost there! Complete your ${missingConfigurations.join(', ')} setup.`}
