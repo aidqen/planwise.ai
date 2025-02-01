@@ -40,9 +40,9 @@ export default function Home() {
   console.log("🚀 ~ file: page.jsx:40 ~ user:", user)
 
   const scheduleStats = {
-    relaxed: user?.schedules?.filter(s => s.intensity === 'relaxed')?.length || 0,
-    moderate: user?.schedules?.filter(s => s.intensity === 'moderate')?.length || 0,
-    intense: user?.schedules?.filter(s => s.intensity === 'intense')?.length || 0
+    relaxed: user?.schedules?.filter(s => s?.preferences?.intensity === 'relaxed')?.length || 0,
+    moderate: user?.schedules?.filter(s => s?.preferences?.intensity === 'moderate')?.length || 0,
+    intense: user?.schedules?.filter(s => s?.preferences?.intensity === 'intense')?.length || 0
   }
 
   const goalStats = {
