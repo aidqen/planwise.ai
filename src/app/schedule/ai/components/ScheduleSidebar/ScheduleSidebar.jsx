@@ -44,15 +44,15 @@ export function ScheduleSidebar({ schedule, setSchedule, onScheduleEdit, setIsLo
     ];
 
     const sidebarContent = (
-        <>
-            <CardHeader className="flex flex-col gap-1.5 pt-0 pb-6 md:pb-8 space-y-0 min-h-[20%] max-h-[20%] z-[20]">
+        <div className="flex flex-col h-full">
+            <CardHeader className="flex-shrink-0 flex flex-col gap-1.5 pt-0 pb-4 sticky top-0 z-[20] bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
                 <CardTitle className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                     Schedule Details
                 </CardTitle>
                 <CardDescription className="mt-0 text-sm text-gray-600 font-regular dark:text-gray-400">
                     {activeView === "chat" ? "Ask AI to modify your schedule" : "View your preferences and tasks"}
                 </CardDescription>
-                <div className="grid grid-cols-[50%_50%] gap-1 p-2  mb-4 rounded-lg backdrop-blur-sm bg-gray-100/80 dark:bg-gray-800/80">
+                <div className="grid grid-cols-2 gap-1 p-1.5 mt-2 rounded-lg backdrop-blur-sm bg-gray-100/80 dark:bg-gray-800/80">
                     {views.map(view => (
                         <button
                             key={view.id}
@@ -69,37 +69,33 @@ export function ScheduleSidebar({ schedule, setSchedule, onScheduleEdit, setIsLo
                     ))}
                 </div>
             </CardHeader>
-            <CardContent className="p-0">
-                <div className="overflow-hidden h-[calc(100vh-10rem)] md:h-[calc(100vh-14rem)] max-h-[70vh] md:max-h-none">
-                    {activeView === "details" ? (
-                        <ScheduleDetails
-                            schedule={schedule}
-                            openSection={openSection}
-                            toggleSection={toggleSection}
-                            onSaveSchedule={onSaveSchedule}
-                        />
-                    ) : (
-                        <AIChat 
-                            chat={schedule?.chat} 
-                            schedule={schedule} 
-                            onScheduleEdit={onScheduleEdit}
-                            setIsLoading={setIsLoading}
-                            isLoading={isLoading}
-                            setSchedule={setSchedule}
-                        />
-                    )}
-                </div>
+            <CardContent className="flex-1 p-0 min-h-0">
+                {activeView === "details" ? (
+                    <ScheduleDetails
+                        schedule={schedule}
+                        openSection={openSection}
+                        toggleSection={toggleSection}
+                        onSaveSchedule={onSaveSchedule}
+                    />
+                ) : (
+                    <AIChat 
+                        chat={schedule?.chat} 
+                        schedule={schedule} 
+                        onScheduleEdit={onScheduleEdit}
+                        setIsLoading={setIsLoading}
+                        isLoading={isLoading}
+                        setSchedule={setSchedule}
+                    />
+                )}
             </CardContent>
-        </>
+        </div>
     )
 
     return (
         <>
             {/* Desktop Sidebar */}
             {!isMobile && (
-                <Card className="overflow-y-auto overflow-x-hidden relative px-0 pt-16 mx-auto max-w-md h-full min-h-screen max-h-screen bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm transition-all duration-200 xl:w-[25em] md:w-[20em] lg:w-[22em] border-gray-200 dark:border-gray-800"
-                    // style={{ width: '40em' }}
-                    >
+                <Card className="flex flex-col overflow-hidden relative h-screen pt-4 md:pt-16 max-h-screen bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm transition-all duration-200 w-[350px] border-r border-gray-200 xl:w-[25em] md:w-[20em] lg:w-[22em]  dark:border-gray-800">
                     {sidebarContent}
                 </Card>
             )}
