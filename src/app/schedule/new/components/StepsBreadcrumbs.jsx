@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
-import { Check, ChevronRight } from "lucide-react";
+import { Check } from "lucide-react";
 
-export function StepsBreadcrumbs({ steps, currentStep }) {
+export function StepsBreadcrumbs({ steps, currentStep, setStep }) {
     return (
       <nav aria-label="Progress" className="hidden mx-auto w-full max-w-3xl md:block">
         <ol role="list" className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -12,6 +12,7 @@ export function StepsBreadcrumbs({ steps, currentStep }) {
                 "flex items-center cursor-pointer",
                 index !== steps.length - 1 && "flex-1 sm:justify-center"
               )}
+              onClick={() => setStep(step.id - 1)}
             >
               <div className="flex items-center">
                 <span

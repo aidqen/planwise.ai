@@ -3,15 +3,13 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState, Suspense } from 'react'
 import { Preferences } from './components/Preferences'
-import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { AddGoals } from './components/AddGoals'
 import { Routines } from './components/Routines'
 import { ConfettiButton } from '@/components/ui/confetti-button'
-import { useSelector } from 'react-redux'
 import { StepsBreadcrumbs } from './components/StepsBreadcrumbs'
 import { CalendarSync, Goal, SquareChartGantt, UserRoundPen } from 'lucide-react'
 import ReviewStep from './components/ReviewStep'
-import { GenerateScheduleBtn } from './final/component/GenerateScheduleBtn'
+import { GenerateScheduleBtn } from './components/GenerateScheduleBtn'
 
 
 function ScheduleNewContent() {
@@ -71,7 +69,7 @@ function ScheduleNewContent() {
 
     <div className="scrollbar-hidden px-6 pt-7 scroll-smooth flex overflow-y-auto overflow-x-hidden relative flex-col justify-between md:pt-16 items-center sm:px-5 md:px-6  sm:w-[65%] md-[60%] xl:w-[50%] 2xl:w-[45%] h-full text-black rounded-xl w-full">
       <div className="flex flex-col items-center pt-1 w-full max-sm:block">
-        <StepsBreadcrumbs currentStep={step + 1} steps={steps} />
+        <StepsBreadcrumbs currentStep={step + 1} steps={steps} setStep={setStep} />
         {renderStepContent()}
       </div>
       <div className="flex flex-row gap-20 justify-center items-center py-4 pt-7 w-full md:py-3 btns max-sm:justify-center max-sm:gap-5">
