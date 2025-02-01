@@ -90,7 +90,7 @@ export function SidebarDemo() {
     return (
         (<div
             className={cn(
-                "overflow-hidden flex-1 pt-16 max-w-max h-screen bg-[#f3f4f6] dark:bg-gray-900 text-gray-900 dark:text-gray-100 border max-sm:fixed z-[10] border-neutral-200 dark:border-gray-800 border-l-0 border-y-0 border-r",
+                "overflow-hidden flex-1 pt-16 max-w-max h-screen bg-[#f3f4f6] dark:bg-gray-900 text-gray-900 dark:text-gray-100 border max-sm:fixed z-[20] border-neutral-200 dark:border-gray-800 border-l-0 border-y-0 border-r",
                 open ? 'max-sm:max-w-full' : 'max-sm:max-w-0',
                 isVisible ? 'flex' : 'hidden'
             )}>
@@ -121,7 +121,7 @@ export function SidebarDemo() {
                         {user && (
                             <>
                                 <TooltipTool content="Logout" side="top">
-                                    <SidebarLink link={{ label: "Logout", href: "#", icon: <LogOutIcon /> }} onClick={onLogout} className="capitalize dark:hover:bg-transparent hover:bg-transparent my-0" />
+                                    <SidebarLink link={{ label: "Logout", href: "#", icon: <LogOutIcon /> }} onClick={onLogout} className="my-0 capitalize dark:hover:bg-transparent hover:bg-transparent" />
                                 </TooltipTool>
                             </>
                             // <DropdownMenu>

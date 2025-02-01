@@ -57,7 +57,7 @@ export function AppHeader() {
     <header
       className={cn(
         isVisible ? 'flex':'hidden', 
-        'fixed top-0 left-0 z-50 flex-row justify-between items-center py-3 w-full ps-3 pe-6 max-sm:justify-between'
+        'fixed top-0 left-0 z-10 flex-row justify-between items-center py-3 w-full ps-3 pe-6 max-sm:justify-between'
       )}
     >
       <button 
