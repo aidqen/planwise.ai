@@ -6,6 +6,8 @@ import { RoutinesSection } from './components/RoutinesSection'
 import { useSelector } from 'react-redux'
 import { updateUser } from '@/store/actions/user.actions'
 import { useToast } from "@/components/hooks/use-toast"
+import Link from 'next/link'
+import { ArrowLeft, Plus } from 'lucide-react'
 
 export default function PlanwiseDashboard() {
     const user = useSelector(state => state.userModule.user)
@@ -60,7 +62,7 @@ export default function PlanwiseDashboard() {
 
     return (
         <div className="flex flex-col w-full min-h-screen md:h-full">
-            <div className="flex-1 md:flex md:items-center max-sm:pt-16 overflow-y-auto">
+            <div className="overflow-y-auto flex-1 md:flex md:items-center max-sm:pt-16">
                 <div className="w-full">
                     <PreferencesHeader />
                     <div className="px-4 py-8 sm:px-6 md:px-8 lg:px-12">
@@ -76,6 +78,25 @@ export default function PlanwiseDashboard() {
                                 handleRemoveItem={handleRemoveItem}
                                 routines={user?.routines}
                             />
+                            <div className="flex justify-start max-w-7xl">
+
+                                <div className="flex justify-between items-center mt-3 space-x-4 w-max">
+                                    <Link
+                                        href="/home"
+                                        className="flex flex-row flex-1 justify-center items-center px-3 py-3 text-xs font-medium text-center text-gray-700 whitespace-nowrap bg-gray-100 rounded-lg border border-gray-200 transition-colors duration-200 sm:text-sm hover:bg-gray-200 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-700"
+                                    >
+                                        <ArrowLeft className="mr-1 w-4 h-4" />
+                                        Back to Dashboard
+                                    </Link>
+                                    <Link
+                                        href="/schedule/new"
+                                        className="flex flex-row flex-1 justify-center items-center px-3 py-3 text-xs font-medium text-center text-white whitespace-nowrap bg-green-500 rounded-lg shadow-sm transition-colors duration-200 sm:text-sm hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700 hover:shadow-md"
+                                    >
+                                        <Plus className="mr-1 w-4 h-4" />
+                                        Create New Schedule
+                                    </Link>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
