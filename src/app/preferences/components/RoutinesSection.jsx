@@ -57,7 +57,7 @@ export function RoutinesSection({ routines, handleUserUpdate, handleRemoveItem }
                 icon={<IconWrapper color="purple"><Clock className="w-4 h-4 sm:w-5 sm:h-5" /></IconWrapper>}
                 title="Routines"
                 action={
-                    <AddButton title="Add Routine" description='Add a new routine to easily customize your schedules.' compact>
+                    <AddButton title="Add Routine" description='Add your unchangeable routines here.' compact>
                         <RoutineForm 
                             onAddRoutine={onAddRoutine} 
                             onSubmitRoutines={onSubmitRoutines} 

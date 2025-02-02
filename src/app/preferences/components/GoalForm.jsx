@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Trash2 } from 'lucide-react'
 
 export function GoalForm({ onAddGoal, onSubmitGoals, localGoals, setLocalGoals }) {
   const [goal, setGoal] = useState({ name: '', importance: 'medium' })
@@ -25,7 +26,7 @@ export function GoalForm({ onAddGoal, onSubmitGoals, localGoals, setLocalGoals }
   }
 
   return (
-    <div className="space-y-4">
+    <div className=''>
       <form onSubmit={handleAddGoal} className="space-y-4">
         <div className="space-y-2">
           <label className="text-sm text-gray-600 dark:text-gray-300">Goal description</label>
@@ -62,13 +63,13 @@ export function GoalForm({ onAddGoal, onSubmitGoals, localGoals, setLocalGoals }
       </form>
 
       {localGoals.length > 0 && (
-        <div className="mt-4 space-y-2">
+        <div className="mt-4 space-y-4">
           <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Goals to Submit:</h4>
           <div className="space-y-2 max-h-[200px] overflow-y-auto">
             {localGoals.map((goal) => (
               <div 
                 key={goal.id} 
-                className="p-2 bg-gray-50 rounded-lg flex justify-between items-center dark:bg-gray-800"
+                className="flex justify-between items-center p-2 bg-gray-50 rounded-lg group dark:bg-gray-800"
               >
                 <div>
                   <p className="text-sm text-gray-900 dark:text-white">{goal.name}</p>
@@ -78,16 +79,16 @@ export function GoalForm({ onAddGoal, onSubmitGoals, localGoals, setLocalGoals }
                   variant="ghost" 
                   size="sm" 
                   onClick={() => setLocalGoals(localGoals.filter(g => g.id !== goal.id))}
-                  className="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-500"
+                  className="text-red-500 opacity-0 transition-opacity group-hover:opacity-100 hover:text-red-600 dark:text-red-400 dark:hover:text-red-500"
                 >
-                  Remove
+                  <Trash2 className="w-4 h-4" />
                 </Button>
               </div>
             ))}
           </div>
           <Button 
             onClick={handleSubmitGoals}
-            className="w-full bg-green-500 text-white hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700"
+            className="mt-8 w-full text-white bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700"
             disabled={localGoals.length === 0}
           >
             Submit Goals

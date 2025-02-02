@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import TimePicker from '@/components/TimePicker'
+import { Trash2 } from 'lucide-react'
 
 export function RoutineForm({ onAddRoutine, onSubmitRoutines, localRoutines, setLocalRoutines }) {
   const [routine, setRoutine] = useState({
@@ -48,7 +49,7 @@ export function RoutineForm({ onAddRoutine, onSubmitRoutines, localRoutines, set
         />
         <div className="flex flex-row gap-4 w-full">
           <div className="flex flex-col w-full">
-            <label htmlFor="startTime" className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label htmlFor="startTime" className="mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
               Start Time
             </label>
             <TimePicker
@@ -58,7 +59,7 @@ export function RoutineForm({ onAddRoutine, onSubmitRoutines, localRoutines, set
             />
           </div>
           <div className="flex flex-col w-full">
-            <label htmlFor="endTime" className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label htmlFor="endTime" className="mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
               End Time
             </label>
             <TimePicker
@@ -84,7 +85,7 @@ export function RoutineForm({ onAddRoutine, onSubmitRoutines, localRoutines, set
             {localRoutines.map((routine) => (
               <div 
                 key={routine.id} 
-                className="p-2 bg-gray-50 rounded-lg flex justify-between items-center dark:bg-gray-800"
+                className="flex justify-between items-center p-2 bg-gray-50 rounded-lg group dark:bg-gray-800"
               >
                 <div>
                   <p className="text-sm text-gray-900 dark:text-white">{routine.name}</p>
@@ -96,16 +97,16 @@ export function RoutineForm({ onAddRoutine, onSubmitRoutines, localRoutines, set
                   variant="ghost" 
                   size="sm" 
                   onClick={() => setLocalRoutines(localRoutines.filter(r => r.id !== routine.id))}
-                  className="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-500"
+                  className="text-red-500 opacity-0 transition-opacity group-hover:opacity-100 hover:text-red-600 dark:text-red-400 dark:hover:text-red-500"
                 >
-                  Remove
+                  <Trash2 className="w-4 h-4" />
                 </Button>
               </div>
             ))}
           </div>
           <Button 
             onClick={handleSubmitRoutines}
-            className="w-full bg-green-500 text-white hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700"
+            className="w-full text-white bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700"
             disabled={localRoutines.length === 0}
           >
             Submit Routines

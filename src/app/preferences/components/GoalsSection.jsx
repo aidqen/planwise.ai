@@ -61,7 +61,7 @@ export function GoalsSection({goals, handleUserUpdate, handleRemoveItem}) {
                 icon={<IconWrapper color="green"><Target className="w-4 h-4 sm:w-5 sm:h-5" /></IconWrapper>}
                 title="Goals"
                 action={
-                    <AddButton title="Add Goal" description='Add a new goal to easily create schedules and track your progress.' compact>
+                    <AddButton title="Add New Goals" description='' compact>
                         <GoalForm 
                             onAddGoal={onAddGoal} 
                             onSubmitGoals={onSubmitGoals} 
