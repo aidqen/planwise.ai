@@ -24,7 +24,7 @@ const poppins = Poppins({
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`h-full ${poppins.className}`}>
-      <body className={`grid flex-col grid-rows-1 h-full min-h-screen max-h-screen grid-cols-[auto_1fr] min-w-screen max-w-screen bg-mainLight dark:bg-gray-900 font-[poppins] max-sm:flex`}>
+      <body className={`grid flex-col grid-rows-1 min-h-dvh max-h-dvh md:max-h-screen md:min-h-screen grid-cols-[auto_1fr] md:min-w-screen md:max-w-screen bg-mainLight dark:bg-gray-900 font-[poppins] max-sm:flex`}>
         <ReduxProvider>
           <TooltipProvider delayDuration={0}>
             <ThemeClientWrapper>

@@ -1,13 +1,13 @@
 import OpenAI from 'openai'
 import { jsonrepair } from 'jsonrepair'
 
-// const openai = new OpenAI({
-//   baseURL: 'https://api.deepseek.com',
-//   apiKey: process.env.DEEPSEEK_API_KEY
-// });
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+  baseURL: 'https://api.deepseek.com',
+  apiKey: process.env.DEEPSEEK_API_KEY
 });
+// const openai = new OpenAI({
+//   apiKey: process.env.OPENAI_API_KEY
+// });
 export async function POST(request) {
   try {
     const { preferences, routines, goals } = await request.json();
@@ -127,7 +127,7 @@ ${goals?.map(g => `Goal: ${g.name}, Importance: ${g.importance}`).join('\n')}
 
 
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4o',
+      model: 'deepseek-chat',
       messages: [{ role: 'user', content: prompt }],
       max_tokens: 2000,
     })

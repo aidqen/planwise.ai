@@ -78,7 +78,7 @@ export function AppHeader() {
         {/* <button className="flex justify-center items-center p-2 rounded-full border shadow-md bg-secondaryLight dark:bg-gray-800 dark:border-gray-700">
           <Search className="text-black dark:text-gray-200" />
         </button> */}
-        <DropdownMenu>
+        {/* <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Image
               src={user?.image || 'https://res.cloudinary.com/di6tqrg5y/image/upload/v1733919613/random_person_vzka45.jpg'}
@@ -96,7 +96,7 @@ export function AppHeader() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu> */}
       </div>
     </header>
   )
