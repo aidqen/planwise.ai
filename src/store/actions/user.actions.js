@@ -52,6 +52,13 @@ export async function deleteScheduleFromUser(scheduleId) {
         store.dispatch({ type: SET_USER, user })
 }
 
+export function appendScheduleToUserState(schedule) {
+        const user = getLocalUser()
+        if (!user.schedules) user.schedules = [...schedule]
+        user?.schedules.unshift(schedule)
+        store.dispatch({ type: SET_USER, user: userToSave })
+}
+
 export async function updateUser(user) {
         try {
                 await userService.updateUser(user)

@@ -87,10 +87,10 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
                 minimalSchedule,
                 lastMessages
             );
+            setStreamingMessage('');
             let aiResponse = '';
             let messageType = null;
 
-            setStreamingMessage('');
 
             while (true) {
                 const { done, value } = await stream.read();
