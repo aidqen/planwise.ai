@@ -1,31 +1,49 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@radix-ui/react-label'
-import { X } from 'lucide-react'
+import { Label } from '@/components/ui/label'
+import { X, Save } from 'lucide-react'
 import TimePicker from '@/components/TimePicker'
 import { useState } from 'react'
+import { cn } from '@/lib/utils'
 
 export function RoutineEdit({ routine, toggleEditing, saveEdit }) {
   const [startTime, setStartTime] = useState(routine.startTime)
   const [endTime, setEndTime] = useState(routine.endTime)
+  const [timeError, setTimeError] = useState('')
+
+  const validateTimes = (start, end) => {
+    if (!start || !end) return true
+    const [startHour, startMin] = start.split(':').map(Number)
+    const [endHour, endMin] = end.split(':').map(Number)
+    const startValue = startHour * 60 + startMin
+    const endValue = endHour * 60 + endMin
+    return endValue > startValue
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (!validateTimes(startTime, endTime)) {
+      setTimeError('End time must be after start time')
+      return
+    }
+    saveEdit(routine.id, {
+      name: e.currentTarget.routineName.value,
+      startTime,
+      endTime,
+    })
+  }
+
   return (
-    <div className="p-4 mx-auto w-full max-w-xl bg-white rounded-xl border border-gray-800 shadow-lg transition-all duration-300 sm:p-6 dark:bg-gray-900 dark:border-gray-700">
-      <form
-        onSubmit={e => {
-          e.preventDefault()
-          saveEdit(routine.id, {
-            name: e.currentTarget.routineName.value,
-            startTime,
-            endTime,
-          })
-        }}
-        className="space-y-6"
-      >
-        <div className="space-y-5">
-          <div>
+    <div className="overflow-hidden p-4 bg-white rounded-xl border border-gray-100 shadow-md transition-all duration-300 dark:bg-gray-800/20 dark:border-gray-700/50">
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="space-y-4">
+          {/* Routine Name Input */}
+          <div className="space-y-2">
             <Label
               htmlFor={`routineName-${routine.id}`}
-              className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-200"
+              className="text-sm font-medium text-gray-700 dark:text-gray-200"
             >
               Routine Name
             </Label>
@@ -34,16 +52,22 @@ export function RoutineEdit({ routine, toggleEditing, saveEdit }) {
               name="routineName"
               defaultValue={routine.name}
               required
-              className="px-3 py-2 w-full text-gray-900 bg-white rounded-lg border border-gray-300 transition-all duration-200 dark:text-gray-100 dark:bg-gray-800 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+              className={cn(
+                "w-full bg-white dark:bg-gray-800/50",
+                "border-gray-200 dark:border-gray-700 dark:text-gray-100",
+                "focus:border-blue-500 dark:focus:border-blue-400",
+                "placeholder:text-gray-400 dark:placeholder:text-gray-500"
+              )}
               placeholder="Enter routine name"
             />
           </div>
 
+          {/* Time Inputs */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div>
+            <div className="space-y-2">
               <Label 
                 htmlFor={`startTime-${routine.id}`}
-                className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-200"
+                className="text-sm font-medium text-gray-700 dark:text-gray-200"
               >
                 Start Time
               </Label>
@@ -52,19 +76,22 @@ export function RoutineEdit({ routine, toggleEditing, saveEdit }) {
                 name="startTime"
                 value={startTime}
                 onChange={(value) => {
-                  // Optional: Add any additional logic if needed
                   setStartTime(value)
+                  setTimeError('')
                 }}
                 placeholder="Select start time"
-                className="w-full"
-                />
+                className={cn(
+                  "w-full",
+                  timeError && "border-red-500 dark:border-red-500"
+                )}
+              />
             </div>
 
-            <div>
+            <div className="space-y-2">
               <Label 
                 htmlFor={`endTime-${routine.id}`}
-                className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-200"
-                >
+                className="text-sm font-medium text-gray-700 dark:text-gray-200"
+              >
                 End Time
               </Label>
               <TimePicker
@@ -73,28 +100,40 @@ export function RoutineEdit({ routine, toggleEditing, saveEdit }) {
                 value={endTime}
                 onChange={(value) => {
                   setEndTime(value)
-                  // Optional: Add any additional logic if needed
+                  setTimeError('')
                 }}
                 placeholder="Select end time"
-                className="w-full"
+                className={cn(
+                  "w-full",
+                  timeError && "border-red-500 dark:border-red-500"
+                )}
               />
             </div>
           </div>
+
+          {timeError && (
+            <p className="mt-1 text-sm text-red-500 dark:text-red-400">
+              {timeError}
+            </p>
+          )}
         </div>
 
-        <div className="flex flex-col justify-end mt-6 space-y-3 sm:flex-row sm:space-y-0 sm:space-x-3">
+        {/* Action Buttons */}
+        <div className="flex flex-col-reverse gap-2 pt-2 sm:flex-row sm:justify-end sm:gap-3">
           <Button
             type="button"
             variant="outline"
             onClick={() => toggleEditing(routine.id, false)}
-            className="w-full text-gray-700 bg-white border-gray-300 transition-colors duration-200 sm:w-auto dark:text-gray-300 dark:border-gray-600 dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
+            className="justify-center w-full sm:w-auto dark:text-white dark:bg-gray-800/50 dark:hover:bg-gray-700/50"
           >
-            <X className="mr-2 w-4 h-4" /> Cancel
+            <X className="mr-2 w-4 h-4" />
+            Cancel
           </Button>
           <Button 
-            type="submit" 
-            className="w-full text-white bg-blue-600 transition-all duration-200 sm:w-auto dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+            type="submit"
+            className="justify-center w-full bg-blue-600 dark:text-white hover:bg-blue-700 sm:w-auto dark:bg-blue-600 dark:hover:bg-blue-700"
           >
+            <Save className="mr-2 w-4 h-4" />
             Save Changes
           </Button>
         </div>

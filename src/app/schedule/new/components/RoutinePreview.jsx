@@ -1,43 +1,47 @@
-import { Button } from "@/components/ui/button";
-import { Clock, Edit2, Trash } from "lucide-react";
+import { Button } from '@/components/ui/button'
+import { Clock, Edit2, Trash2 } from 'lucide-react'
 
 export function RoutinePreview({ routine, deleteRoutine, toggleEditing }) {
   return (
-    <div className="group relative p-4 bg-white dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700/50 shadow-sm hover:shadow-md hover:border-blue-200 dark:hover:border-blue-800/50 transition-all duration-200">
-      <div className="flex flex-col space-y-3">
-        <div className="flex justify-between items-start">
-          <div className="space-y-1.5">
-            <h3 className="text-base font-medium text-gray-900 dark:text-gray-100 line-clamp-1">
-              {routine.name}
-            </h3>
-            <div className="flex items-center gap-1.5 text-gray-600 dark:text-gray-300">
-              <Clock className="w-4 h-4 text-blue-500 dark:text-blue-400" />
-              <span className="text-sm font-medium">
+    <div className="relative p-4 bg-white rounded-xl border border-gray-100 shadow-sm transition-all duration-300 group hover:shadow-md dark:bg-gray-800/20 dark:hover:bg-gray-800/40 dark:border-gray-700/50 dark:hover:border-gray-600/50">
+      <div className="flex gap-4 justify-between items-start">
+        {/* Left side - Content */}
+        <div className="flex-1 min-w-0">
+          <h3 className="font-medium text-gray-900 truncate dark:text-gray-100">
+            {routine.name}
+          </h3>
+          <div className="flex gap-2 items-center mt-1 text-sm">
+            <div className="flex items-center gap-1.5 text-gray-800  rounded-full  dark:text-gray-300/80">
+              <Clock className="w-3.5 h-3.5" />
+              <span className="font-medium whitespace-nowrap">
                 {routine.startTime} - {routine.endTime}
               </span>
             </div>
           </div>
+        </div>
 
-          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 text-gray-400 hover:text-blue-500 dark:text-gray-500 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20"
-              onClick={() => toggleEditing(routine.id, true)}
-            >
-              <Edit2 className="w-4 h-4" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
-              onClick={() => deleteRoutine(routine.id)}
-            >
-              <Trash className="w-4 h-4" />
-            </Button>
-          </div>
+        {/* Right side - Actions */}
+        <div className="flex items-center gap-1.5">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => toggleEditing(routine.id, true)}
+            className="w-8 h-8 text-gray-500 transition-colors hover:text-blue-500 hover:bg-blue-50 dark:text-gray-400 dark:hover:text-blue-400 dark:hover:bg-blue-500/10"
+          >
+            <Edit2 className="w-4 h-4" />
+            <span className="sr-only">Edit routine</span>
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => deleteRoutine(routine.id)}
+            className="w-8 h-8 text-gray-500 transition-colors hover:text-red-500 hover:bg-red-50 dark:text-gray-400 dark:hover:text-red-400 dark:hover:bg-red-500/10"
+          >
+            <Trash2 className="w-4 h-4" />
+            <span className="sr-only">Delete routine</span>
+          </Button>
         </div>
       </div>
     </div>
-  );
+  )
 }
