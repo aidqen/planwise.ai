@@ -18,20 +18,15 @@ export default function TimePicker({
     
         for (let i = 0; i < totalHours; i++) {
             const currentHour = (startHour + i) % 24;
-    
-            // Military time for ID
-            const militaryTimeHour = String(currentHour).padStart(2, '0');
-    
-            // Convert to AM/PM for label
-            const formattedHour = currentHour % 12 === 0 ? 12 : currentHour % 12;
-            const period = currentHour < 12 ? "AM" : "PM";
+            const hour = String(currentHour).padStart(2, '0');
     
             // Add slots for :00, :15, :30, and :45
             const minutes = ["00", "15", "30", "45"];
             minutes.forEach(minute => {
+                const timeString = `${hour}:${minute}`;
                 slots.push({
-                    id: `${militaryTimeHour}:${minute}`,
-                    label: `${formattedHour}:${minute} ${period}`
+                    id: timeString,
+                    label: timeString
                 });
             });
         }
@@ -44,7 +39,7 @@ export default function TimePicker({
     return (
         <Select onValueChange={onChange}>
             <SelectTrigger 
-                className={`inline-flex justify-start items-center px-2 sm:px-3 md:px-5 py-2 w-full text-xs sm:text-sm text-gray-700 bg-white rounded-lg border border-gray-200 shadow-sm transition-all duration-200 dark:bg-gray-800 dark:border-gray-700 me-2 dark:text-gray-200 focus:outline-none hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-2 focus:ring-green-500/20 dark:focus:ring-green-500/20 ${className}`}
+                className={`inline-flex justify-start items-center px-2 py-2 w-full text-xs text-gray-700 bg-white rounded-lg border border-gray-200 shadow-sm transition-all duration-200 sm:px-3 md:px-5 sm:text-sm dark:bg-gray-800 dark:border-gray-700 me-2 dark:text-gray-200 focus:outline-none hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-2 focus:ring-green-500/20 dark:focus:ring-green-500/20 ${className}`}
             >
                 <Icon className="mr-1.5 sm:mr-2 w-4 h-4 sm:w-5 sm:h-5 text-gray-500 dark:text-gray-400" />
                 <SelectValue placeholder={value ? value : placeholder} className="truncate">{value}</SelectValue>

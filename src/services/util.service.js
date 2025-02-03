@@ -22,6 +22,19 @@ export function makeId(length) {
   return result;
 }
 
+export const getImportanceColor = (importance) => {
+  switch (importance) {
+    case "low":
+      return "bg-green-100/90 text-green-700 dark:bg-green-500/20 dark:text-green-400";
+    case "medium":
+      return "bg-yellow-100/90 text-yellow-700 dark:bg-yellow-500/20 dark:text-yellow-400";
+    case "high":
+      return "bg-red-100/90 text-red-700 dark:bg-red-500/20 dark:text-red-400";
+    default:
+      return "bg-gray-100/90 text-gray-700 dark:bg-gray-500/20 dark:text-gray-400";
+  }
+}
+
 export const getIntensityColor = (intensity) => {
   switch (intensity) {
     case "relaxed":
@@ -29,19 +42,6 @@ export const getIntensityColor = (intensity) => {
     case "moderate":
       return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/70 dark:text-yellow-100";
     case "intense":
-      return "bg-red-100 text-red-800 dark:bg-red-900/70 dark:text-red-100";
-    default:
-      return "bg-gray-100 text-gray-800 dark:bg-gray-900/70 dark:text-gray-100";
-  }
-};
-
-export const getImportanceColor = (importance) => {
-  switch (importance) {
-    case "low":
-      return "bg-green-100 text-green-800 dark:bg-green-900/70 dark:text-green-100";
-    case "medium":
-      return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/70 dark:text-yellow-100";
-    case "high":
       return "bg-red-100 text-red-800 dark:bg-red-900/70 dark:text-red-100";
     default:
       return "bg-gray-100 text-gray-800 dark:bg-gray-900/70 dark:text-gray-100";
