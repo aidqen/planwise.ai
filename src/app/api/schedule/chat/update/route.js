@@ -1,13 +1,13 @@
 import OpenAI from 'openai';
 import { NextResponse } from 'next/server';
 
-const openai = new OpenAI({
-  baseURL: 'https://api.deepseek.com',
-  apiKey: process.env.DEEPSEEK_API_KEY
-});
 // const openai = new OpenAI({
-//   apiKey: process.env.OPENAI_API_KEY
+//   baseURL: 'https://api.deepseek.com',
+//   apiKey: process.env.DEEPSEEK_API_KEY
 // });
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
 
 export async function POST(request) {
   try {
@@ -53,7 +53,7 @@ export async function POST(request) {
     12. Ensure all JSON strings are properly escaped`;
 
     const completion = await openai.chat.completions.create({
-      model: 'deepseek-chat',
+      model: 'gpt-4o',
       // model: 'gpt-4o',
       messages: [{ role: 'user', content: updatePrompt }],
       max_tokens: 2000,

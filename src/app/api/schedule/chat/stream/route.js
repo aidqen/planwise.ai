@@ -1,13 +1,13 @@
 import OpenAI from 'openai';
 
 // OpenAI configuration
-// const openai = new OpenAI({
-//   apiKey: process.env.OPENAI_API_KEY
-// });
 const openai = new OpenAI({
-  baseURL: 'https://api.deepseek.com',
-  apiKey: process.env.DEEPSEEK_API_KEY
+  apiKey: process.env.OPENAI_API_KEY
 });
+// const openai = new OpenAI({
+//   baseURL: 'https://api.deepseek.com',
+//   apiKey: process.env.DEEPSEEK_API_KEY
+// });
 
 // Prompt templates
 const PROMPTS = {
@@ -112,7 +112,7 @@ Rules:
 // Helper functions
 const createChatCompletion = async (prompt, { stream = false, maxTokens = 500, temperature = 0.7 } = {}) => {
   return await openai.chat.completions.create({
-    model: 'deepseek-chat',
+    model: 'gpt-4o',
     messages: [{ role: 'user', content: prompt }],
     max_tokens: maxTokens,
     stream,
@@ -195,7 +195,7 @@ export async function GET(request) {
 
     // Step 3: Create streaming response with message history
     const response = await openai.chat.completions.create({
-      model: 'deepseek-chat',
+      model: 'gpt-4o',
       messages,
       max_tokens: 2000,
       stream: true,

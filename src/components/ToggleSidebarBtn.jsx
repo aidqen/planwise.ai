@@ -10,6 +10,6 @@ export function ToggleSidebarBtn() {
     const toggleSidebar = () => dispatch({ type: TOGGLE_SIDEBAR })
 
     return <TooltipTool content="Toggle Sidebar">
-        <PanelRight className="ms-3" onClick={toggleSidebar} />
+        <PanelRight className="cursor-pointer ms-3" onClick={toggleSidebar} />
     </TooltipTool>
 }
