@@ -9,12 +9,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { SAVE_ROUTINES } from '@/store/reducers/schedule.reducer'
 import { Info } from 'lucide-react'
 import { PredefinedItemsDialog } from '@/components/PredefinedItemsDialog'
+import { makeId } from '@/services/util.service'
 
 export function Routines({ }) {
   const dispatch = useDispatch()
   const multiStepForm = useSelector(state => state.scheduleModule.multiStepForm)
   const user = useSelector(state => state.userModule.user)
+  console.log("🚀 ~ file: Routines.jsx:17 ~ user:", user)
   const routines = multiStepForm.routines
+  console.log("🚀 ~ file: Routines.jsx:19 ~ routines:", routines)
   const [newRoutine, setNewRoutine] = useState({
     name: '',
     startTime: '',
@@ -23,9 +26,16 @@ export function Routines({ }) {
 
   function addRoutine() {
     if (newRoutine.name && newRoutine.startTime && newRoutine.endTime) {
-      dispatch({ type: SAVE_ROUTINES, routines: [{ ...newRoutine, id: Date.now(), isEditing: false },...routines] })
+      dispatch({ type: SAVE_ROUTINES, routines: [{ ...newRoutine, id: makeId(10), isEditing: false },...routines] })
       setNewRoutine({ name: '', startTime: '', endTime: '' })
     }
+  }
+
+  function handleExistingRoutine(routine) {
+    dispatch({ 
+      type: SAVE_ROUTINES, 
+      routines: [{ ...routine, id: makeId(10), isEditing: false }, ...routines] 
+    })
   }
 
   function deleteRoutine(id) {
@@ -51,7 +61,7 @@ export function Routines({ }) {
 
   const handlePredefinedRoutinesSelect = (selectedRoutines) => {
     const formattedRoutines = selectedRoutines.map(routine => ({
-      id: Date.now(), 
+      id: makeId(10), 
       name: routine.name, 
       startTime: routine.startTime || '09:00', 
       endTime: routine.endTime || '10:00'
@@ -64,7 +74,7 @@ export function Routines({ }) {
   }
 
   return (
-    <Section className="py-3 w-full md:p-6">
+    <Section className="py-3 pt-10 w-full md:p-6">
       <div className="mx-auto max-w-2xl">
         <div className="mb-4 space-y-2 text-center md:mb-8">
           <h1 className="text-xl font-medium text-gray-900 dark:text-gray-100 md:text-2xl">
@@ -75,13 +85,15 @@ export function Routines({ }) {
           </p>
         </div>
 
-        <div className="space-y-3 md:space-y-8">
+        <div className="space-y-8 md:space-y-8">
           
             <AddRoutine
               newRoutine={newRoutine}
               setNewRoutine={setNewRoutine}
               addRoutine={addRoutine}
+              onAddExistingRoutine={handleExistingRoutine}
               multiStepForm={multiStepForm}
+              user={user}
             />
           
 
