@@ -38,7 +38,7 @@ export function Preferences() {
 
   return (
     <Section className="w-full">
-      <div className="flex flex-col gap-8 items-center py-8 w-full h-full md:p-8 max-sm:items-start">
+      <div className="flex flex-col gap-8 items-center py-8 pt-10 w-full h-full md:p-8 max-sm:items-start">
         <div className="space-y-2 w-full text-center">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 md:text-2xl">
             Daily Schedule Preferences

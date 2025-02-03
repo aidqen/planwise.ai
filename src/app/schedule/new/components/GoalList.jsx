@@ -2,14 +2,16 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AnimatePresence, motion, Reorder } from "framer-motion";
 import { GripVertical, X } from "lucide-react";
+import { getImportanceColor } from '@/services/util.service';
+import { cn } from "@/lib/utils";
 
-export function GoalList({ goals, saveGoals, updateGoalImportance, removeGoal, importanceColors, handleReorder }) {
+export function GoalList({ goals, updateGoalImportance, removeGoal, handleReorder }) {
   return (
     <Reorder.Group
       axis="y"
       values={goals}
       onReorder={handleReorder}
-      className="space-y-3 max-h-[400px] overflow-y-auto py-2 px-1"
+      className="space-y-3 h-[400px] overflow-y-auto py-2 px-1"
     >
       <AnimatePresence>
         {goals.map(goal => (
@@ -23,7 +25,7 @@ export function GoalList({ goals, saveGoals, updateGoalImportance, removeGoal, i
             className="focus:outline-none"
           >
             <motion.div
-              className={`grid gap-3 p-4 rounded-lg shadow-md transition-all duration-200 grid-cols-[auto_1fr_auto] dark:bg-gray-800/50 hover:bg-opacity-20 dark:hover:bg-opacity-30`}
+              className="grid gap-3 p-4 rounded-lg shadow-md transition-all duration-200 grid-cols-[auto_1fr_auto] dark:bg-gray-800/50 hover:bg-opacity-20 dark:hover:bg-opacity-30"
             >
               <div className="flex items-center">
                 <GripVertical className="w-5 h-5 text-gray-400 transition-colors duration-200 cursor-grab hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400 active:cursor-grabbing active:text-gray-700" />
@@ -37,20 +39,42 @@ export function GoalList({ goals, saveGoals, updateGoalImportance, removeGoal, i
                   onValueChange={value => updateGoalImportance(goal.id, value)}
                 >
                   <SelectTrigger
-                    className={`w-[120px] border-0 bg-opacity-50 dark:bg-opacity-30 bg-gray-200 dark:bg-gray-700 ${
-                      importanceColors[goal.importance]
-                    }`}
+                    className={cn(
+                      "w-[80px] border-0 ",
+                      getImportanceColor(goal.importance), "bg-gray-800/70"
+                    )}
                   >
                     <SelectValue placeholder="Importance" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="low" className="text-green-700 dark:text-green-400">
+                  <SelectContent className="dark:bg-gray-800 dark:border-gray-700">
+                    <SelectItem 
+                      value="low" 
+                      className={cn(
+                        "text-green-700 dark:text-green-400",
+                        "hover:bg-green-50 dark:hover:bg-green-500/10",
+                        "dark:hover:bg-green-500/20 dark:hover:text-green-300"
+                      )}
+                    >
                       Low
                     </SelectItem>
-                    <SelectItem value="medium" className="text-yellow-700 dark:text-yellow-400">
+                    <SelectItem 
+                      value="medium" 
+                      className={cn(
+                        "text-yellow-700 dark:text-yellow-400",
+                        "hover:bg-yellow-50 dark:hover:bg-yellow-500/10",
+                        "dark:hover:bg-yellow-500/20 dark:hover:text-yellow-300"
+                      )}
+                    >
                       Medium
                     </SelectItem>
-                    <SelectItem value="high" className="text-red-700 dark:text-red-400">
+                    <SelectItem 
+                      value="high" 
+                      className={cn(
+                        "text-red-700 dark:text-red-400",
+                        "hover:bg-red-50 dark:hover:bg-red-500/10",
+                        "dark:hover:bg-red-500/20 dark:hover:text-red-300"
+                      )}
+                    >
                       High
                     </SelectItem>
                   </SelectContent>

@@ -21,7 +21,7 @@ export function Routine({
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="relative shadow-md transition-shadow duration-300 h-max hover:shadow-lg dark:bg-gray-800 dark:border-gray-700 dark:shadow-gray-900/30">
+      <Card className="relative shadow-md transition-shadow duration-300 h-max hover:shadow-lg dark:bg-gray-800/30 dark:border-gray-700 dark:shadow-gray-900/30">
         {routine.isEditing ? (
           <RoutineEdit routine={routine} toggleEditing={toggleEditing} saveEdit={saveEdit} />
         ) : (
