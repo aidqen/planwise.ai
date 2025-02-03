@@ -19,7 +19,7 @@ export function WelcomeHero({ user, router }) {
     const index = seed.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % QUOTES.length
     return QUOTES[index]
   }, [user?.id, user?.name])
-  
+
   return (
     <div className="pt-4 md:pt-6">
       <div className="flex flex-col gap-6">
@@ -31,7 +31,7 @@ export function WelcomeHero({ user, router }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
             className="flex flex-col gap-1.5"
-            >
+          >
             <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
               Welcome back, <span className='capitalize'>{user?.name?.split(' ')[0]} 👋</span>
             </h1>
@@ -47,24 +47,24 @@ export function WelcomeHero({ user, router }) {
             transition={{ duration: 0.3, delay: 0.1 }}
             className="flex flex-row gap-2 w-full sm:flex-row sm:gap-3 sm:w-auto"
           >
-            <button
+            {user?.schedules?.length > 0 && <button
               onClick={() => router.push('/schedule/all')}
               className="inline-flex gap-2 justify-center items-center px-4 py-2 text-sm font-medium text-gray-700 whitespace-nowrap rounded-lg border border-gray-200 backdrop-blur-sm transition-all duration-200 bg-white/80 hover:bg-white hover:border-gray-300 dark:bg-gray-800/80 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:border-gray-600"
-              >
+            >
               <CalendarDays className="w-4 h-4" />
               <span>View Schedules</span>
-            </button>
+            </button>}
             <button
               onClick={() => router.push('/schedule/new')}
               className="inline-flex gap-2 justify-center items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg transition-all duration-200 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 hover:shadow-md hover:shadow-blue-500/10 dark:hover:shadow-blue-500/20"
-              >
+            >
               <PlusCircle className="w-4 h-4" />
               <span>New Schedule</span>
             </button>
           </motion.div>
         </div>
-      {/* Motivational quote card */}
-      {/* <motion.div
+        {/* Motivational quote card */}
+        {/* <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.2 }}
