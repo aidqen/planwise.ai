@@ -39,7 +39,7 @@ export function PredefinedItemsDialog({
             <DialogTrigger asChild>
                 <Button
                     variant="outline"
-                    className={`flex gap-2 items-center px-3 py-2 text-gray-700 bg-blue-500 rounded-md border border-gray-200 shadow-sm transition-all duration-200 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:shadow-md ${triggerClassName}`}
+                    className={`flex gap-2 items-center px-3 py-2 text-white bg-blue-500 rounded-md border border-gray-200 shadow-sm transition-all duration-200 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 dark:border-gray-700 dark:text-gray-300 dark:hover:text-white hover:shadow-md ${triggerClassName}`}
                 >
                     {triggerChildren || (
                         <>

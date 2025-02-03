@@ -6,10 +6,10 @@ import { ScheduleGrid } from './ScheduleGrid';
 export function ScheduleSection({ selectedTab, tabs, schedules, sortConfig, onSortChange }) {
     return (
         <div>
-            <div className="flex items-center justify-between mt-6 mb-4">
-                <h2 className="text-sm font-medium text-gray-600 dark:text-gray-400">
+            <div className="flex justify-between items-center my-4">
+                {/* <h2 className="text-sm font-medium text-gray-600 dark:text-gray-400">
                     {tabs.find(tab => tab.id === selectedTab)?.label} Schedules
-                </h2>
+                </h2> */}
                 <SortDropdown 
                     sortConfig={sortConfig} 
                     onSortChange={onSortChange}

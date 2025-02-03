@@ -10,7 +10,7 @@ export function ScheduleFilter({ tabs, setSelectedTab, selectedTab, schedulesLen
     }
     return (
         <>
-            <div className="flex relative flex-row justify-between items-center mb-6 w-full border-b border-gray-200 max-sm:pt-10 max-sm:mb-4">
+            <div className="flex relative flex-row justify-between items-center mb-0 w-full border-b border-gray-200 max-sm:pt-10 max-sm:mb-4">
                 {/* Invisible range input */}
                 <input
                     type="range"

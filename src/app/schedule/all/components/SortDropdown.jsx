@@ -31,19 +31,19 @@ export function SortDropdown({ sortConfig, onSortChange }) {
             <DropdownMenuTrigger asChild>
                 <Button 
                     variant="ghost" 
-                    className="flex gap-2 items-center text-sm h-8 px-2 font-normal text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-transparent"
+                    className="flex gap-2 items-center px-0 h-8 text-sm font-normal text-gray-600 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-transparent"
                 >
                     {sortConfig.direction === 'desc' ? 
                         <ArrowDown className="w-3.5 h-3.5" /> : 
                         <ArrowUp className="w-3.5 h-3.5" />
                     }
-                    <span>Sort by {sortingOptions.find(opt => opt.id === sortConfig.field)?.label}</span>
+                    <span>{sortingOptions.find(opt => opt.id === sortConfig.field)?.label}</span>
                     <ChevronDown className="w-3.5 h-3.5 ml-0.5 opacity-50" />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent 
                 align="end" 
-                className="w-48 bg-white/95 dark:bg-gray-950/95 backdrop-blur-sm border border-gray-200 dark:border-gray-800 shadow-lg"
+                className="w-48 border border-gray-200 shadow-lg backdrop-blur-sm bg-white/95 dark:bg-gray-950/95 dark:border-gray-800"
             >
                 {sortingOptions.map((option) => (
                     <DropdownMenuItem

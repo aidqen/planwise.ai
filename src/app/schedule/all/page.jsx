@@ -83,7 +83,7 @@ export default function AllSchedules() {
     }, [user?.schedules, selectedTab, sortConfig]);
 
     return (
-        <div className="px-4 py-12 w-full min-h-screen md:pt-[4.1rem] sm:px-6 lg:px-8 overflow-y-auto">
+        <div className="px-4 py-12 w-full min-h-screen md:pt-[4.1rem] sm:px-6 lg:px-8 overflow-y-auto scrollbar">
             <PageHeader />
             
             <ScheduleFilter 

@@ -124,14 +124,14 @@ export function RoutineEdit({ routine, toggleEditing, saveEdit }) {
             type="button"
             variant="outline"
             onClick={() => toggleEditing(routine.id, false)}
-            className="justify-center w-full sm:w-auto dark:text-white dark:bg-gray-800/50 dark:hover:bg-gray-700/50"
+            className="justify-center w-full text-black dark:text-white sm:w-auto dark:border-gray-700/50 dark:bg-gray-800/50 dark:hover:bg-gray-700/50"
           >
             <X className="mr-2 w-4 h-4" />
             Cancel
           </Button>
           <Button 
             type="submit"
-            className="justify-center w-full bg-blue-600 dark:text-white hover:bg-blue-700 sm:w-auto dark:bg-blue-600 dark:hover:bg-blue-700"
+            className="justify-center w-full text-white bg-blue-600 hover:bg-blue-700 sm:w-auto dark:bg-blue-600 dark:hover:bg-blue-700"
           >
             <Save className="mr-2 w-4 h-4" />
             Save Changes
