@@ -67,12 +67,12 @@ function ScheduleNewContent() {
 
   return (
 
-    <div className="scrollbar-hidden px-6 pt-7 scroll-smooth flex overflow-y-auto overflow-x-hidden relative flex-col justify-between md:pt-16 items-center sm:px-5 md:px-6  sm:w-[65%] md-[60%] xl:w-[50%] 2xl:w-[45%] h-full text-black rounded-xl w-full">
+    <div className="scrollbar-hidden px-6 pt-7 pb-[4.5em] scroll-smooth flex overflow-y-auto overflow-x-hidden relative flex-col justify-between md:pt-16 items-center sm:px-5 md:px-6  sm:w-[75%] md-[60%] xl:w-[50%] 2xl:w-[45%] h-full text-black rounded-xl w-full">
       <div className="flex flex-col items-center pt-1 w-full max-sm:block">
         <StepsBreadcrumbs currentStep={step + 1} steps={steps} setStep={setStep} />
         {renderStepContent()}
       </div>
-      <div className="flex flex-row gap-20 justify-center items-center py-4 pt-7 w-full md:py-3 btns max-sm:justify-center max-sm:gap-5">
+      <div className="flex fixed bottom-0 flex-row gap-20 justify-center items-center py-4 pt-7 w-full md:py-3 btns max-sm:justify-center max-sm:gap-5">
         {step > 0 && <button
           onClick={goBackStep}
           className="px-10 py-2.5 rounded-lg font-medium transition-all duration-300 transform hover:scale-[1.02] bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 shadow-md dark:shadow-gray-900/30 border border-gray-200 dark:border-gray-700"
