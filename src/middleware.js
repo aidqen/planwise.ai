@@ -7,9 +7,6 @@ export function middleware(request) {
     cookies.get("next-auth.session-token") ||
     cookies.get("__Secure-next-auth.session-token");
 
-  // If user is logged in and tries to access auth pages, redirect to home
-  // if (nextUrl.pathname.startsWith("/auth") && authToken) {
-  // }
   
   // Allow public routes like `/` and `/auth`
   if (nextUrl.pathname.startsWith("/auth")) {
