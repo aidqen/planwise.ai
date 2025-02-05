@@ -10,6 +10,7 @@ import { SAVE_ROUTINES } from '@/store/reducers/schedule.reducer'
 import { Info } from 'lucide-react'
 import { PredefinedItemsDialog } from '@/components/PredefinedItemsDialog'
 import { makeId } from '@/services/util.service'
+import { RoutineSearchInput } from './RoutineSearchInput'
 
 export function Routines({ }) {
   const dispatch = useDispatch()
@@ -24,12 +25,12 @@ export function Routines({ }) {
     endTime: '',
   })
 
-  function addRoutine() {
-    if (newRoutine.name && newRoutine.startTime && newRoutine.endTime) {
-      dispatch({ type: SAVE_ROUTINES, routines: [{ ...newRoutine, id: makeId(10), isEditing: false },...routines] })
-      setNewRoutine({ name: '', startTime: '', endTime: '' })
-    }
-  }
+  // function addRoutine() {
+  //   if (newRoutine.name && newRoutine.startTime && newRoutine.endTime) {
+  //     dispatch({ type: SAVE_ROUTINES, routines: [{ ...newRoutine, id: makeId(10), isEditing: false },...routines] })
+  //     setNewRoutine({ name: '', startTime: '', endTime: '' })
+  //   }
+  // }
 
   function handleExistingRoutine(routine) {
     dispatch({ 
@@ -73,6 +74,13 @@ export function Routines({ }) {
     })
   }
 
+  function handleAddRoutine(routine) {
+    dispatch({ 
+      type: SAVE_ROUTINES, 
+      routines: [{ ...routine, id: makeId(10), isEditing: false }, ...routines] 
+    })
+  }
+
   return (
     <Section className="py-3 pt-10 w-full md:p-6">
       <div className="mx-auto max-w-2xl">
@@ -86,16 +94,12 @@ export function Routines({ }) {
         </div>
 
         <div className="space-y-8 md:space-y-8">
-          
-            <AddRoutine
-              newRoutine={newRoutine}
-              setNewRoutine={setNewRoutine}
-              addRoutine={addRoutine}
-              onAddExistingRoutine={handleExistingRoutine}
-              multiStepForm={multiStepForm}
-              user={user}
-            />
-          
+          <RoutineSearchInput
+            routines={routines}
+            onAddRoutine={handleAddRoutine}
+            multiStepForm={multiStepForm}
+            userRoutines={user?.routines || []}
+          />
 
           <div className="space-y-4">
             <div className="flex justify-between items-center">

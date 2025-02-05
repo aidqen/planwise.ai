@@ -2,6 +2,7 @@
 
 import { Clock } from 'lucide-react';
 import { cn } from "@/lib/utils";
+import { useState, useEffect } from 'react';
 
 export default function TimeInput({ 
     startHour = 0,
@@ -13,8 +14,16 @@ export default function TimeInput({
     error,
     disabled = false,
 }) {
+    const [inputValue, setInputValue] = useState(value || '');
+
+    useEffect(() => {
+        setInputValue(value || '');
+    }, [value]);
+
     const handleTimeChange = (e) => {
         const newTime = e.target.value;
+        setInputValue(newTime);
+
         if (!newTime) {
             onChange('');
             return;
@@ -27,13 +36,10 @@ export default function TimeInput({
         // Validate time is within bounds
         const timeValue = parseInt(hours) * 60 + parseInt(minutes);
         const startValue = startHour * 60;
-        const endValue = endHour * 60;
+        const endValue = endHour * 60 + 59; // Allow up to XX:59
 
         if (timeValue >= startValue && timeValue <= endValue) {
             onChange(formattedTime);
-        } else {
-            // Reset to previous valid value or clear
-            e.target.value = value || '';
         }
     };
 
@@ -57,7 +63,7 @@ export default function TimeInput({
             >
                 <input
                     type="time"
-                    value={value || ''}
+                    value={inputValue}
                     onChange={handleTimeChange}
                     min={minTime}
                     max={maxTime}
