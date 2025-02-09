@@ -4,37 +4,29 @@ import TimePicker from '@/components/TimePicker'
 import { Section } from '@/components/ui/section'
 import { SET_SLEEP, SET_WAKEUP } from '@/store/reducers/schedule.reducer'
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 export function Preferences() {
   const timeTypes = ['Wake Up', 'Sleep']
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.userModule.user)
+  const userPreferences = useSelector((state) => state.userModule.user?.preferences)
   const preferences = useSelector(
     (state) => state.scheduleModule.multiStepForm.preferences
   )
+  const initialized = useRef(false)
 
   useEffect(() => {
-    // Set default values from user preferences if they exist and no values are set yet
-    if (user?.preferences) {
-      if (!preferences.wakeup && user.preferences.wakeup) {
-        dispatch({ type: SET_WAKEUP, wakeup: user.preferences.wakeup });
+    if (!initialized.current && userPreferences) {
+      initialized.current = true
+      
+      if (!preferences.wakeup && userPreferences.wakeup) {
+        dispatch({ type: SET_WAKEUP, wakeup: userPreferences.wakeup })
       }
-      if (!preferences.sleep && user.preferences.sleep) {
-        dispatch({ type: SET_SLEEP, sleep: user.preferences.sleep });
+      if (!preferences.sleep && userPreferences.sleep) {
+        dispatch({ type: SET_SLEEP, sleep: userPreferences.sleep })
       }
     }
-  }, [user]);
-
-  useEffect(() => {
-    // Set wakeup and sleep times from user preferences on first load
-    if (user?.preferences?.wakeup) {
-      dispatch({ type: SET_WAKEUP, wakeup: user.preferences.wakeup })
-    }
-    if (user?.preferences?.sleep) {
-      dispatch({ type: SET_SLEEP, sleep: user.preferences.sleep })
-    }
-  }, [user]) // Only run when user data changes
+  }, [userPreferences, preferences.wakeup, preferences.sleep, dispatch])
 
   return (
     <Section className="w-full">
@@ -50,15 +42,15 @@ export function Preferences() {
 
         <div className="grid grid-cols-2 gap-8 w-full max-w-xl">
           {timeTypes.map(timeType => {
-            const isWakeUp = timeType === 'Wake Up';
-            const value = isWakeUp ? preferences.wakeup : preferences.sleep;
+            const isWakeUp = timeType === 'Wake Up'
+            const value = isWakeUp ? preferences.wakeup : preferences.sleep
             const handleChange = (newValue) => {
               if (isWakeUp) {
-                dispatch({ type: SET_WAKEUP, wakeup: newValue });
+                dispatch({ type: SET_WAKEUP, wakeup: newValue })
               } else {
-                dispatch({ type: SET_SLEEP, sleep: newValue });
+                dispatch({ type: SET_SLEEP, sleep: newValue })
               }
-            };
+            }
 
             return (
               <div
@@ -74,7 +66,7 @@ export function Preferences() {
                   placeholder={value}
                 />
               </div>
-            );
+            )
           })}
         </div>
 

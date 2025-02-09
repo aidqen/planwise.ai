@@ -19,12 +19,13 @@ export async function getUser() {
 }
 
 export function getLocalUser() {
+        console.log("🚀 ~ file: user.actions.js:23 ~ store.getState().userModule.user:", store.getState().userModule.user)
         return store.getState().userModule.user
 }
 
 export async function addScheduleToUser(schedule) {
         const { id, name, updatedAt, preferences, routines, goals } = schedule
-        const user = store.getState().userModule.user
+        const user = getLocalUser()
         const scheduleToSave = { id, name, updatedAt, preferences, routines, goals }
 
         const userToSave = { ...user, schedules: user?.schedules ? [...user.schedules, scheduleToSave] : [scheduleToSave] }
@@ -34,7 +35,7 @@ export async function addScheduleToUser(schedule) {
 export async function updateScheduleInUser(schedule) {
         try {
                 const { _id: id, name, updatedAt, preferences, routines, goals } = schedule
-                const user = store.getState().userModule.user
+                const user = getLocalUser()
                 const scheduleToSave = { id, name, updatedAt, preferences, routines, goals }
                 const updatedSchedules = user?.schedules?.map(s => s.id === id ? scheduleToSave : s) || [scheduleToSave]
                 const userToSave = { ...user, schedules: updatedSchedules }
@@ -53,11 +54,16 @@ export async function deleteScheduleFromUser(scheduleId) {
 }
 
 export function appendScheduleToUserState(schedule) {
-        const user = getLocalUser()
-        if (!user.schedules) user.schedules = [...schedule]
-        user?.schedules.unshift(schedule)
-        store.dispatch({ type: SET_USER, user: userToSave })
-}
+        const user = getLocalUser();
+        
+        // Ensure immutability by spreading user and schedules into new objects
+        const updatedUser = {
+            ...user,
+            schedules: user.schedules ? [schedule, ...user.schedules] : [schedule]
+        };
+    
+        store.dispatch({ type: SET_USER, user: updatedUser });
+    }
 
 export async function updateUser(user) {
         try {

@@ -1,25 +1,25 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import { Leaf, Clock, Zap } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { SET_INTENSITY } from '@/store/reducers/schedule.reducer'
 
-export function ScheduleIntensity({}) {
+export function ScheduleIntensity() {
   const intensity = useSelector(
     state => state.scheduleModule.multiStepForm.preferences.intensity
   )
-  const user = useSelector(state => state.userModule.user)
-  console.log("🚀 ~ file: ScheduleIntensity.jsx:14 ~ user:", user)
+  const userPreferences = useSelector(state => state.userModule.user?.preferences)
   const dispatch = useDispatch()
+  const initialized = useRef(false)
 
   useEffect(() => {
-    // Set intensity from user preferences on first load
-    if (user?.preferences?.intensity) {
-      dispatch({ type: SET_INTENSITY, intensity: user.preferences.intensity })
+    if (!initialized.current && userPreferences?.intensity && !intensity) {
+      initialized.current = true
+      dispatch({ type: SET_INTENSITY, intensity: userPreferences.intensity })
     }
-  }, [user]) // Only run when user data changes
+  }, [userPreferences, intensity, dispatch])
 
   const scheduleOptions = [
     {
@@ -63,7 +63,6 @@ export function ScheduleIntensity({}) {
 
   return (
     <div className="pb-6 space-y-6 w-full">
-      
       <RadioGroup
         value={intensity}
         onValueChange={handleIntensityChange}
