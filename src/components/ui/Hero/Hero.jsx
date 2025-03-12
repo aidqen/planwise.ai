@@ -41,7 +41,7 @@ const Hero = () => (
                     <GradientWrapper className="mt-16 sm:mt-28" wrapperclassname="max-w-full w-full h-[400px] top-12 inset-0 sm:h-[500px] lg:h-[750px]">
                         <div className="relative w-full h-[400px] sm:h-[500px] lg:h-[680px]">
                             <Image
-                                src={'https://res.cloudinary.com/di6tqrg5y/image/upload/v1737290927/rnujsqcf7abjg9xmgra6.png'}
+                                src={'https://res.cloudinary.com/di6tqrg5y/image/upload/v1741811695/f1jd8ry5kjnnvpjholzs.png'}
                                 fill
                                 className="rounded-xl object-fit"
                                 alt="PlanWise.ai Dashboard"
