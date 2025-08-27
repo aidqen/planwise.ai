@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { scheduleService } from "@/services/scheduleService";
 import { makeId } from "@/services/util.service";
 import { TOGGLE_SCHEDULE_SIDEBAR } from "@/store/reducers/system.reducer";
+import { useChat } from "@ai-sdk/react";
 import { Send } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import ReactMarkdown from 'react-markdown';
@@ -11,6 +12,7 @@ import { useDispatch } from "react-redux";
 import remarkGfm from 'remark-gfm';
 
 export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading, setIsLoading }) {
+    const { messages,  } = useChat()
     const dispatch = useDispatch()
     const [message, setMessage] = useState('');
     const messagesEndRef = useRef(null);

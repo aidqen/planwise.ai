@@ -76,12 +76,12 @@ body {
 }
 
 .scrollbar-hidden::-webkit-scrollbar-track {
-  background: transparent;
+  /* background: transparent; */
   margin-right: 1rem; /* Add margin to the right of the track */
 }
 
 .scrollbar-hidden::-webkit-scrollbar-thumb {
-  background-color: transparent; /* Start with transparent background */
+  /* background-color: transparent; Start with transparent background */
   border-radius: 0.25rem;
   transition: background-color 0.3s ease; /* Smooth transition for background color */
   margin-right: 1rem; /* Add margin to the right of the thumb */

@@ -11,7 +11,7 @@ export function GoalList({ goals, updateGoalImportance, removeGoal, handleReorde
       axis="y"
       values={goals}
       onReorder={handleReorder}
-      className="space-y-3 h-[400px] overflow-y-auto py-2 px-1"
+      className="space-y-3 h-[400px] overflow-y-auto py-2 pb-16 px-1 scrollbar-hidden"
     >
       <AnimatePresence>
         {goals.map(goal => (

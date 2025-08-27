@@ -67,7 +67,7 @@ function ScheduleNewContent() {
 
   return (
 
-    <div className="scrollbar-hidden px-6 pt-7 pb-[4.5em] scroll-smooth flex overflow-y-auto overflow-x-hidden relative flex-col justify-between md:pt-16 items-center sm:px-5 md:px-6  sm:w-[75%] md-[60%] xl:w-[50%] 2xl:w-[45%] h-full text-black rounded-xl w-full">
+    <div className="px-6 pt-7 pb-[4.5em] flex overflow-hidden relative flex-col justify-between md:pt-16 items-center sm:px-5 md:px-6  sm:w-[75%] md-[60%] xl:w-[50%] 2xl:w-[45%] h-full text-black rounded-xl w-full">
       <div className="flex flex-col items-center pt-1 w-full max-sm:block">
         <StepsBreadcrumbs currentStep={step + 1} steps={steps} setStep={setStep} />
         {renderStepContent()}

@@ -126,7 +126,7 @@ export function Routines({ }) {
                   )}
                 </div>
               ) : (
-                <div className="grid grid-cols-1 gap-4 w-full">
+                <div className="grid grid-cols-1 gap-4 w-full overflow-y-auto max-h-[400px] pb-14 scrollbar-hidden">
                   {routines.map(routine => (
                     <Routine
                       routine={routine}

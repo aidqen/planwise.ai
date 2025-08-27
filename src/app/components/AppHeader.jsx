@@ -1,29 +1,22 @@
 'use client'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+
 import { useIsMobile } from '@/hooks/useMediaQuery'
 import { cn } from '@/lib/utils'
 import { getUser } from '@/store/actions/user.actions'
 import { TOGGLE_SIDEBAR } from '@/store/reducers/system.reducer'
-import { Component, LogOut, PanelRight, Search, MessageCircle } from 'lucide-react'
+import { Component, MessageCircle } from 'lucide-react'
 import { signOut } from 'next-auth/react'
-import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 export function AppHeader() {
-  const user = useSelector(state => state.userModule.user)
+  const user = useSelector((state) => state.userModule.user)
   console.log("🚀 ~ file: AppHeader.jsx:22 ~ user:", user)
   const pathname = usePathname()
   const dispatch = useDispatch()
   const isMobile = useIsMobile()
-  
+
   const [isVisible, setIsVisible] = useState(false)
   const isSchedulePage = pathname.includes('schedule/ai/')
 
@@ -40,7 +33,7 @@ export function AppHeader() {
   }, [])
 
   function onLogout() {
-    signOut({ callbackUrl: '/auth'})
+    signOut({ callbackUrl: '/auth' })
   }
 
   function onToggleSidebar() {
@@ -56,11 +49,11 @@ export function AppHeader() {
   return (
     <header
       className={cn(
-        isVisible ? 'flex':'hidden', 
+        isVisible ? 'flex' : 'hidden',
         'fixed top-0 left-0 z-10 flex-row justify-between items-center py-3 w-full ps-3 pe-6 max-sm:justify-between'
       )}
     >
-      <button 
+      <button
         className="flex justify-center items-center p-2 rounded-full shadow-md bg-secondaryLight dark:bg-gray-800 dark:shadow-gray-900/30"
         onClick={onToggleSidebar}
       >
@@ -68,7 +61,7 @@ export function AppHeader() {
       </button>
       <div className="flex flex-row gap-4 items-center">
         {isSchedulePage && (
-          <button 
+          <button
             className="flex justify-center items-center p-2 text-white bg-blue-500 rounded-full shadow-md transition-colors hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 dark:shadow-gray-900/30"
             onClick={onToggleChat}
           >
