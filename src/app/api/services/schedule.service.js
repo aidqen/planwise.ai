@@ -1,18 +1,49 @@
 import { streamText, generateObject, generateText } from "ai";
 import { openai } from '@ai-sdk/openai';
-import { ScheduleSchema } from '../../../types/schedule.types';
+import { ScheduleSchema, TaskListSchema, TaskSuggestions } from '../../../types/schedule.types';
+import { buildSchedulePrompt, experimentalScheduleBuildPrompt, TaskSuggestionPrompt } from "@/constants/prompt.constant";
 
 const mainModel = openai('gpt-4o')
 
-export async function completeScheduleGenFlow(input) {
+export async function completeScheduleGenFlow({goals, schedule, intensity, review}) {
     // Generate a new schedule with AI based on the input and prompt
-    const schedule = generateSchedule(input)
+    let AISchedule
+    if (review) {
+        AISchedule = await improveSchedule(AISchedule, review)
+    } else {
+        experimentalScheduleBuildPrompt(schedule, intensity, goals)
+        // const { taskSuggestions } = await suggestTasks(goals)
+        // AISchedule = await generateSchedule(schedule, intensity, taskSuggestions)
+        // console.log("🚀 ~ completeScheduleGenFlow ~ AISchedule:", AISchedule)
+        // return AISchedule
+    }
     // Judge the schedule by a few parameters from 1-10
     // Check if the schedule fits the parameters' standards
-    const { needsFix, review } = validateAndReview(schedule)
-    // If it doesn't, run it again with the improvement suggestions
-    // And then review it again
-    if (needsFix) improveSchedule(schedule, review)
+    // const { needsFix, improvements } = validateAndReview(AISchedule)
+    // // If it doesn't, run it again with the improvement suggestions
+    // // And then review it again
+    // if (needsFix) completeScheduleGenFlow(AISchedule, improvements)
+}
+
+export async function suggestTasks(goals) {
+    try {
+        const result = await generateObject({
+            model: openai('gpt-4o'),
+            schema: TaskSuggestions,
+            prompt: TaskSuggestionPrompt(goals),
+            temperature: 0,
+            maxRetries: 2,
+            providerOptions: { openai: { strictJsonSchema: true } }
+        })
+        console.log("🚀 ~ suggestTasks ~ result:", result.object)
+
+        const usage = result.usage || result.response?.usage || null
+        console.log("🚀 ~ suggestTasks ~ usage:", usage)
+
+        return result.toJsonResponse();
+    } catch (e) {
+        throw e
+    }
 }
 
 export async function streamResponse(messages) {
@@ -32,20 +63,20 @@ function validateAndReview(schedule, preferences, goals, routines) {
     // Checks if the schedule adds enough tasks following the goals and returns a score from 1-10
     // Checks if the schedule is according to preferences
     // Gives an overall score of the schedule from 1-10
-    
+
     const result = generateObject({
         model: mainModel,
         system: prompt,
-        
+
     })
-    
+
 }
 
-export async function generateSchedule(prompt) {
+export async function generateSchedule(schedule, intensity, taskSuggestions) {
     const { object } = await generateObject({
         model: mainModel,
-        prompt: prompt,
-        schema: ScheduleSchema
+        prompt: experimentalScheduleBuildPrompt(schedule, intensity, taskSuggestions),
+        schema: TaskListSchema
     });
 
     return object;

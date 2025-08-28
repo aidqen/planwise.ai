@@ -12,7 +12,24 @@ export const scheduleService = {
   saveChat,
   getEditedSchedule,
   deleteScheduleById,
+  generateSchedule2
 }
+
+export async function generateSchedule2(schedule, goals, intensity) {
+  try {
+    const response = await fetch(`/api/experimental-ai/new`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' },
+        body: JSON.stringify({ schedule, goals, intensity })
+      }
+    )
+    return response.json()
+  } catch (error) {
+    throw error
+  }
+}
+
 
 async function getScheduleById(id) {
   try {

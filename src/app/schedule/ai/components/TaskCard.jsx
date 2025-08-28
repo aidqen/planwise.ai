@@ -3,14 +3,9 @@ import { Clock, Coffee, Repeat, Target, Utensils } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
-export function TaskCard({ task, wakeupMinutes, handleTaskClick, columnIndex, totalColumns }) {
+export function TaskCard({ task, wakeupMinutes, parseTimeToMinutes, handleTaskClick, columnIndex, totalColumns }) {
   const [isDescVisible, setIsDescVisible] = useState(false);
   const [rowOrColumn, setRowOrColumn] = useState("");
-
-  const parseTimeToMinutes = (time) => {
-    const [hours, minutes] = time.split(":").map(Number);
-    return hours * 60 + minutes;
-  };
 
   const startTotalMinutes = parseTimeToMinutes(task?.start || "00:00");
   const endTotalMinutes = parseTimeToMinutes(task?.end || "00:00");

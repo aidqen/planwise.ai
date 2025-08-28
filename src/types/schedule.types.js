@@ -1,5 +1,17 @@
 import { z } from 'zod';
 
+export const TaskSuggestions = z.object({
+    taskSuggestions: z.array(z.object({
+        title: z.string().describe("The name of the goal"),
+        importance: z.enum(['low', 'medium', 'high']).describe("The importance of the goal"),
+        suggestedTasks: z.array(z.object({
+            summary: z.string().describe("A short summary of the task"),
+            description: z.string().min(10).max(35).describe("A description of the task"),
+            recommendedDurationMins: z.number().min(5).describe("The recommended duration of the task in minutes")
+        })).length(5).describe("An array of 5 tasks that could help the user reach his goal.")
+    }))
+})
+
 // Define the Schedule Task schema for individual tasks in the schedule
 export const ScheduleTaskSchema = z.object({
     // id: z.string(),
@@ -8,6 +20,10 @@ export const ScheduleTaskSchema = z.object({
     end: z.string(),   // Time format like "10:15"
     category: z.enum(['break', 'meal', 'goal', 'routine'])
 });
+
+export const TaskListSchema = z.object({
+    taskList: z.array(ScheduleTaskSchema)
+})
 
 // Define the Routine schema
 export const RoutineSchema = z.object({
@@ -52,12 +68,12 @@ export const ScheduleSchema = z.object({
 });
 
 // Export types derived from the schemas
-export const scheduleTypes = {
-    ScheduleTask: z.infer(typeof ScheduleTaskSchema),
-    Routine: z.infer(typeof RoutineSchema),
-    Goal: z.infer(typeof GoalSchema),
-    Creator: z.infer(typeof CreatorSchema),
-    Schedule: z.infer(typeof ScheduleSchema)
-};
+// export const scheduleTypes = {
+//     ScheduleTask: z.infer(typeof ScheduleTaskSchema),
+//     Routine: z.infer(typeof RoutineSchema),
+//     Goal: z.infer(typeof GoalSchema),
+//     Creator: z.infer(typeof CreatorSchema),
+//     Schedule: z.infer(typeof ScheduleSchema)
+// };
 
 export default ScheduleSchema;

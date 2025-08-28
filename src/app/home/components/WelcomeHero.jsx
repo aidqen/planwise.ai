@@ -1,4 +1,6 @@
 'use client'
+import { scheduleService } from '@/services/scheduleService'
+import { scheduleBoilerplate } from '@/store/actions/schedule.actions'
 import { motion } from 'framer-motion'
 import { PlusCircle, CalendarDays, Sparkles } from 'lucide-react'
 import { useMemo } from 'react'
@@ -13,12 +15,20 @@ const QUOTES = [
 ]
 
 export function WelcomeHero({ user, router }) {
+  console.log("🚀 ~ WelcomeHero ~ user:", user)
   // Get a deterministic quote based on the user's ID or name
   const quote = useMemo(() => {
     const seed = user?.id || user?.name || ''
     const index = seed.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % QUOTES.length
     return QUOTES[index]
   }, [user?.id, user?.name])
+
+  async function activate() {
+    // const schedule = scheduleBoilerplate(user.preferences, user.routines, user.goals, user)
+    // console.log("🚀 ~ activate ~ schedule:", schedule)
+    const result = await scheduleService.generateSchedule2({goals: user.goals, intensity: user.preferences.intensity, routines: user.routines})
+    console.log("🚀 ~ activate ~ result:", result)
+  }
 
   return (
     <div className="pt-4 md:pt-6">
@@ -55,7 +65,8 @@ export function WelcomeHero({ user, router }) {
               <span>View Schedules</span>
             </button>}
             <button
-              onClick={() => router.push('/schedule/new')}
+              onClick={activate}
+              // onClick={() => router.push('/schedule/new')}
               className="inline-flex gap-2 justify-center items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg transition-all duration-200 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 hover:shadow-md hover:shadow-blue-500/10 dark:hover:shadow-blue-500/20"
             >
               <PlusCircle className="w-4 h-4" />

@@ -53,6 +53,7 @@ export function TaskList({ tasks, wakeupMinutes, handleTaskClick }) {
                             <TaskCard
                                 task={task}
                                 wakeupMinutes={wakeupMinutes}
+                                parseTimeToMinutes={parseTimeToMinutes}
                                 handleTaskClick={handleTaskClick}
                                 columnIndex={columnIndex}
                                 totalColumns={groupedTasks.length}

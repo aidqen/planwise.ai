@@ -1,6 +1,6 @@
 'use client'
 
-import { useSelector } from 'react-redux'
+// import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -37,19 +37,15 @@ export default function DailySchedule() {
   const [selectedTask, setSelectedTask] = useState(null)
   const [isCreateTask, setIsCreateTask] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
   const [editedSchedule, setEditedSchedule] = useState(null)
   const [schedule, setSchedule] = useState(DEFAULT_SCHEDULE)
   console.log("🚀 ~ file: page.jsx:43 ~ schedule:", schedule)
-  const [mounted, setMounted] = useState(false)
   // console.log("🚀 ~ file: page.jsx:45 ~ schedule:", schedule)
   // const schedule = useSelector(state => state.scheduleModule.schedule)
   const wakeupTime = editedSchedule?.preferences?.wakeup || schedule?.preferences?.wakeup || '04:00'
   const wakeupMinutes = getMinutesFromMidnight(wakeupTime)
   const { toast } = useToast();
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   useEffect(() => {
     if (params?.id) {
@@ -194,7 +190,7 @@ export default function DailySchedule() {
               <div className="flex justify-between items-center">
                 {/* <div className="space-y-1 w-max"> */}
                   <EditableTitle
-                    title={mounted ? schedule?.name : ''}
+                    title={schedule?.name || "Daily Schedule"}
                     onSave={onSaveSchedule}
                   />
                 {/* </div> */}
