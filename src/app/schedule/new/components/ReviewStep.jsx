@@ -28,7 +28,7 @@ export default function ReviewStep({ }) {
           </p>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4 overflow-y-auto max-h-[65vh] sm:max-h-[55vh] py-3 scrollbar-hidden scrollbar">
           {/* Preferences Section */}
           <div className="p-4 bg-white rounded-xl border border-gray-100 shadow-sm md:p-5 dark:bg-gray-800/50 dark:border-gray-700/50">
             <h3 className="flex gap-2 items-center mb-5 text-base font-medium text-gray-900 dark:text-gray-100 md:text-lg">

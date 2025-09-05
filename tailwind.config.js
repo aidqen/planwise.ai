@@ -16,6 +16,8 @@ module.exports = {
 				neutral: 'rgb(156, 163, 175)',
 				textColorLight: '#212226',
 				foreground: 'var(--foreground)',
+				backgroundExp: 'var(--background)',
+				backgroundExpLighter: 'var(--background-lighter)',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',

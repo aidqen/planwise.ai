@@ -12,11 +12,11 @@ export function SaveToCalendarBtn({ toggleCalendarDialog }) {
                 className="flex relative gap-2 items-center px-4 py-3 text-base font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-lg group md:text-lg"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                transition={{ duration: 0.2 }}
+                transition={{ duration: 0.2, type: 'spring' }}
             >
                 <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-100"
-                    style={{ filter: 'blur(20px)' }}
+                    className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-15"
+                    style={{ filter: 'blur(5px)' }}
                 />
                 <motion.div
                     className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl"

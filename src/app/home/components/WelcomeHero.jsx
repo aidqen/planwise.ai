@@ -1,6 +1,6 @@
 'use client'
 import { scheduleService } from '@/services/scheduleService'
-import { scheduleBoilerplate } from '@/store/actions/schedule.actions'
+import { createSchedule, scheduleBoilerplate } from '@/store/actions/schedule.actions'
 import { motion } from 'framer-motion'
 import { PlusCircle, CalendarDays, Sparkles } from 'lucide-react'
 import { useMemo } from 'react'
@@ -26,8 +26,9 @@ export function WelcomeHero({ user, router }) {
   async function activate() {
     // const schedule = scheduleBoilerplate(user.preferences, user.routines, user.goals, user)
     // console.log("🚀 ~ activate ~ schedule:", schedule)
-    const result = await scheduleService.generateSchedule2({goals: user.goals, intensity: user.preferences.intensity, routines: user.routines})
+    const result = await createSchedule({preferences: user.preferences, routines:[ user.routines[1]], goals: user.goals})
     console.log("🚀 ~ activate ~ result:", result)
+    // const result = await scheduleService.generateSchedule2({ goals: user.goals, intensity: user.preferences.intensity, routines: user.routines[1] })
   }
 
   return (

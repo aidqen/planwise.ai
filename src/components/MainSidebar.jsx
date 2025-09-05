@@ -124,37 +124,6 @@ export function SidebarDemo() {
                                     <LogOutIcon onClick={onLogout} className="ms-3.5" />
                                 </TooltipTool>
                             </>
-                            // <DropdownMenu>
-                            //     <DropdownMenuTrigger asChild>
-                            //         <SidebarLink
-                            //             className="capitalize hover:bg-gray-200 dark:hover:bg-gray-800"
-                            //             link={{
-                            //                 label: user?.name,
-                            //                 href: "#",
-                            //                 icon: (
-                            //                     <Image
-                            //                         src={user?.image || "https://res.cloudinary.com/di6tqrg5y/image/upload/v1733919613/random_person_vzka45.jpg"}
-                            //                         className="flex-shrink-0 w-7 h-7 rounded-full"
-                            //                         width={50}
-                            //                         height={50}
-                            //                         alt="Avatar"
-                            //                     />
-                            //                 ),
-                            //             }}
-                            //         />
-                            //     </DropdownMenuTrigger>
-                            //     <DropdownMenuContent className="bg-white border-gray-200 w-50 dark:bg-gray-800 dark:border-gray-700">
-                            //         <DropdownMenuGroup>
-                            //             <DropdownMenuItem 
-                            //                 onClick={onLogout} 
-                            //                 className="text-gray-700 cursor-pointer dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-                            //             >
-                            //                 <LogOut className="mr-2 w-4 h-4" />
-                            //                 <span>Log out</span>
-                            //             </DropdownMenuItem>
-                            //         </DropdownMenuGroup>
-                            //     </DropdownMenuContent>
-                            // </DropdownMenu>
                         )}
                     </div>
                 </SidebarBody>
@@ -162,29 +131,4 @@ export function SidebarDemo() {
         </div>)
     );
 }
-// export const Logo = () => {
-//     return (
-//         (<Link
-//             href="#"
-//             className="flex relative z-20 items-center py-1 space-x-2 text-sm font-normal text-black">
-//             <div
-//                 className="flex-shrink-0 w-6 h-5 bg-black rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm dark:bg-white" />
-//             <motion.span
-//                 initial={{ opacity: 0 }}
-//                 animate={{ opacity: 1 }}
-//                 className="font-medium text-black whitespace-pre dark:text-white">
-//                 Acet Labs
-//             </motion.span>
-//         </Link>)
-//     );
-// };
-// export const LogoIcon = () => {
-//     return (
-//         (<Link
-//             href="#"
-//             className="flex relative z-20 items-center py-1 space-x-2 text-sm font-normal text-black">
-//             <div
-//                 className="flex-shrink-0 w-6 h-5 bg-black rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm dark:bg-white" />
-//         </Link>)
-//     );
-// };
+

@@ -116,6 +116,8 @@ body {
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --background: hsl(240,4%,4.9%);
+    --background-lighter: hsl(210,6.67%,5.88%);
   }
 }
 

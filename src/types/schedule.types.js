@@ -1,3 +1,4 @@
+
 import { z } from 'zod';
 
 export const TaskSuggestions = z.object({
@@ -13,6 +14,7 @@ export const TaskSuggestions = z.object({
 })
 
 // Define the Schedule Task schema for individual tasks in the schedule
+
 export const ScheduleTaskSchema = z.object({
     // id: z.string(),
     summary: z.string(),
@@ -20,7 +22,6 @@ export const ScheduleTaskSchema = z.object({
     end: z.string(),   // Time format like "10:15"
     category: z.enum(['break', 'meal', 'goal', 'routine'])
 });
-
 export const TaskListSchema = z.object({
     taskList: z.array(ScheduleTaskSchema)
 })

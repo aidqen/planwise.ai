@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { TaskCard } from "./TaskCard";
+import { motion } from 'framer-motion'
 
 export function TaskList({ tasks, wakeupMinutes, handleTaskClick }) {
     const [groupedTasks, setGroupedTasks] = useState([]);
@@ -48,8 +49,8 @@ export function TaskList({ tasks, wakeupMinutes, handleTaskClick }) {
         <div className="relative w-full h-full">
             {groupedTasks.map((column, columnIndex) => (
                 <div key={columnIndex} className="absolute top-0 left-0 w-full h-full">
-                    {column.map((task) => (
-                        <div key={task?.id}> 
+                    {column.map((task, index) => (
+                        <div key={index}> 
                             <TaskCard
                                 task={task}
                                 wakeupMinutes={wakeupMinutes}

@@ -6,6 +6,7 @@ import { ConfigurationCTA } from './components/ConfigurationCTA'
 import { BackgroundDecoration } from './components/BackgroundDecoration'
 import { WelcomeHero } from './components/WelcomeHero'
 import { StatisticsCard } from './components/StatisticsCard'
+import { useMemo } from 'react'
 
 const SCHEDULE_TYPES = [
   { id: 'relaxed', label: 'Relaxed', color: 'bg-blue-400' },
@@ -39,17 +40,17 @@ export default function Home() {
   // }
   console.log("🚀 ~ file: page.jsx:40 ~ user:", user)
 
-  const scheduleStats = {
+  const scheduleStats = useMemo(() => ({
     relaxed: user?.schedules?.filter(s => s?.preferences?.intensity === 'relaxed')?.length || 0,
     moderate: user?.schedules?.filter(s => s?.preferences?.intensity === 'moderate')?.length || 0,
     intense: user?.schedules?.filter(s => s?.preferences?.intensity === 'intense')?.length || 0
-  }
+  }), [user?.schedules])
 
-  const goalStats = {
+  const goalStats = useMemo(() => ({
     low: user?.goals?.filter(g => g.importance === 'low')?.length || 0,
     medium: user?.goals?.filter(g => g.importance === 'medium')?.length || 0,
     high: user?.goals?.filter(g => g.importance === 'high')?.length || 0
-  }
+  }), [user?.goals])
 
   return (
     <div className="flex overflow-y-auto flex-col items-center w-full min-h-screen bg-gradient-to-b from-transparent to-gray-50 dark:to-gray-900/50">

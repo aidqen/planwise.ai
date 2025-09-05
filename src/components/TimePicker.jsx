@@ -44,7 +44,7 @@ export default function TimePicker({
                 <Icon className="mr-1.5 sm:mr-2 w-4 h-4 sm:w-5 sm:h-5 text-gray-500 dark:text-gray-400" />
                 <SelectValue placeholder={value ? value : placeholder} className="truncate">{value}</SelectValue>
             </SelectTrigger>
-            <SelectContent className="max-h-[40vh] w-[var(--radix-select-trigger-width)] overflow-auto bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg">
+            <SelectContent className="max-h-[40vh] w-[var(--radix-select-trigger-width)] overflow-auto overflow-x-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg">
                 <SelectGroup>
                     {timeSlots.map((slot) => (
                         <SelectItem

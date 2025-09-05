@@ -63,7 +63,7 @@ export function TaskCard({ task, wakeupMinutes, parseTimeToMinutes, handleTaskCl
   const CategoryIcon = getCategoryIcon(task?.category);
 
   const getTaskClasses = (category) => {
-    const baseClasses = "absolute px-2 py-0 text-white rounded-lg shadow-sm transition-all duration-100 ease-in-out cursor-pointer hover:scale-[1.01] hover:z-[80] hover:shadow-md dark:shadow-black/20 dark:hover:shadow-black/40 border border-white/10 dark:border-black/10";
+    const baseClasses = "absolute px-2 py-0 text-white rounded-lg shadow-sm transition-all duration-100 ease-in-out cursor-pointer hover:scale-[1.01] origin-center hover:z-[80] hover:shadow-md dark:shadow-black/20 dark:hover:shadow-black/40 border border-white/10 dark:border-black/10";
     
     const categoryClasses = {
       break: "bg-blue-500 dark:bg-blue-600",

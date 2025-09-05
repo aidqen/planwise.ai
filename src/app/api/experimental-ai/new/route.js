@@ -9,7 +9,6 @@ export async function POST(request) {
     try {
         const data = await request.json()
         const { schedule, goals, intensity } = data || {}
-        console.log("🚀 ~ POST ~ goals:", goals)
         console.log("🚀 ~ POST ~ data:", data)
 
         const result = await completeScheduleGenFlow({ goals, schedule, intensity })

@@ -1,6 +1,6 @@
 'use client'
 
-import { generateAiSchedule } from '@/store/actions/schedule.actions'
+import { createSchedule, generateAiSchedule } from '@/store/actions/schedule.actions'
 import { Sparkles } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -12,7 +12,9 @@ export function GenerateScheduleBtn() {
 
   async function onGenerateAiSchedule() {
     router.replace('/schedule/ai/loading')
-    const schedule = await generateAiSchedule(multistepForm)
+    // const schedule = await generateAiSchedule(multistepForm)
+    const schedule = await createSchedule(multistepForm)
+    console.log("🚀 ~ onGenerateAiSchedule ~ schedule:", schedule)
     router.replace(`/schedule/ai/${schedule._id}`)
   }
 

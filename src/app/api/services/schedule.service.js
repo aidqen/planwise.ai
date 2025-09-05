@@ -1,7 +1,7 @@
 import { streamText, generateObject, generateText } from "ai";
 import { openai } from '@ai-sdk/openai';
 import { ScheduleSchema, TaskListSchema, TaskSuggestions } from '../../../types/schedule.types';
-import { buildSchedulePrompt, experimentalScheduleBuildPrompt, TaskSuggestionPrompt } from "@/constants/prompt.constant";
+import { buildSchedulePrompt, experimentalScheduleBuildPrompt, taskSuggestionPrompt } from "@/constants/prompt.constant";
 
 const mainModel = openai('gpt-4o')
 
@@ -11,11 +11,11 @@ export async function completeScheduleGenFlow({goals, schedule, intensity, revie
     if (review) {
         AISchedule = await improveSchedule(AISchedule, review)
     } else {
-        experimentalScheduleBuildPrompt(schedule, intensity, goals)
-        // const { taskSuggestions } = await suggestTasks(goals)
-        // AISchedule = await generateSchedule(schedule, intensity, taskSuggestions)
-        // console.log("🚀 ~ completeScheduleGenFlow ~ AISchedule:", AISchedule)
-        // return AISchedule
+        const { taskSuggestions } = await suggestTasks(goals)
+        console.log("🚀 ~ completeScheduleGenFlow ~ taskSuggestions:", taskSuggestions)
+        const prompt = experimentalScheduleBuildPrompt(schedule, intensity, taskSuggestions)
+        AISchedule = await generateSchedule(schedule, intensity, taskSuggestions)
+        return AISchedule
     }
     // Judge the schedule by a few parameters from 1-10
     // Check if the schedule fits the parameters' standards
@@ -30,7 +30,7 @@ export async function suggestTasks(goals) {
         const result = await generateObject({
             model: openai('gpt-4o'),
             schema: TaskSuggestions,
-            prompt: TaskSuggestionPrompt(goals),
+            prompt: taskSuggestionPrompt(goals),
             temperature: 0,
             maxRetries: 2,
             providerOptions: { openai: { strictJsonSchema: true } }
@@ -40,7 +40,7 @@ export async function suggestTasks(goals) {
         const usage = result.usage || result.response?.usage || null
         console.log("🚀 ~ suggestTasks ~ usage:", usage)
 
-        return result.toJsonResponse();
+        return result.object;
     } catch (e) {
         throw e
     }
@@ -79,7 +79,7 @@ export async function generateSchedule(schedule, intensity, taskSuggestions) {
         schema: TaskListSchema
     });
 
-    return object;
+    return object.taskList;
 }
 
 async function improveSchedule(schedule, review) {

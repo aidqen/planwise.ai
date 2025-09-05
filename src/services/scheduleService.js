@@ -15,7 +15,7 @@ export const scheduleService = {
   generateSchedule2
 }
 
-export async function generateSchedule2(schedule, goals, intensity) {
+export async function generateSchedule2({schedule, goals, intensity}) {
   try {
     const response = await fetch(`/api/experimental-ai/new`,
       {

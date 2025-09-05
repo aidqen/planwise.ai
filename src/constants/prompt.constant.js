@@ -1,6 +1,104 @@
+export function editSchedulePrompt(currentSchedule, message) {
+  const scheduleJson = JSON.stringify(currentSchedule, null, 2)
+  console.log("🚀 ~ editSchedulePrompt ~ scheduleJson:", scheduleJson)
 
+  return `You are an expert AI assistant specialized in daily schedule editing and optimization. Your task is to modify a schedule based on user instructions and return a valid array of schedule tasks.
 
-export function TaskSuggestionPrompt(goals) {
+## CURRENT SCHEDULE
+${scheduleJson}
+
+---------------
+
+## USER REQUEST
+${message}
+
+---------------
+
+## INSTRUCTIONS
+
+1. **Analyze the Current Schedule and User Request**
+   - Understand the user's request in ## USER REQUEST
+   - Carefully review the existing schedule structure in ## CURRENT SCHEDULE
+   - Identify which tasks need to be modified, added, removed, or rescheduled
+
+2. **Rules for Editing Tasks:**
+   - NEVER modify or move ANY tasks with category "routine" - these are FIXED and UNCHANGEABLE
+   - The ONLY exception is if the user EXPLICITLY requests to change a SPECIFIC routine task
+   - All schedule changes MUST work around existing routine tasks - treat routines as immovable blocks
+   - Maintain existing time formats (e.g., "10:00", "14:30")
+   - DO NOT CHANGE tasks labeled as "sleep" or "wakeup" unless the user specifically asks
+   - Preserve the overall structure of the day (wake-up time, sleep time) unless explicitly requested
+
+3. **Schedule Requirements:**
+   - Ensure NO overlapping tasks
+   - Fill EVERY minute from wake-up to sleep time with tasks (no gaps allowed)
+   - Maintain three meals (breakfast, lunch, dinner) unless the user requests otherwise:
+     * Breakfast: Within 1 hour of wake-up time
+     * Lunch: Between 12:00 and 14:00
+     * Dinner: Between 18:00 and 20:00
+   - Each meal must be at least 30 minutes long
+   - Include appropriate breaks between focused work sessions based on the schedule's intensity:
+     * For intense schedules: Short 5-15 minute breaks
+     * For medium schedules: Mix of short and longer breaks
+     * For relaxed schedules: More frequent and longer breaks
+
+4. **Category-Specific Guidelines:**
+   - **Routines**: Keep fixed unless explicitly requested to change
+   - **Meals**: Maintain at least 30 minutes duration with category "meal"
+   - **Breaks**: Use descriptive names (e.g., "Short Break", "Relaxation Time", "Outdoor Walk") with category "break"
+   - **Goals**: Allocate appropriate time based on importance with category "goal"
+
+5. **Task Structure Requirements:**
+   - Each task MUST have these properties:
+     * summary: A clear, concise description of the task
+     * start: Start time in format "HH:MM" (24-hour format)
+     * end: End time in format "HH:MM" (24-hour format)
+     * category: One of ['break', 'meal', 'goal', 'routine']
+
+6. **Output Format:**
+   - Return ONLY a valid JSON array of schedule tasks
+   - Do NOT include any explanations or additional text
+   - Tasks MUST be in chronological order
+   - Ensure the output matches the TaskListSchema exactly
+
+## OUTPUT EXAMPLE
+[
+  {
+    "summary": "Morning Routine",
+    "start": "07:00",
+    "end": "08:00",
+    "category": "routine"
+  },
+  {
+    "summary": "Breakfast",
+    "start": "08:00",
+    "end": "08:30",
+    "category": "meal"
+  },
+  {
+    "summary": "Work on Project",
+    "start": "08:30",
+    "end": "10:30",
+    "category": "goal"
+  },
+  {
+    "summary": "Short Break",
+    "start": "10:30",
+    "end": "10:45",
+    "category": "break"
+  },
+  {
+    "summary": "Exercise",
+    "start": "10:45",
+    "end": "11:45",
+    "category": "goal"
+  }
+]
+
+Now, create a new schedule based on the user's request while following all the rules above. Return ONLY the array of tasks.`
+}
+
+export function taskSuggestionPrompt(goals) {
   const goalsJson = typeof goals === 'string' ? goals : JSON.stringify(goals, null, 2)
   return `
 You generate action-focused task suggestions to help users achieve their goals.
@@ -45,7 +143,7 @@ Hard constraints:
 
 Task quality rules:
 - Make tasks atomic, specific, measurable, and progress-oriented.
-- Make a variety of task durations, short ones (15-45 minutes) and longer ones (45-120 minutes)
+- Make a variety of task durations, short ones (30-60 minutes) and longer ones (60-180 minutes)
 
 Selection rules:
 - Prioritize actions with highest expected impact toward the goal.
@@ -164,22 +262,36 @@ ${goals?.map(g => `Goal: ${g.name}, Importance: ${g.importance}`).join('\n')}
   return prompt;
 }
 
+export function scheduleAssistantPrompt(schedule) {
+  return `
+You are a schedule assistant designed to help the user make decisions about his scheduling and provide the following tools:
+
+1. use "editSchedule" tool (if the message explicitly requests changes to the schedule)
+    If editSchedule is used, display text afterwards and pretend you're showing the result to the user and keep your response limited to a phrase.
+2. use "scheduleAnalysis" tool (if the message asks questions about scheduling or the current schedule without requesting changes)
+
+1. Be friendly and natural in your response
+2. DO NOT mention or discuss the schedule unless the user specifically asks
+3. Keep responses concise and engaging
+
+Here's the current schedule: ${JSON.stringify(schedule, null, 2)}
+`;
+}
+
 export function experimentalScheduleBuildPrompt(schedule, intensity, suggestedTasks) {
+  console.log("🚀 ~ experimentalScheduleBuildPrompt ~ suggestedTasks:", suggestedTasks)
   const scheduleJson = JSON.stringify(schedule, null, 2)
-  console.log("🚀 ~ experimentalScheduleBuildPrompt ~ scheduleJson:", scheduleJson)
-  const suggestedTasks = JSON.stringify(suggestedTasks, null, 2)
-  console.log("🚀 ~ experimentalScheduleBuildPrompt ~ goalsJson:", goalsJson)
+  const suggestedTasksJson = JSON.stringify(suggestedTasks, null, 2)
+  console.log("🚀 ~ experimentalScheduleBuildPrompt ~ suggestedTasksJson:", suggestedTasksJson)
   const intensityJson = JSON.stringify(intensity)
 
   const prompt = `
-You are a scheduling AI that creates a fully-packed daily schedule to help the user make maximum progress on their goals, while respecting their existing habits and preferences.
-
-Use the provided inputs (read-only):
+You are a scheduling AI that creates a fully-packed daily schedule to help the user maximize progress on their goals, while respecting their existing habits and preferences.
 
 {
-  Suggested tasks: ${scheduleJson}, // contains fixed 'wakeup', routine blocks, and 'sleep' — DO NOT MODIFY these
-  intensity: ${intensityJson}, // higher = more goal tasks, fewer/shorter breaks
-  goals: ${goalsJson}
+  Starter schedule: ${scheduleJson},
+  intensity: ${intensityJson},
+  SuggestedTasks: ${suggestedTasksJson}
 }
 
 Output a complete schedule using this schema:
@@ -197,23 +309,46 @@ z.array(
 
 Build a complete daily schedule from wakeup to sleep that helps the user make the most progress on their personal goals, based on the given goals and intensity.
 
+📋 Understanding Your Inputs
+
+1. Starter Schedule: This is the user's existing schedule framework containing fixed commitments like wake-up time, sleep time, and any non-negotiable routines. These are the anchors of the schedule that cannot be moved or modified.
+2. Suggested Tasks: This is an array of goal objects. Each goal contains task suggestions that will help the user make progress toward that specific goal. Each suggested task includes a summary, description, and recommended duration to complete it.
+3. Intensity: This determines how packed the schedule should be
+
 🧠 Rules
 
-Do not change or move any entries in starterSchedule (wakeup, routine tasks, or sleep). Add tasks around them without overlap.
+1. Fixed Elements:
+   - Do not change or move any entries in the starter schedule (wakeup, routine tasks, or sleep).
+   - Add tasks around these fixed elements without creating overlaps.
 
-Every minute must be scheduled from wakeup to sleep. No gaps.
+2. Complete Coverage:
+   - Every minute must be scheduled from wakeup to sleep. No gaps allowed.
+   - If there's time between tasks, explicitly schedule it as a break.
 
-Add 3 meals: morning, noon, evening.
+3. Essential Activities:
+   - Add 3 meals: morning (within 1.5 hours of waking), noon (12:00-14:00), and evening (18:00-20:00). Each meal should be around 40 minutes
 
-Insert breaks when needed. No single focus block (goal task) should exceed 1.5 hours without a break.
+4. Breaks Based on Intensity:
+   - Relaxed: Include longer breaks (60-90 minutes) every 90-120 minutes of focused work.
+   - Moderate: Schedule medium breaks (45-60 minutes) every 120-150 minutes of focused work.
+   - Intense: Add shorter breaks (30-45 minutes) every 150-180 minutes of focused work.
+   - Prefer longer work periods (1.5-3 hours) when the task allows for deep focus.
+   - The breaks should be creative and not just 'Break', suggest things to do in the break.
 
-Distribute tasks smartly: choose tasks that maximize ROI toward the provided goals, adjusting quantity and duration based on the intensity level.
+5. Task Selection:
+   - Choose tasks ONLY from suggestedTasks that maximize progress toward the user's goals.
+   - Keep the total number of tasks to a minimum, ideally 15 or fewer across the entire day.
+   - Prefer selecting fewer, longer tasks rather than many short tasks when possible.
+   - Prioritize high-importance goals when selecting tasks.
+   - Tasks must be minimum of 15 minutes
 
-You may split long tasks to insert breaks.
+6. Task Management:
+   - You may split long tasks to insert necessary breaks.
+   - Group similar tasks together when possible to minimize context switching.
 
-Respect time order. The schedule must be strictly sequential and valid.
-
-Output must match the schema exactly. No extra fields or comments.
+7. Schedule Integrity:
+   - Respect time order. The schedule must be strictly sequential and valid.
+   - Output must match the schema exactly. No extra fields or comments.
 `
 
   return prompt;

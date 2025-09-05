@@ -40,7 +40,6 @@ export default function DailySchedule() {
   const [error, setError] = useState(null)
   const [editedSchedule, setEditedSchedule] = useState(null)
   const [schedule, setSchedule] = useState(DEFAULT_SCHEDULE)
-  console.log("🚀 ~ file: page.jsx:43 ~ schedule:", schedule)
   // console.log("🚀 ~ file: page.jsx:45 ~ schedule:", schedule)
   // const schedule = useSelector(state => state.scheduleModule.schedule)
   const wakeupTime = editedSchedule?.preferences?.wakeup || schedule?.preferences?.wakeup || '04:00'
@@ -169,9 +168,7 @@ export default function DailySchedule() {
 
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] pt-16 md:pt-0 overflow-y-hidden justify-between w-full"
-    //  ref={pageRef}
-    >
+    <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] pt-16 md:pt-0 overflow-y-hidden justify-between w-full">
       <ScheduleSidebar
         schedule={schedule}
         setIsLoading={setIsLoading}
@@ -185,7 +182,7 @@ export default function DailySchedule() {
         <Loading />
       ) : (
         <Card className="overflow-y-auto relative w-full bg-transparent border-none md:pt-16 scrollbar">
-          <div className="mx-auto ps-8 w-full md:w-[80%] relative">
+          <div className="mx-auto ps-8 w-full md:w-[90%] relative">
             <CardHeader className="pt-0 pe-1.5">
               <div className="flex justify-between items-center">
                 {/* <div className="space-y-1 w-max"> */}

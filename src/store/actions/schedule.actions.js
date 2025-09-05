@@ -63,9 +63,17 @@ function formatSchedule(schedule, preferences, routines, goals, user) {
     if (!schedule) return
     const now = new Date()
     const timestamp = now.getTime()
+    
+    // Add unique IDs to each task in the schedule - shorter and unique only to this schedule
+    const scheduleWithIds = schedule.map((task, index) => {
+        // Create a shorter ID using just index and a small random component
+        const uniqueId = `t${index}_${Math.random().toString(36).substring(2, 6)}`
+        return { ...task, id: uniqueId }
+    })
+    
     return { 
         name: 'Daily Schedule', 
-        schedule: [...schedule], 
+        schedule: scheduleWithIds, 
         createdAt: timestamp, 
         updatedAt: timestamp, 
         preferences,
@@ -76,12 +84,16 @@ function formatSchedule(schedule, preferences, routines, goals, user) {
 }
 
 export async function createSchedule(parameters) {
-    var { intensity, routines, goals } = parameters;
+    var { preferences, routines, goals } = parameters;
 
     const user = store.getState().userModule.user
-    const schedule = scheduleBoilerplate(preferences, routines, goals, user)
-    const aiResponse = await generateSchedule2(schedule.schedule, goals, intensity)
-    return aiResponse
+    const scheduleStarter = createScheduleStarter(preferences, routines)
+    const aiScheduleTasks = await generateSchedule2({scheduleStarter, goals, intensity: preferences.intensity})
+    // console.log("🚀 ~ createSchedule ~ aiResponse:", aiScheduleTasks)
+    const completeSchedule = formatSchedule(aiScheduleTasks, preferences, routines, goals, user)
+    const completeScheduleWithId = await saveScheduleToDB(completeSchedule);
+    console.log("🚀 ~ createSchedule ~ completeSchedule:", completeSchedule)
+    return completeScheduleWithId
 }
 
 function formatTask({summary, start, end, type}) {
@@ -115,7 +127,7 @@ function addDurationToTime(time, duration) {
     return `${pad(endH)}:${pad(endM)}`
 }
 
-export function scheduleBoilerplate(preferences, routines, goals, user) {
+export function createScheduleStarter(preferences, routines) {
     const { wakeup, sleep } = preferences
     let schedule
 
@@ -131,16 +143,16 @@ export function scheduleBoilerplate(preferences, routines, goals, user) {
     } else {
         schedule = [wakeupTask, sleepTask]
     }
-    return { 
-        name: 'Daily Schedule', 
-        schedule, 
-        createdAt: timestamp, 
-        updatedAt: timestamp, 
-        preferences, routines, 
-        goals, 
-        creator: { id: user?._id, name: user?.name }, 
-        chat: []
-    }
+    return (
+        // name: 'Daily Schedule', 
+        schedule
+        // createdAt: timestamp, 
+        // updatedAt: timestamp, 
+        // preferences, routines, 
+        // goals, 
+        // creator: { id: user?._id, name: user?.name }, 
+        // chat: []
+    )
 }
 
 // Action creators
@@ -161,4 +173,3 @@ export function getCmdAiSchedule(aiSchedule) {
         aiSchedule
     }
 }
-
