@@ -4,8 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(request, { params }) {
     try {
-        // `params` is automatically available here
-        const id = params?.id; // Access `id` directly
+        const id = await params?.id; 
         if (!id) {
             return NextResponse.json({ error: 'ID is required' }, { status: 400 });
         }

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { MessageCircle, ListChecks, X } from "lucide-react"
 import { ScheduleDetails } from './ScheduleDetails'
-import { AIChat } from './AIChat'
+import { AIChat } from './AIChat/AIChat'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useSelector, useDispatch } from 'react-redux'
 import { TOGGLE_SCHEDULE_SIDEBAR } from '@/store/reducers/system.reducer'

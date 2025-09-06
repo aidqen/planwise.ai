@@ -15,7 +15,7 @@ import { Loading } from '../components/Loading'
 import { DesktopActions } from '../components/DesktopActions'
 import { getMinutesFromMidnight } from '@/services/util.service'
 import { Button } from '@/components/ui/button'
-import { Check, X, Plus } from 'lucide-react'
+import { Check, X, Plus, ArrowLeftRight } from 'lucide-react'
 import { EditableTitle } from '../components/EditableTitle'
 import { useToast } from "@/components/hooks/use-toast"
 import { deleteSchedule, updateSchedule } from '@/store/actions/schedule.actions'
@@ -39,8 +39,8 @@ export default function DailySchedule() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
   const [editedSchedule, setEditedSchedule] = useState(null)
+  const [showOriginal, setShowOriginal] = useState(false)
   const [schedule, setSchedule] = useState(DEFAULT_SCHEDULE)
-  // console.log("🚀 ~ file: page.jsx:45 ~ schedule:", schedule)
   // const schedule = useSelector(state => state.scheduleModule.schedule)
   const wakeupTime = editedSchedule?.preferences?.wakeup || schedule?.preferences?.wakeup || '04:00'
   const wakeupMinutes = getMinutesFromMidnight(wakeupTime)
@@ -88,11 +88,14 @@ export default function DailySchedule() {
       setEditedSchedule(null)
     } catch (error) {
       console.error('Failed to accept changes:', error)
+    } finally {
+      setShowOriginal(false)
     }
   }
 
   const handleRejectChanges = () => {
     setEditedSchedule(null)
+    setShowOriginal(false)
   }
 
   function handleTaskClick(task) {
@@ -185,12 +188,10 @@ export default function DailySchedule() {
           <div className="mx-auto ps-8 w-full md:w-[90%] relative">
             <CardHeader className="pt-0 pe-1.5">
               <div className="flex justify-between items-center">
-                {/* <div className="space-y-1 w-max"> */}
                   <EditableTitle
                     title={schedule?.name || "Daily Schedule"}
                     onSave={onSaveSchedule}
                   />
-                {/* </div> */}
                 <div className="hidden gap-4 md:flex">
                   <DesktopActions
                     onCreateTask={onCreateTask}
@@ -210,7 +211,7 @@ export default function DailySchedule() {
               <div className="relative h-[1640px] w-full border-l-2 border-gray-300 dark:border-gray-600 pl-8 pr-4">
                 <ScheduleStructure wakeupMinutes={wakeupMinutes} />
                 <TaskList
-                  tasks={editedSchedule?.schedule || schedule.schedule}
+                  tasks={editedSchedule && !showOriginal ? editedSchedule.schedule : schedule.schedule}
                   wakeupMinutes={wakeupMinutes}
                   handleTaskClick={handleTaskClick}
                 />
@@ -218,7 +219,12 @@ export default function DailySchedule() {
 
               {editedSchedule && (
                 <div className="flex fixed left-0 bottom-4 z-50 gap-3 justify-center w-full md:sticky">
-                  {/* <div className="flex gap-2 px-0 rounded-lg md:gap-4"> */}
+                  <Button
+                    onClick={() => setShowOriginal(prev => !prev)}
+                    className="flex gap-2 items-center px-2 py-1 text-xs text-white bg-blue-500 shadow-md md:py-2 md:px-4 hover:bg-blue-600"
+                  >
+                    {showOriginal ? 'Show Edited' : 'Show Original'}
+                  </Button>
                   <Button
                     onClick={handleRejectChanges}
                     className="flex gap-2 items-center px-2 py-1 text-xs text-white bg-red-500 shadow-md md:py-2 md:px-4 hover:bg-red-600"
@@ -233,7 +239,6 @@ export default function DailySchedule() {
                     <Check className="w-4 h-4" />
                     Accept Changes
                   </Button>
-                  {/* </div> */}
                 </div>
               )}
             </CardContent>

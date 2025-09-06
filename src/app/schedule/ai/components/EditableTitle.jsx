@@ -51,7 +51,7 @@ export function EditableTitle({ title, onSave }) {
           className="px-1 py-0.5 text-xl font-semibold bg-transparent border-b-2 border-blue-500 outline-none text-gray-900 dark:text-gray-100 w-full"
         />
       ) : (
-        <div className="flex gap-2 items-center group w-full">
+        <div className="flex gap-1 items-center group w-full">
           <CardTitle
             onClick={() => setIsEditing(true)}
             className="transition-colors duration-200 cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis hover:text-blue-600 dark:hover:text-blue-400 w-full"
@@ -60,7 +60,7 @@ export function EditableTitle({ title, onSave }) {
             {title}
           </CardTitle>
           <Pen 
-            className="absolute -right-4 w-4 h-4 text-gray-400 transition-colors duration-200 cursor-pointer hover:text-blue-500 dark:hover:text-blue-400" 
+            className=" w-6 h-6 text-gray-400 transition-colors duration-200 cursor-pointer hover:text-blue-500 dark:hover:text-blue-400" 
             onClick={() => setIsEditing(true)}
           />
         </div>
