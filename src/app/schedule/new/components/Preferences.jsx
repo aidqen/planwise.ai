@@ -1,10 +1,10 @@
 'use client'
 import { ScheduleIntensity } from '@/components/ScheduleIntensity'
 import TimePicker from '@/components/TimePicker'
-import { Section } from '@/components/ui/section'
 import { SET_SLEEP, SET_WAKEUP } from '@/store/reducers/schedule.reducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useRef } from 'react'
+import FormWrapper from '@/components/FormWrapper'
 
 export function Preferences() {
   const timeTypes = ['Wake Up', 'Sleep']
@@ -29,17 +29,10 @@ export function Preferences() {
   }, [userPreferences, preferences.wakeup, preferences.sleep, dispatch])
 
   return (
-    <Section className="w-full">
-      <div className="flex flex-col gap-8 items-center py-8 pt-10 w-full h-full md:p-8 max-sm:items-start">
-        <div className="space-y-2 w-full text-center">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 md:text-2xl">
-            Daily Schedule Preferences
-          </h2>
-          <p className="mx-auto max-w-lg text-sm text-gray-600 dark:text-gray-400 md:text-base max-sm:mx-0">
-            Set your daily preferences to help us generate a schedule which fits you.
-          </p>
-        </div>
-
+    <FormWrapper
+      title="Daily Schedule Preferences"
+      description="Set your daily preferences to help us generate a schedule which fits you."
+    >
         <div className="grid grid-cols-2 gap-8 w-full max-w-xl">
           {timeTypes.map(timeType => {
             const isWakeUp = timeType === 'Wake Up'
@@ -73,7 +66,6 @@ export function Preferences() {
         <div className="pt-4 w-full max-w-xl">
           <ScheduleIntensity />
         </div>
-      </div>
-    </Section>
+    </FormWrapper>
   )
 }

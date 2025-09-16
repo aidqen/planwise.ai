@@ -1,7 +1,7 @@
 'use client'
 
 // import { useSelector } from 'react-redux'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { ScheduleStructure } from '../components/ScheduleStructure'
@@ -15,11 +15,13 @@ import { Loading } from '../components/Loading'
 import { DesktopActions } from '../components/DesktopActions'
 import { getMinutesFromMidnight } from '@/services/util.service'
 import { Button } from '@/components/ui/button'
-import { Check, X, Plus, ArrowLeftRight } from 'lucide-react'
 import { EditableTitle } from '../components/EditableTitle'
+import { ScheduleActionButtons } from '../components/ScheduleActionButtons'
 import { useToast } from "@/components/hooks/use-toast"
 import { deleteSchedule, updateSchedule } from '@/store/actions/schedule.actions'
 import { updateScheduleInUser } from '@/store/actions/user.actions'
+import { MultiStepForm } from '@/components/custom/multistepform/MultiStepForm'
+import { Plus } from 'lucide-react'
 
 const DEFAULT_SCHEDULE = {
   schedule: [],
@@ -37,7 +39,6 @@ export default function DailySchedule() {
   const [selectedTask, setSelectedTask] = useState(null)
   const [isCreateTask, setIsCreateTask] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(null)
   const [editedSchedule, setEditedSchedule] = useState(null)
   const [showOriginal, setShowOriginal] = useState(false)
   const [schedule, setSchedule] = useState(DEFAULT_SCHEDULE)
@@ -45,6 +46,8 @@ export default function DailySchedule() {
   const wakeupTime = editedSchedule?.preferences?.wakeup || schedule?.preferences?.wakeup || '04:00'
   const wakeupMinutes = getMinutesFromMidnight(wakeupTime)
   const { toast } = useToast();
+
+  const isForm = useMemo(() => params?.id === 'form', [params?.id])
 
   useEffect(() => {
     if (params?.id) {
@@ -56,7 +59,7 @@ export default function DailySchedule() {
     console.log("🚀 ~ file: page.jsx:54 ~ params?.id:", params?.id)
     try {
       setIsLoading(true)
-      if (params?.id === 'loading') return
+      if (params?.id === 'loading' || params?.id === 'form') return
 
       const fetchedSchedule = await scheduleService.getScheduleById(params.id)
       // dispatch({type: SET_SCHEDULE, schedule: fetchedSchedule })
@@ -71,18 +74,11 @@ export default function DailySchedule() {
   }
 
   const handleScheduleEdit = (newSchedule) => {
-    setEditedSchedule(newSchedule)
+    setEditedSchedule({...schedule, schedule: newSchedule})
   }
 
   const handleAcceptChanges = async () => {
     try {
-      console.log("🚀 ~ file: page.jsx:40 ~ editedSchedule:", editedSchedule)
-      // Create a merged schedule with all original fields and AI updates
-      // const updatedSchedule = {
-      //   ...schedule,  // Keep all original schedule fields (routines, goals, etc)
-      //   ...editedSchedule,  // Override with AI's changes (preferences, schedule array),
-      // };
-
       setSchedule(editedSchedule)
       await scheduleService.updateSchedule(editedSchedule)
       setEditedSchedule(null)
@@ -181,6 +177,7 @@ export default function DailySchedule() {
         isEditedSchedule={!!editedSchedule}
         onSaveSchedule={onSaveSchedule}
       />
+      <MultiStepForm />
       {(isLoading || !schedule?.schedule?.length) ? (
         <Loading />
       ) : (
@@ -218,28 +215,12 @@ export default function DailySchedule() {
               </div>
 
               {editedSchedule && (
-                <div className="flex fixed left-0 bottom-4 z-50 gap-3 justify-center w-full md:sticky">
-                  <Button
-                    onClick={() => setShowOriginal(prev => !prev)}
-                    className="flex gap-2 items-center px-2 py-1 text-xs text-white bg-blue-500 shadow-md md:py-2 md:px-4 hover:bg-blue-600"
-                  >
-                    {showOriginal ? 'Show Edited' : 'Show Original'}
-                  </Button>
-                  <Button
-                    onClick={handleRejectChanges}
-                    className="flex gap-2 items-center px-2 py-1 text-xs text-white bg-red-500 shadow-md md:py-2 md:px-4 hover:bg-red-600"
-                  >
-                    <X className="w-4 h-4" />
-                    Reject Changes
-                  </Button>
-                  <Button
-                    onClick={handleAcceptChanges}
-                    className="flex gap-2 items-center px-2 py-1 text-xs text-white bg-green-500 shadow-md md:py-2 md:px-4 hover:bg-green-600"
-                  >
-                    <Check className="w-4 h-4" />
-                    Accept Changes
-                  </Button>
-                </div>
+                <ScheduleActionButtons
+                  showOriginal={showOriginal}
+                  setShowOriginal={setShowOriginal}
+                  handleRejectChanges={handleRejectChanges}
+                  handleAcceptChanges={handleAcceptChanges}
+                />
               )}
             </CardContent>
           </div>

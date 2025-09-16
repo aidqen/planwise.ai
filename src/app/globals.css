@@ -1,6 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --font-poppins: 'Poppins', 'Rubik', sans-serif;
+    --font-rubik: 'Rubik', sans-serif;
+  }
+}
+
 /* @import "react-day-picker/dist/style.css"; */
 
 @media (prefers-color-scheme: dark) {
@@ -11,6 +19,7 @@
 
 * {
   box-sizing: border-box;
+  font-family: var(--font-poppins);
 }
 
 html, body {
@@ -29,7 +38,7 @@ body {
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
   scrollbar-gutter: stable;
   -ms-overflow-style: none;
-  padding-right: 6px;
+  padding-right: 0px;
 }
 
 .scrollbar::-webkit-scrollbar {
@@ -56,11 +65,11 @@ body {
   .scrollbar {
     scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
   }
-  
+
   .scrollbar::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.2);
   }
-  
+
   .scrollbar::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.3);
   }
@@ -141,3 +150,9 @@ body {
 .custom-btn-bg:hover {
   background: radial-gradient(118.75% 118.75% at 50% 50%, #4B5563 0%, rgba(75, 85, 99, 0) 100%);
 }
+
+::view-transition-old(root), ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+

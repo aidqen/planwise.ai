@@ -16,7 +16,7 @@ export const REORDER_GOALS = 'REORDER_GOALS'
 
 const initialState = {
     multiStepForm: { preferences: { wakeup: '7:00', sleep: '22:00', intensity: 'moderate' }, goals: [], routines: [] },
-    schedule: [],
+    // schedule: [],
 }
 
 export function scheduleReducer(state = initialState, action) {
@@ -45,13 +45,10 @@ export function scheduleReducer(state = initialState, action) {
         case SET_SCHEDULE:
             newState = { ...state, schedule: action.schedule }
             break
-        case RESET_SCHEDULE:
-            newState = { ...state, aiSchedule: [] }
-            break
         case ADD_TASK_TO_AI_SCHEDULE:
             newState = {
                 ...state,
-                schedule: [...state.aiSchedule, action.task], // Append the new task
+                schedule: [...state.schedule, action.task], // Append the new task
             };
         case REORDER_GOALS:
             newState = {

@@ -163,10 +163,6 @@ export const addTaskToSchedule = (task) => ({
     task,
 });
 
-export const resetSchedule = () => ({
-    type: RESET_SCHEDULE,
-});
-
 export function getCmdAiSchedule(aiSchedule) {
     return {
         type: SET_SCHEDULE,

@@ -1,11 +1,7 @@
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Card } from '@/components/ui/card'
 import { motion } from 'framer-motion'
-import { Clock, Edit2, X } from 'lucide-react'
-import { RoutineEdit } from './RoutineEdit'
-import { RoutinePreview } from './RoutinePreview'
+import TaskPreview from '@/components/tasks/TaskPreview'
+import TaskEdit from '@/components/tasks/TaskEdit'
 
 export function Routine({
   routine,
@@ -23,9 +19,21 @@ export function Routine({
     >
       <Card className="relative shadow-md transition-shadow duration-300 h-max hover:shadow-lg dark:bg-gray-800/30 dark:border-gray-700 dark:shadow-gray-900/30">
         {routine.isEditing ? (
-          <RoutineEdit routine={routine} toggleEditing={toggleEditing} saveEdit={saveEdit} />
+          <TaskEdit
+            id={routine.id}
+            defaultName={routine.name}
+            defaultStartTime={routine.startTime}
+            defaultEndTime={routine.endTime}
+            nameLabel="Routine Name"
+            onCancel={(id) => toggleEditing(id, false)}
+            onSave={(id, data) => saveEdit(id, { name: data.name, startTime: data.startTime, endTime: data.endTime })}
+          />
         ) : (
-          <RoutinePreview routine={routine} deleteRoutine={deleteRoutine} toggleEditing={toggleEditing} />
+          <TaskPreview
+            task={{ id: routine.id, name: routine.name, startTime: routine.startTime, endTime: routine.endTime }}
+            onEdit={(id) => toggleEditing(id, true)}
+            onDelete={(id) => deleteRoutine(id)}
+          />
         )}
       </Card>
     </motion.div>

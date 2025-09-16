@@ -39,12 +39,12 @@ export default function TimePicker({
     return (
         <Select onValueChange={onChange}>
             <SelectTrigger 
-                className={`inline-flex justify-start items-center px-2 py-2 w-full text-xs text-gray-700 bg-white rounded-lg border border-gray-200 shadow-sm transition-all duration-200 sm:px-3 md:px-5 sm:text-sm dark:bg-gray-800 dark:border-gray-700 me-2 dark:text-gray-200 focus:outline-none hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-2 focus:ring-green-500/20 dark:focus:ring-green-500/20 ${className}`}
+                className={`focus-visible:ring-0 focus-visible:border-0 inline-flex justify-start items-center px-2 py-2 w-full text-xs text-gray-700 bg-white rounded-lg border border-gray-200 shadow-sm transition-all duration-200 sm:px-3 md:px-5 sm:text-sm dark:bg-gray-800 dark:border-gray-700 me-2 dark:text-gray-200 focus:outline-none hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-2 focus:ring-green-500/20 dark:focus:ring-green-500/20 ${className}`}
             >
                 <Icon className="mr-1.5 sm:mr-2 w-4 h-4 sm:w-5 sm:h-5 text-gray-500 dark:text-gray-400" />
                 <SelectValue placeholder={value ? value : placeholder} className="truncate">{value}</SelectValue>
             </SelectTrigger>
-            <SelectContent className="max-h-[40vh] w-[var(--radix-select-trigger-width)] overflow-auto overflow-x-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg">
+            <SelectContent className="max-h-[40vh] z-[1000] w-[var(--radix-select-trigger-width)] overflow-auto overflow-x-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg">
                 <SelectGroup>
                     {timeSlots.map((slot) => (
                         <SelectItem

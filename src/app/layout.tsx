@@ -1,7 +1,7 @@
 import './globals.css'
 import { AppHeader } from './components/AppHeader'
 import { ReduxProvider } from '@/components/ReduxProvider'
-import { Poppins } from 'next/font/google';
+import { Poppins, Rubik } from 'next/font/google';
 import { SidebarDemo } from '@/components/MainSidebar';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -17,13 +17,20 @@ export const metadata = {
 }
 
 const poppins = Poppins({
-  subsets: ['latin'], // Loads characters for most Western languages
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'], // Includes all weights
+  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-poppins',
 })
 
-export default function RootLayout({ children }) {
+const rubik = Rubik({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-rubik',
+})
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`h-full ${poppins.className}`}>
+    <html lang="en" className={`h-full ${poppins.variable} ${rubik.variable}`}>
       <body className={`grid flex-col grid-rows-1 min-h-dvh max-h-dvh md:max-h-screen md:min-h-screen grid-cols-[auto_1fr] md:min-w-screen md:max-w-screen bg-mainLight dark:bg-gray-900 font-[poppins] max-sm:flex`}>
         <ReduxProvider>
           <TooltipProvider delayDuration={0}>

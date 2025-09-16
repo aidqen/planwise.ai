@@ -72,9 +72,9 @@ export function ScheduleIntensity() {
         {scheduleOptions.map(option => (
           <div
             key={option.id}
-            style={{
-              '--ring-color': option.ringColor
-            }}
+            // style={{
+            //   '--ring-color': option.ringColor
+            // }}
             className={`relative flex cursor-pointer items-center px-4 py-3 max-sm:py-2 max-sm:px-2 rounded-xl border-2 w-full ${option.borderColor} ${
               intensity === option.value
                 ? `${option.bgColor} ${option.borderColor} ${option.textColor} ring-2 ring-offset-2 dark:ring-offset-gray-900 ring-[--ring-color]`

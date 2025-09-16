@@ -13,6 +13,15 @@ export const TaskSuggestions = z.object({
     }))
 })
 
+export const EditTaskSuggestions = z.object({
+    taskSuggestions: z.array(z.object({
+        summary: z.string().describe("A short summary of the task"),
+        description: z.string().min(10).max(35).describe("A description of the task"),
+        recommendedStart: z.string().describe("Recommended start time in HH:MM format"),
+        recommendedEnd: z.string().describe("Recommended end time in HH:MM format")
+    })).min(1).max(5).describe("An array of 1-5 tasks to add based on the user's request.")
+})
+
 // Define the Schedule Task schema for individual tasks in the schedule
 
 export const ScheduleTaskSchema = z.object({

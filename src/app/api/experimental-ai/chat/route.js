@@ -1,13 +1,13 @@
 import { scheduleAssistantPrompt } from "@/constants/prompt.constant";
 import { streamText, stepCountIs } from "ai";
 import { openai } from "@ai-sdk/openai";
-import { editSchedule } from "../../tools/response.tools";
+import { editSchedule, fetchGoogleEvents } from "../../tools/response.tools";
 
 export async function POST(request) {
     try {
         const data = await request.json()
+        console.log("🚀 ~ POST ~ data:", data)
         const { schedule, messages } = data || {}
-        console.log("🚀 ~ POST ~ messages:", messages)
         console.log("🚀 ~ POST ~ schedule:", schedule)
         
         const formattedMessages = messages.map(msg => ({
@@ -21,7 +21,7 @@ export async function POST(request) {
             system: scheduleAssistantPrompt(schedule),
             tools: {
                 editSchedule: editSchedule(schedule),
-                // fetchGoogleEvents: ''
+                fetchGoogleEvents
             },
             stopWhen: stepCountIs(3)
         })

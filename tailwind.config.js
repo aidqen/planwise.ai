@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const { fontFamily } = require('tailwindcss/defaultTheme')
+
 module.exports = {
 	darkMode: 'class',
 	content: [
@@ -41,6 +43,9 @@ module.exports = {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			fontFamily: {
+				sans: ["var(--font-poppins)", "var(--font-rubik)", ...fontFamily.sans],
 			},
 			animation: {
 				spotlight: "spotlight 2s ease .75s 1 forwards",

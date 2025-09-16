@@ -2,6 +2,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 import { Clock, Coffee, Repeat, Target, Utensils } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { TaskHoverPanel } from "./TaskHoverPanel";
 
 export function TaskCard({ task, wakeupMinutes, parseTimeToMinutes, handleTaskClick, columnIndex, totalColumns }) {
   const [isDescVisible, setIsDescVisible] = useState(false);
@@ -79,7 +80,7 @@ export function TaskCard({ task, wakeupMinutes, parseTimeToMinutes, handleTaskCl
   return (
     <Card
       onClick={() => handleTaskClick(task)}
-      className={getTaskClasses(task?.category)}
+      className={getTaskClasses(task?.category) + 'relative'}
       style={{
         top: `${top}%`,
         height: `${height}%`,
@@ -98,6 +99,7 @@ export function TaskCard({ task, wakeupMinutes, parseTimeToMinutes, handleTaskCl
           {task.start} - {task.end}
         </CardDescription>
       </CardHeader>
+      <TaskHoverPanel />
     </Card>
   );
 }

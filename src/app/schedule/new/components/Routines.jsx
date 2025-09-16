@@ -2,15 +2,16 @@
 
 import { useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
-import { Section } from '@/components/ui/section'
 import { Routine } from './Routine'
 import { AddRoutine } from './AddRoutine'
 import { useDispatch, useSelector } from 'react-redux'
 import { SAVE_ROUTINES } from '@/store/reducers/schedule.reducer'
 import { Info } from 'lucide-react'
 import { PredefinedItemsDialog } from '@/components/PredefinedItemsDialog'
+import EmptyState from '@/components/EmptyState'
 import { makeId } from '@/services/util.service'
 import { RoutineSearchInput } from './RoutineSearchInput'
+import FormWrapper from '@/components/FormWrapper'
 
 export function Routines({ }) {
   const dispatch = useDispatch()
@@ -82,66 +83,52 @@ export function Routines({ }) {
   }
 
   return (
-    <Section className="py-3 pt-10 w-full md:p-6">
-      <div className="mx-auto max-w-2xl">
-        <div className="mb-4 space-y-2 text-center md:mb-8">
-          <h1 className="text-xl font-medium text-gray-900 dark:text-gray-100 md:text-2xl">
-            Set Your Daily Routines
-          </h1>
-          <p className="mx-auto max-w-lg text-sm text-gray-600 md:text-base dark:text-gray-400">
-            Add your unchangeable activities to help us create a schedule that doesn&apos;t interfere with your existing commitments.
-          </p>
+    <FormWrapper
+      title="Set Your Daily Routines"
+      description="Add your unchangeable activities to help us create a schedule that doesn't interfere with your existing commitments."
+    >
+      <RoutineSearchInput
+        routines={routines}
+        onAddRoutine={handleAddRoutine}
+        multiStepForm={multiStepForm}
+        userRoutines={user?.routines || []}
+      />
+
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <h2 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            Your Routines {routines.length > 0 && `(${routines.length})`}
+          </h2>
         </div>
 
-        <div className="space-y-8 md:space-y-8">
-          <RoutineSearchInput
-            routines={routines}
-            onAddRoutine={handleAddRoutine}
-            multiStepForm={multiStepForm}
-            userRoutines={user?.routines || []}
-          />
-
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                Your Routines {routines.length > 0 && `(${routines.length})`}
-              </h2>
-            </div>
-
-            <AnimatePresence>
-              {routines.length === 0 ? (
-                <div className="flex flex-col justify-center items-center p-8 h-full text-center bg-gray-50 rounded-lg border-2 border-gray-200 border-dashed dark:bg-gray-800/30 dark:border-gray-700">
-                  <Info className="mb-2 w-8 h-8 text-gray-400 dark:text-gray-500" />
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    No routines added yet. Start by adding your first routine above.
-                  </p>
-                  {user?.routines?.length > 0 && (
-                    <PredefinedItemsDialog 
-                      items={user.routines} 
-                      type="Routines" 
-                      onSelect={handlePredefinedRoutinesSelect}
-                      triggerClassName="mt-4"
-                      triggerChildren="Add from Predefined Routines"
-                    />
-                  )}
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 gap-4 w-full overflow-y-auto max-h-[400px] pb-14 scrollbar-hidden">
-                  {routines.map(routine => (
-                    <Routine
-                      routine={routine}
-                      key={routine.id}
-                      deleteRoutine={deleteRoutine}
-                      toggleEditing={toggleEditing}
-                      saveEdit={saveEdit}
-                    />
-                  ))}
-                </div>
+        <AnimatePresence>
+          {routines.length === 0 ? (
+            <EmptyState message="No routines added yet. Start by adding your first routine above.">
+              {user?.routines?.length > 0 && (
+                <PredefinedItemsDialog 
+                  items={user.routines} 
+                  type="Routines" 
+                  onSelect={handlePredefinedRoutinesSelect}
+                  triggerClassName="mt-4"
+                  triggerChildren="Add from your Routines"
+                />
               )}
-            </AnimatePresence>
-          </div>
-        </div>
+            </EmptyState>
+          ) : (
+            <div className="grid grid-cols-1 gap-4 w-full overflow-y-auto max-h-[400px] pb-14 scrollbar-hidden">
+              {routines.map(routine => (
+                <Routine
+                  routine={routine}
+                  key={routine.id}
+                  deleteRoutine={deleteRoutine}
+                  toggleEditing={toggleEditing}
+                  saveEdit={saveEdit}
+                />
+              ))}
+            </div>
+          )}
+        </AnimatePresence>
       </div>
-    </Section>
+    </FormWrapper>
   )
 }

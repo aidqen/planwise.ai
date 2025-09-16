@@ -54,7 +54,7 @@ export function EditableTitle({ title, onSave }) {
         <div className="flex gap-1 items-center group w-full">
           <CardTitle
             onClick={() => setIsEditing(true)}
-            className="transition-colors duration-200 cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis hover:text-blue-600 dark:hover:text-blue-400 w-full"
+            className="transition-colors duration-200 text-black dark:text-white cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis hover:text-blue-600 dark:hover:text-blue-400 w-full"
             title={title} // Show full title on hover
           >
             {title}

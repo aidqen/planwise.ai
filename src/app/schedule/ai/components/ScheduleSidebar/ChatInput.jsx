@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Textarea } from "@/components/ui/textarea";
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, AtSign } from 'lucide-react';
 import { ChatButton } from './ChatButton';
 
 /**
@@ -14,13 +14,14 @@ import { ChatButton } from './ChatButton';
  * @param {boolean} props.isLoading - Whether the chat is loading
  * @param {Object} props.error - Error object if there is an error
  */
-export function ChatInput({ input, setInput, handleSubmit, status, stop, isLoading, error }) {
+export function ChatInput({ activeToolName, onSubmit, status, stop, isLoading, error }) {
   const textareaRef = useRef(null);
-  
+  const [input, setInput] = useState('');
+
   useEffect(() => {
     adjustTextareaHeight();
   }, [input]);
-  
+
   const adjustTextareaHeight = () => {
     const textarea = textareaRef.current;
     if (textarea) {
@@ -28,33 +29,45 @@ export function ChatInput({ input, setInput, handleSubmit, status, stop, isLoadi
       textarea.style.height = textarea.scrollHeight + 'px';
     }
   };
-  
+
+  function handleFormSubmit(e) {
+    e?.preventDefault();
+    if (!input.trim() || isLoading) return;
+
+    onSubmit(input);
+    setInput('');
+  }
+
   return (
+
     <form
-      onSubmit={(e) => handleSubmit(e)}
-      className="sticky bottom-0 p-4 mt-auto border-t border-gray-200 backdrop-blur-sm transition-opacity duration-300 bg-white/50 dark:bg-gray-900/50 dark:border-gray-700"
+      onSubmit={(e) => handleFormSubmit(e)}
+      className={`sticky bottom-0 px-3 py-4 border-gray-200 backdrop-blur-sm transition-opacity duration-300 bg-white/50 dark:bg-gray-900/50 dark:border-gray-700`}
     >
-      <div className="flex gap-2 items-end">
+      <div className="relative">
         <Textarea
           ref={textareaRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask AI to modify your schedule..."
-          className="flex-grow md:text-xs lg:text-sm text-sm rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-400 max-h-[20rem] min-h-[40px] px-3 py-2.5 transition-all duration-200 resize-none focus:border-blue-500 dark:focus:border-blue-400"
-          style={{ height: 'auto', overflow: 'hidden' }}
+          placeholder="Ask AI anything..."
+          className="w-full md:text-xs lg:text-sm text-sm  rounded-3xl border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-400 max-h-[20rem] min-h-[38px] pl-3 pr-[68px] py-2 transition-all duration-200 resize-none"
+          style={{ height: 'auto', overflow: 'hidden', lineHeight: '1.7' }}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
-              handleSubmit(e);
+              handleFormSubmit(e);
             }
           }}
           rows={1}
         />
-        <ChatButton
-          status={status}
-          input={input}
-          stop={stop}
-          isLoading={isLoading}
-        />
+        <div className='buttons absolute bottom-1 right-2 flex flex-row items-center gap-2'>
+          <AtSign className='w-5 h-5 text-black dark:text-white' />
+          <ChatButton
+            status={status}
+            input={input}
+            stop={stop}
+            isLoading={isLoading}
+          />
+        </div>
       </div>
       {error && (
         <div className="mt-2 flex items-start text-sm text-red-500 dark:text-red-400">

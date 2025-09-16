@@ -1,8 +1,4 @@
-import { buildSchedulePrompt, TaskSuggestionPrompt } from "@/constants/prompt.constant";
-import { TaskSuggestions } from "@/types/schedule.types";
-import { generateObject } from "ai";
-import { openai } from "@ai-sdk/openai";
-import { completeScheduleGenFlow, suggestTasks } from "../../services/schedule.service";
+import { completeScheduleGenFlow } from "../../services/schedule.service";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
@@ -14,9 +10,9 @@ export async function POST(request) {
         const result = await completeScheduleGenFlow({ goals, schedule, intensity })
         console.log("🚀 ~ POST ~ result:", result)
 
-        return new NextResponse(JSON.stringify(result))
+        return new NextResponse(JSON.stringify({schedule: result.schedule, taskSuggestions: result.taskSuggestions}))
     } catch (err) {
         console.error("/api/experimental-ai/new error:", err)
-        return new NextResponse(JSON.stringify({ error: 'Failed to generate task suggestions' }), { status: 500, headers: { 'Content-Type': 'application/json' } })
+        throw new Error('Failed to generate task suggestions')
     }
 }

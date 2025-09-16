@@ -33,7 +33,7 @@ export function TaskDialog({ isCreateTask ,selectedTask, handleCloseModal, handl
 
   function onHandleSaveTask() {
     if (isCreateTask) {
-      task.id = makeId(8)
+      task.id = makeId(10)
       handleNewTaskSave(task)
     } else handleSaveTask(task)
     onHandleCloseModal()

@@ -2,7 +2,6 @@
 
 import { CalendarSync, Goal, UserRoundPen } from 'lucide-react';
 import { useSelector } from 'react-redux';
-import { Section } from '@/components/ui/section';
 
 const formatTime = (time) => {
   if (!time) return 'Not set';
@@ -17,7 +16,7 @@ export default function ReviewStep({ }) {
   const formData = useSelector(state => state.scheduleModule.multiStepForm);
 
   return (
-    <Section className="pt-6 mx-auto w-full max-w-2xl md:p-6">
+    <div className="pt-6 mx-auto w-full max-w-2xl md:p-6">
       <div className="space-y-6">
         <div className="text-center">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white md:text-2xl">
@@ -116,6 +115,6 @@ export default function ReviewStep({ }) {
           </div>
         </div>
       </div>
-    </Section>
+    </div>
   );
 }

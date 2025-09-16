@@ -1,8 +1,9 @@
-export function editSchedulePrompt(currentSchedule, message) {
+export function editSchedulePrompt(currentSchedule, message, taskSuggestions) {
   const scheduleJson = JSON.stringify(currentSchedule, null, 2)
+  const taskSuggestionsJson = taskSuggestions ? JSON.stringify(taskSuggestions, null, 2) : null
   console.log("🚀 ~ editSchedulePrompt ~ scheduleJson:", scheduleJson)
 
-  return `You are an expert AI assistant specialized in daily schedule editing and optimization. Your task is to modify a schedule based on user instructions and return a valid array of schedule tasks.
+  return `You are an expert AI assistant specialized in daily schedule editing and optimization. Your task is to EDIT the existing schedule based on user instructions and task suggestions, ensuring zero gaps and common-sense scheduling.
 
 ## CURRENT SCHEDULE
 ${scheduleJson}
@@ -14,14 +15,27 @@ ${message}
 
 ---------------
 
+${taskSuggestionsJson ? `## TASK SUGGESTIONS
+${taskSuggestionsJson}
+
+---------------` : ''}
+
 ## INSTRUCTIONS
 
-1. **Analyze the Current Schedule and User Request**
+1. **Analyze the Current Schedule, User Request, and Task Suggestions**
    - Understand the user's request in ## USER REQUEST
    - Carefully review the existing schedule structure in ## CURRENT SCHEDULE
+   - Use ## TASK SUGGESTIONS (if provided) as recommended tasks with specific time slots
    - Identify which tasks need to be modified, added, removed, or rescheduled
+   - Apply common sense to scheduling decisions - consider energy levels, logical task flow, and realistic transitions
 
-2. **Rules for Editing Tasks:**
+2. **Task Suggestions Integration:**
+   - If ## TASK SUGGESTIONS are provided, prioritize incorporating these tasks at their recommended time slots
+   - Adjust surrounding tasks to accommodate the suggested tasks while maintaining schedule integrity
+   - Ensure suggested tasks fit logically within the daily flow and don't disrupt essential activities
+
+3. **Rules for Editing Tasks:**
+   - EDIT the existing schedule, do NOT create an entirely new schedule from scratch
    - NEVER modify or move ANY tasks with category "routine" - these are FIXED and UNCHANGEABLE
    - The ONLY exception is if the user EXPLICITLY requests to change a SPECIFIC routine task
    - All schedule changes MUST work around existing routine tasks - treat routines as immovable blocks
@@ -29,9 +43,11 @@ ${message}
    - DO NOT CHANGE tasks labeled as "sleep" or "wakeup" unless the user specifically asks
    - Preserve the overall structure of the day (wake-up time, sleep time) unless explicitly requested
 
-3. **Schedule Requirements:**
+4. **Zero-Gap Schedule Requirements:**
    - Ensure NO overlapping tasks
-   - Fill EVERY minute from wake-up to sleep time with tasks (no gaps allowed)
+   - Fill EVERY SINGLE MINUTE from wake-up to sleep time with tasks (absolutely no gaps allowed)
+   - If removing a task, immediately fill that time with another task or break
+   - If adding a task, ensure it replaces existing time or extends/shortens adjacent tasks
    - Maintain three meals (breakfast, lunch, dinner) unless the user requests otherwise:
      * Breakfast: Within 1 hour of wake-up time
      * Lunch: Between 12:00 and 14:00
@@ -41,6 +57,13 @@ ${message}
      * For intense schedules: Short 5-15 minute breaks
      * For medium schedules: Mix of short and longer breaks
      * For relaxed schedules: More frequent and longer breaks
+
+5. **Common Sense Scheduling:**
+   - Schedule mentally demanding tasks during peak energy hours (typically morning)
+   - Place lighter tasks or breaks after meals
+   - Ensure logical transitions between tasks (e.g., don't jump from intense work to sleep immediately)
+   - Consider task dependencies and natural workflow
+   - Respect circadian rhythms and energy patterns
 
 4. **Category-Specific Guidelines:**
    - **Routines**: Keep fixed unless explicitly requested to change
@@ -149,7 +172,51 @@ Selection rules:
 - Prioritize actions with highest expected impact toward the goal.
 - Minimize dependencies and context switching.
 - Prefer specific, directly executable steps over planning or vague research.
-- Prefer actions with compounding benefits or clear progress signals.`
+- Prefer actions with compounding benefits or clear progress signals.
+`
+}
+
+export function editTaskSuggestionPrompt(schedule, message) {
+  const scheduleJson = typeof schedule === 'string' ? schedule : JSON.stringify(schedule, null, 2)
+  return `
+You analyze user requests to suggest specific tasks with recommended time slots.
+
+Current Schedule JSON (read-only source of truth):
+${scheduleJson}
+
+User Request: "${message}"
+
+You must produce an object matching this schema exactly:
+{
+  "taskSuggestions": [
+    {
+      "summary": string,
+      "description": string,
+      "recommendedStart": string, // HH:MM format
+      "recommendedEnd": string    // HH:MM format
+    }
+  ]
+}
+
+Analysis rules:
+- Examine the current schedule to find available time slots
+- Understand what the user wants to add/change based on their message
+- Suggest 1-5 specific tasks that fulfill the user's request
+- Recommend realistic time slots that don't conflict with existing schedule
+
+Task generation rules:
+- summary: imperative, 3–8 words describing the task
+- description: 10–35 characters total, specific action
+- recommendedStart/End: Use HH:MM format, ensure logical duration
+- Find gaps in the schedule or suggest reasonable replacements
+
+Time slot rules:
+- Avoid conflicts with existing scheduled items
+- Suggest realistic durations (25 minutes minimum)
+- Consider natural break points and transitions
+- Respect meal times and important routines
+
+Output JSON only. No prose, no markdown, no backticks.`
 }
 
 export function buildSchedulePrompt(preferences, routines, goals) {
@@ -266,9 +333,10 @@ export function scheduleAssistantPrompt(schedule) {
   return `
 You are a schedule assistant designed to help the user make decisions about his scheduling and provide the following tools:
 
+The time of today (right now) is: ${new Date().toISOString()}
 1. use "editSchedule" tool (if the message explicitly requests changes to the schedule)
     If editSchedule is used, display text afterwards and pretend you're showing the result to the user and keep your response limited to a phrase.
-2. use "scheduleAnalysis" tool (if the message asks questions about scheduling or the current schedule without requesting changes)
+2. use "fetchGoogleEvents" tool (if the message asks questions about events in the user's calendar)
 
 1. Be friendly and natural in your response
 2. DO NOT mention or discuss the schedule unless the user specifically asks

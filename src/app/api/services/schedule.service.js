@@ -1,21 +1,24 @@
 import { streamText, generateObject, generateText } from "ai";
 import { openai } from '@ai-sdk/openai';
-import { ScheduleSchema, TaskListSchema, TaskSuggestions } from '../../../types/schedule.types';
-import { buildSchedulePrompt, experimentalScheduleBuildPrompt, taskSuggestionPrompt } from "@/constants/prompt.constant";
+import { ScheduleSchema, TaskListSchema, TaskSuggestions, EditTaskSuggestions } from '../../../types/schedule.types';
+import { buildSchedulePrompt, editSchedulePrompt, experimentalScheduleBuildPrompt, taskSuggestionPrompt, editTaskSuggestionPrompt } from "@/constants/prompt.constant";
 
 const mainModel = openai('gpt-4o')
 
-export async function completeScheduleGenFlow({goals, schedule, intensity, review}) {
-    // Generate a new schedule with AI based on the input and prompt
-    let AISchedule
-    if (review) {
-        AISchedule = await improveSchedule(AISchedule, review)
-    } else {
-        const { taskSuggestions } = await suggestTasks(goals)
-        console.log("🚀 ~ completeScheduleGenFlow ~ taskSuggestions:", taskSuggestions)
-        const prompt = experimentalScheduleBuildPrompt(schedule, intensity, taskSuggestions)
-        AISchedule = await generateSchedule(schedule, intensity, taskSuggestions)
-        return AISchedule
+export async function completeScheduleGenFlow({ goals, schedule, intensity, review }) {
+    try {
+
+        // Generate a new schedule with AI based on the input and prompt
+        let AISchedule
+        if (review) {
+            AISchedule = await improveSchedule(AISchedule, review)
+        } else {
+            const { taskSuggestions } = await suggestTasks(goals)
+            AISchedule = await generateSchedule(schedule, intensity, taskSuggestions)
+            return { schedule: AISchedule, taskSuggestions }
+        }
+    } catch (e) {
+        throw e
     }
     // Judge the schedule by a few parameters from 1-10
     // Check if the schedule fits the parameters' standards
@@ -44,6 +47,35 @@ export async function suggestTasks(goals) {
     } catch (e) {
         throw e
     }
+}
+
+export async function suggestTasksWithMessage(schedule, message) {
+    try {
+        const result = await generateObject({
+            model: openai('gpt-4o'),
+            schema: EditTaskSuggestions,
+            prompt: editTaskSuggestionPrompt(schedule, message),
+            temperature: 0.2,
+            maxRetries: 2,
+            providerOptions: { openai: { strictJsonSchema: true } }
+        })
+        console.log("🚀 ~ suggestTasksWithMessage ~ result:", result.object)
+        return result.object;
+    } catch (e) {
+        throw e
+    }
+}
+
+export async function generateEditedSchedule(schedule, message, taskSuggestions) {
+    const result = await generateObject({
+        model: openai('gpt-4o'),
+        schema: TaskListSchema,
+        prompt: editSchedulePrompt(schedule, message, taskSuggestions),
+        temperature: 0.2,
+        maxRetries: 3,
+        providerOptions: { openai: { strictJsonSchema: true } }
+    })
+    return result.object.taskList
 }
 
 export async function streamResponse(messages) {

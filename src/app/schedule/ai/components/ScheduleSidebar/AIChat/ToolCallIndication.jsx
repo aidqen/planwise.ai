@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-export function ToolCallIndication({ toolName }) {
-    const [displayText, setDisplayText] = useState(toolName ? `Called tool ${toolName}` : null);
+export function ToolCallIndication({
+     toolName = "hello" 
+    }) {
+        const [displayText, setDisplayText] = useState(toolName ? `Called tool ${toolName}` : null);
     
     useEffect(() => {
         let interval;
@@ -31,17 +33,17 @@ export function ToolCallIndication({ toolName }) {
     if (!displayText) return null;
     
     return (
-        <p className="absolute bottom-2 w-full px-4 text-xs text-gray-700 dark:text-gray-500">
+        <p className="w-full mb-2 mt-0 px-0 text-xs text-gray-700 dark:text-gray-500">
             {displayText.split('').map((t, index) => (
                 <motion.span
                     key={index}
                     initial={{ opacity: 0.3 }}
                     animate={{ opacity: [0.6, 1, 0.3] }}
                     transition={{ 
-                        duration: 2, 
+                        duration: 1.5, 
                         repeat: Infinity, 
                         ease: "easeInOut",
-                        delay: index * 0.08,
+                        delay: index * 0.04,
                         repeatType: "reverse"
                     }}
                 >

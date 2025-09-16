@@ -11,7 +11,7 @@ export function GoalList({ goals, updateGoalImportance, removeGoal, handleReorde
       axis="y"
       values={goals}
       onReorder={handleReorder}
-      className="space-y-3 h-[400px] overflow-y-auto py-2 pb-16 px-1 scrollbar-hidden"
+      className="space-y-3 max-h-[350px] overflow-y-auto py-2 pb-16 px-1 scrollbar-hidden"
     >
       <AnimatePresence>
         {goals.map(goal => (
@@ -46,7 +46,7 @@ export function GoalList({ goals, updateGoalImportance, removeGoal, handleReorde
                   >
                     <SelectValue placeholder="Importance" />
                   </SelectTrigger>
-                  <SelectContent className="dark:bg-gray-800 dark:border-gray-700">
+                  <SelectContent className="dark:bg-gray-800 z-[1000] dark:border-gray-700">
                     <SelectItem 
                       value="low" 
                       className={cn(

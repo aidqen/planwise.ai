@@ -51,7 +51,7 @@ export function PredefinedItemsDialog({
                     )}
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-md rounded-s-lg w-[95vw] max-w-[500px] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+            <DialogContent className="sm:max-w-md rounded-s-lg w-[95vw] max-w-[500px] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 z-[300]">
                 <DialogHeader>
                     <DialogTitle className="text-gray-900 dark:text-white">
                         Select Predefined {type}

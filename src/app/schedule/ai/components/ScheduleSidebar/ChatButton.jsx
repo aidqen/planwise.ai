@@ -30,9 +30,9 @@ export function ChatButton({ status, input, stop, isLoading }) {
                 e.preventDefault();
                 stop();
             } : undefined}
-            className={`transition-all duration-200 h-10 w-10 shrink-0 text-white ${getButtonClass()}`}
+            className={` transition-all duration-200 rounded-full h-8 w-8 shrink-0 text-white ${getButtonClass()}`}
         >
-            {isStreaming ? <Square className="w-4 h-4" /> : <Send className="w-4 h-4" />}
+            {isStreaming ? <Square className="w-4 h-4" /> : <Send className="w-5 h-5" />}
         </Button>
     );
 }

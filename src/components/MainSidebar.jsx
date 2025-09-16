@@ -16,6 +16,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { signOut } from "next-auth/react";
 import { LightModeToggle } from "./LightModeToggle";
 import { TooltipTool } from "./TooltipTool";
+import { AnimatedThemeToggler } from "./magicui/animated-theme-toggler";
 
 export function SidebarDemo() {
     const dispatch = useDispatch()
@@ -116,7 +117,8 @@ export function SidebarDemo() {
                             <ToggleSidebarBtn />
                         </TooltipTool>
                         <TooltipTool content="Toggle Light Mode">
-                            <LightModeToggle />
+                            {/* <LightModeToggle /> */}
+                             <AnimatedThemeToggler className="ms-3"/>
                         </TooltipTool>
                         {user && (
                             <>
