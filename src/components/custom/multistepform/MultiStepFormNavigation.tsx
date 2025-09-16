@@ -17,7 +17,7 @@ export default function MultiStepFormNavigation({ step, totalSteps, onPrev, onNe
                 type="button"
                 onClick={onPrev}
                 disabled={step === 1}
-                className="px-4 py-2 rounded-md border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-6 py-2 rounded-md border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 Back
             </button>
@@ -29,7 +29,7 @@ export default function MultiStepFormNavigation({ step, totalSteps, onPrev, onNe
                 <button
                     type="button"
                     onClick={onNext}
-                    className="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600 text-white"
+                    className="px-6 py-2 rounded-md bg-blue-500 hover:bg-blue-600 text-white"
                 >
                     Next
                 </button>

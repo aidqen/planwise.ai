@@ -32,14 +32,14 @@ export function MultiStepForm() {
             <div className="relative z-[150] bg-white dark:bg-gray-900 rounded-lg shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
                 {/* Progress Bar */}
                 <ProgressBar progress={progress} />
-                <div className="py-8 px-12 relative z-[250]">
+                <div className="py-6 px-8 md:py-8 md:px-12 relative z-[250]">
                     {/* <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
                         Multi-Step Form
                     </h2> */}
                     <motion.div
                         initial={false}
                         animate={{ height: bounds.height }}
-                        transition={{ duration: 0.3, type: "spring", stiffness: 300, damping: 30, mass: 0.5 }}
+                        transition={{ duration: 1, type: "spring", stiffness: 300, damping: 30, mass: 0.5 }}
                         className="relative overflow-hidden"
                     >
                         <div ref={ref}>
