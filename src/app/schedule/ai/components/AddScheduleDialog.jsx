@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { scheduleService } from "@/services/scheduleService";
+import { scheduleService } from "@/services/schedule.service";
 
 export function AddScheduleDialog({ open, onOpenChange: setOpen, schedule }) {
   const [popoverOpen, setPopoverOpen] = useState(false);

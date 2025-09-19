@@ -12,7 +12,7 @@ export function GoalListItem({ goal, onChangeImportance, onRemove }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.1 }}
-      className="grid gap-3 p-4 rounded-lg shadow-md transition-all duration-200 grid-cols-[1fr_auto] dark:bg-gray-800/50 hover:bg-opacity-20 dark:hover:bg-opacity-30"
+      className="grid gap-3 px-4 py-3 rounded-lg shadow-md transition-all duration-200 grid-cols-[1fr_auto] dark:border hover:bg-opacity-20 dark:hover:bg-opacity-30 border border-white/15"
     >
       <div className="flex flex-col gap-2 min-w-0">
         <span className="text-base font-medium text-gray-800 dark:text-gray-200 truncate">

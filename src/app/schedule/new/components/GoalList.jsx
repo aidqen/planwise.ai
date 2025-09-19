@@ -3,7 +3,7 @@ import { GoalListItem } from "./GoalListItem";
 
 export function GoalList({ goals, updateGoalImportance, removeGoal }) {
   return (
-    <div className="space-y-3 max-h-[350px] overflow-y-auto py-2 pb-0 px-1 scrollbar-hidden">
+    <div className="space-y-2 max-h-[350px] overflow-y-auto  pb-2 px-0 scrollbar-hidden">
       <AnimatePresence>
         {goals.map(goal => (
           <GoalListItem

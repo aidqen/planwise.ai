@@ -1,0 +1,394 @@
+{
+  "meta": {
+    "name": "Synapse-Home-Style",
+    "version": "1.0.0",
+    "created": "2025-09-19T11:00:45.399351",
+    "description": "Design tokens and component specs to replicate the home screen layout shown in the reference image."
+  },
+  "primitives": {
+    "colors": {
+      "white": "#FFFFFF",
+      "black": "#111827",
+      "gray-50": "#F9FAFB",
+      "gray-75": "#F7F7F8",
+      "gray-100": "#F3F4F6",
+      "gray-200": "#E5E7EB",
+      "gray-300": "#D1D5DB",
+      "gray-400": "#9CA3AF",
+      "gray-500": "#6B7280",
+      "blue-600": "#4F46E5",
+      "blue-50": "#EEF2FF",
+      "shadow-rgb": "17,24,39"
+    },
+    "fontFamilies": {
+      "default": "Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, Apple Color Emoji, Segoe UI Emoji"
+    },
+    "fontWeights": {
+      "regular": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700
+    },
+    "fontSizes": {
+      "display-lg": 36,
+      "title": 28,
+      "subtitle": 16,
+      "body": 14,
+      "caption": 12
+    },
+    "lineHeights": {
+      "display-lg": 44,
+      "title": 34,
+      "subtitle": 24,
+      "body": 20,
+      "caption": 16
+    },
+    "radii": {
+      "sm": 8,
+      "md": 12,
+      "lg": 16,
+      "xl": 20,
+      "pill": 9999
+    },
+    "spacing": {
+      "s0": 0,
+      "s1": 4,
+      "s2": 8,
+      "s3": 12,
+      "s4": 16,
+      "s5": 20,
+      "s6": 24,
+      "s7": 28,
+      "s8": 32,
+      "s10": 40,
+      "s12": 48,
+      "s16": 64
+    },
+    "shadows": {
+      "sm": "0 1px 2px rgba(17,24,39,0.06)",
+      "md": "0 2px 8px rgba(17,24,39,0.08)",
+      "lg": "0 8px 24px rgba(17,24,39,0.10)"
+    },
+    "borders": {
+      "hairline": "1px solid #E5E7EB",
+      "medium": "1px solid #D1D5DB"
+    }
+  },
+  "semantic": {
+    "page": {
+      "bg": "{colors.gray-75}",
+      "textPrimary": "{colors.black}",
+      "textSecondary": "{colors.gray-500}",
+      "border": "{colors.gray-200}",
+      "accent": "{colors.blue-600}",
+      "accentMutedBg": "{colors.blue-50}",
+      "muted": "{colors.gray-400}",
+      "cardBg": "{colors.white}"
+    },
+    "dark": {
+      "bg": "#0B0F1A",
+      "surface": "#0F1422",
+      "textPrimary": "#E5E7EB",
+      "textSecondary": "#9CA3AF",
+      "border": "rgba(255,255,255,0.08)",
+      "chipBg": "rgba(255,255,255,0.04)",
+      "accent": "#A7B4FF"
+    }
+  },
+  "layout": {
+    "container": {
+      "maxWidth": 1120,
+      "paddingX": 24,
+      "paddingTop": 64,
+      "align": "center"
+    },
+    "stackGaps": {
+      "heroToInput": 16,
+      "inputToChips": 16,
+      "chipsToCards": 24
+    },
+    "grid": {
+      "columns": 12,
+      "gutter": 24,
+      "cardRowGap": 16
+    }
+  },
+  "typography": {
+    "heroHeading": {
+      "family": "{fontFamilies.default}",
+      "size": "{fontSizes.display-lg}",
+      "lineHeight": "{lineHeights.display-lg}",
+      "weight": "{fontWeights.bold}",
+      "letterSpacing": -0.5,
+      "align": "center"
+    },
+    "heroSubheading": {
+      "family": "{fontFamilies.default}",
+      "size": "{fontSizes.subtitle}",
+      "lineHeight": "{lineHeights.subtitle}",
+      "weight": "{fontWeights.regular}",
+      "color": "{colors.gray-500}",
+      "align": "center"
+    },
+    "cardTitle": {
+      "size": 16,
+      "lineHeight": 22,
+      "weight": "{fontWeights.semibold}"
+    },
+    "cardMeta": {
+      "size": "{fontSizes.caption}",
+      "lineHeight": "{lineHeights.caption}",
+      "color": "{colors.gray-500}"
+    }
+  },
+  "components": {
+    "PromptInput": {
+      "height": 68,
+      "bg": "{colors.white}",
+      "border": "{borders.hairline}",
+      "radius": "{radii.xl}",
+      "paddingX": 20,
+      "paddingY": 12,
+      "gap": 12,
+      "shadow": "{shadows.sm}",
+      "placeholderColor": "{colors.gray-400}",
+      "icons": {
+        "size": 18,
+        "color": "{colors.gray-400}"
+      },
+      "sendButton": {
+        "size": 40,
+        "radius": "{radii.pill}",
+        "bg": "{colors.black}",
+        "iconColor": "#FFFFFF",
+        "hoverBg": "#000000"
+      },
+      "modelSelectorPill": {
+        "height": 28,
+        "paddingX": 10,
+        "bg": "{colors.gray-100}",
+        "border": "{borders.hairline}",
+        "radius": "{radii.pill}",
+        "font": {
+          "size": 13,
+          "weight": "{fontWeights.medium}"
+        }
+      }
+    },
+    "QuickActions": {
+      "gap": 8,
+      "item": {
+        "height": 36,
+        "paddingX": 12,
+        "bg": "{colors.white}",
+        "border": "{borders.hairline}",
+        "radius": "{radii.pill}",
+        "iconSize": 16,
+        "font": {
+          "size": 14,
+          "weight": "{fontWeights.medium}"
+        },
+        "hoverBg": "{colors.gray-100}"
+      }
+    },
+    "Card": {
+      "bg": "{colors.white}",
+      "border": "{borders.hairline}",
+      "radius": "{radii.lg}",
+      "padding": 16,
+      "shadow": "{shadows.sm}"
+    },
+    "WeatherCard": {
+      "_extends": "Card",
+      "width": 280,
+      "height": 124,
+      "layout": {
+        "header": {
+          "fontSize": 14,
+          "color": "{colors.gray-500}"
+        },
+        "temp": {
+          "fontSize": 40,
+          "lineHeight": 44,
+          "weight": "{fontWeights.bold}"
+        },
+        "meta": {
+          "fontSize": 12,
+          "color": "{colors.gray-500}"
+        },
+        "iconSize": 20
+      }
+    },
+    "CalloutCard": {
+      "_extends": "Card",
+      "width": 560,
+      "height": 124,
+      "badge": {
+        "text": "New",
+        "bg": "{colors.blue-50}",
+        "color": "{colors.blue-600}",
+        "radius": "{radii.pill}",
+        "paddingX": 8,
+        "height": 22,
+        "font": {
+          "size": 12,
+          "weight": "{fontWeights.semibold}"
+        }
+      },
+      "title": {
+        "fontSize": 16,
+        "weight": "{fontWeights.semibold}"
+      },
+      "description": {
+        "fontSize": 14,
+        "color": "{colors.gray-500}"
+      },
+      "closeIcon": {
+        "size": 16,
+        "color": "{colors.gray-400}"
+      }
+    },
+    "SectionHeader": {
+      "icon": {
+        "size": 16,
+        "color": "{colors.gray-400}"
+      },
+      "text": {
+        "size": 14,
+        "weight": "{fontWeights.medium}",
+        "color": "{colors.gray-500}"
+      }
+    },
+    "RecentChatCard": {
+      "_extends": "Card",
+      "width": 280,
+      "height": 120,
+      "title": {
+        "size": 16,
+        "weight": "{fontWeights.semibold}"
+      },
+      "timestamp": {
+        "size": 12,
+        "color": "{colors.gray-500}"
+      },
+      "leadingIcon": {
+        "size": 16,
+        "color": "{colors.gray-400}"
+      },
+      "hover": {
+        "shadow": "{shadows.md}",
+        "translateY": -1
+      }
+    },
+    "IconButton": {
+      "size": 28,
+      "radius": "{radii.pill}",
+      "bg": "{colors.gray-100}",
+      "iconSize": 16,
+      "iconColor": "{colors.gray-500}"
+    },
+    "FocusRing": {
+      "ring": "0 0 0 3px rgba(79,70,229,0.15)"
+    }
+  },
+  "structure": {
+    "hero": {
+      "title": "Good evening, {name}",
+      "subtitle": "How can I help you?",
+      "maxWidth": 640
+    },
+    "rows": [
+      {
+        "name": "inputRow",
+        "columns": [
+          {
+            "component": "PromptInput",
+            "colSpan": 12
+          }
+        ]
+      },
+      {
+        "name": "quickActionsRow",
+        "columns": [
+          {
+            "component": "QuickActions",
+            "colSpan": 12
+          }
+        ]
+      },
+      {
+        "name": "cardsRow",
+        "columns": [
+          {
+            "component": "WeatherCard",
+            "colSpan": 3
+          },
+          {
+            "component": "CalloutCard",
+            "colSpan": 6
+          },
+          {
+            "component": "spacer",
+            "colSpan": 3
+          }
+        ]
+      },
+      {
+        "name": "recentHeaderRow",
+        "columns": [
+          {
+            "component": "SectionHeader",
+            "colSpan": 12,
+            "text": "Your recent chats"
+          }
+        ]
+      },
+      {
+        "name": "recentCardsRow",
+        "columns": [
+          {
+            "component": "RecentChatCard",
+            "colSpan": 4
+          },
+          {
+            "component": "RecentChatCard",
+            "colSpan": 4
+          },
+          {
+            "component": "RecentChatCard",
+            "colSpan": 4
+          }
+        ]
+      }
+    ]
+  },
+  "states": {
+    "hover": {
+      "card": {
+        "shadow": "{shadows.md}"
+      },
+      "chip": {
+        "bg": "{colors.gray-100}"
+      }
+    },
+    "focus": {
+      "input": {
+        "ring": "{components.FocusRing.ring}"
+      },
+      "button": {
+        "ring": "{components.FocusRing.ring}"
+      }
+    }
+  },
+  "density": {
+    "comfortable": {
+      "scale": 1
+    },
+    "compact": {
+      "scale": 0.92
+    },
+    "spacious": {
+      "scale": 1.08
+    }
+  }
+}

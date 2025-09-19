@@ -7,7 +7,7 @@ import { editSchedulePrompt } from "@/constants/prompt.constant"
 import { suggestTasksWithMessage, generateEditedSchedule } from "../services/schedule.service"
 import { getServerSession } from "next-auth"
 import { authOptions } from "../auth/[...nextauth]/route"
-import { google } from "googleapis"
+import { fetchGoogleCalendarEventsByDate } from "../services/calendar.service"
 
 export const editSchedule = (schedule) => {
     return tool({
@@ -39,49 +39,8 @@ export const fetchGoogleEvents = tool({
     }),
     execute: async ({ date }) => {
         try {
-            const session = await getServerSession(authOptions)
-            if (!session?.accessToken) {
-                throw new Error("No access token available");
-            }
-
-            const auth = new google.auth.OAuth2(
-                process.env.GOOGLE_CLIENT_ID,
-                process.env.GOOGLE_CLIENT_SECRET
-            );
-            auth.setCredentials({ 
-                access_token: session.accessToken,
-                refresh_token: session.refreshToken 
-            });
-
-            const calendar = google.calendar({ version: "v3", auth });
-
-            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
-
-            const start = new Date(`${date}T00:00:00`);
-            const end = new Date(`${date}T23:59:59`);
-
-
-            const { data } = await calendar.events.list({
-                calendarId: "primary",
-                singleEvents: true,
-                orderBy: "startTime",
-                timeMin: start.toISOString(),
-                timeMax: end.toISOString(),
-                timeZone,
-                maxResults: 25,
-            });
-
-            const events = (data.items ?? []).map(e => ({
-                id: e.id,
-                summary: e.summary ?? '',
-                start: e.start?.dateTime ?? e.start?.date ?? null,
-                end: e.end?.dateTime ?? e.end?.date ?? null,
-                location: e.location ?? null,
-                attendees: e.attendees ?? [],
-                hangoutLink: e.hangoutLink ?? null,
-            }));
-
-            return events;
+            const events = await fetchGoogleCalendarEventsByDate(date)
+            return events
         } catch (error) {
             console.error('Error fetching Google events:', error);
             throw new Error(`Failed to fetch Google Calendar events: ${error.message}`);

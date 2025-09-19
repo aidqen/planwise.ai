@@ -35,7 +35,7 @@
     "next-env.d.ts",
     "next.config.mjs",
     ".next/types/**/*.ts"
-  ],
+, "src/app/home/experimental/page.tsx", "src/components/custom/HomepageChat/HomepagePromptInput.jsx"  ],
   "exclude": [
     "node_modules"
   ]

@@ -39,7 +39,7 @@ export default function TimePicker({
     return (
         <Select onValueChange={onChange}>
             <SelectTrigger 
-                className={`focus-visible:ring-0 focus-visible:border-0 inline-flex justify-start items-center px-2 py-2 w-full text-xs text-gray-700 bg-white rounded-lg border border-gray-200 shadow-sm transition-all duration-200 sm:px-3 md:px-5 sm:text-sm dark:bg-gray-800 dark:border-gray-700 me-2 dark:text-gray-200 focus:outline-none hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-2 focus:ring-green-500/20 dark:focus:ring-green-500/20 ${className}`}
+                className={`focus-visible:ring-0 inline-flex justify-start items-center px-2 py-2 w-full text-xs text-gray-700 bg-white rounded-lg border border-gray-200 shadow-sm transition-all duration-200 sm:px-3 md:px-5 sm:text-sm bg-transparent dark:border-gray-700 me-2 dark:text-gray-200 focus:outline-none hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-2 focus:ring-green-500/20 dark:focus:ring-green-500/20 ${className}`}
             >
                 <Icon className="mr-1.5 sm:mr-2 w-4 h-4 sm:w-5 sm:h-5 text-gray-500 dark:text-gray-400" />
                 <SelectValue placeholder={value ? value : placeholder} className="truncate">{value}</SelectValue>
@@ -50,7 +50,7 @@ export default function TimePicker({
                         <SelectItem
                             key={slot.id}
                             value={slot.id}
-                            className="text-xs sm:text-sm text-gray-700 cursor-pointer dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50 focus:bg-gray-50 dark:focus:bg-gray-700/50 py-1.5 sm:py-2"
+                            className="text-xs sm:text-sm text-gray-700 cursor-pointer dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50 focus:bg-gray-50 dark:focus:bg-gray-700/50 py-1.5 sm:py-2 dark:data-[state=checked]:bg-gray-700/50"
                         >
                             {slot.label}
                         </SelectItem>

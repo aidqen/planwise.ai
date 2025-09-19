@@ -9,7 +9,7 @@ export function SchedulePreview({ schedule }) {
     const router = useRouter()
 
     function navigateToSchedule() {
-        router.replace(`/schedule/ai/${schedule?.id}`)
+        router.replace(`/schedule/ai?id=${schedule?.id}`)
     }
 
     return (

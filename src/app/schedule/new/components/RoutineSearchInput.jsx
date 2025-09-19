@@ -87,7 +87,7 @@ export function RoutineSearchInput({
           setIsDropdownOpen(true)
         }}
         onFocus={() => setIsDropdownOpen(true)}
-        className="w-full dark:border-gray-700 dark:bg-gray-800/30 dark:text-gray-100 dark:placeholder:text-gray-500"
+        className="w-full dark:border-gray-700 dark:bg-gray-800/50 dark:text-gray-100 dark:placeholder:text-gray-500"
       />
       {isDropdownOpen && (
         <div

@@ -12,10 +12,20 @@ export const RESET_SCHEDULE = 'RESET_SCHEDULE'
 export const ADD_GOAL = 'ADD_GOAL'
 export const ADD_ROUTINE = 'ADD_ROUTINE'
 export const REORDER_GOALS = 'REORDER_GOALS'
+export const SET_GOOGLE_EVENTS = 'SET_GOOGLE_EVENTSf'
 // export const ADD_GOAL = 'ADD_GOAL'
 
 const initialState = {
-    multiStepForm: { preferences: { wakeup: '7:00', sleep: '22:00', intensity: 'moderate' }, goals: [], routines: [] },
+    multiStepForm: {
+        preferences: {
+            wakeup: '7:00',
+            sleep: '22:00',
+            intensity: 'moderate'
+        },
+        goals: [],
+        googleEvents: [],
+        routines: []
+    },
     // schedule: [],
 }
 
@@ -41,6 +51,9 @@ export function scheduleReducer(state = initialState, action) {
             newState = { ...state, multiStepForm: { ...state.multiStepForm, goals: [goals.map(goal => (goal.id === action.goal.id ? action.goal : goal))] } }
         case SAVE_ROUTINES:
             newState = { ...state, multiStepForm: { ...state.multiStepForm, routines: [...action.routines] } }
+            break
+        case SET_GOOGLE_EVENTS:
+            newState = { ...state, multiStepForm: { ...state.multiStepForm, googleEvents: [...action.googleEvents] } }
             break
         case SET_SCHEDULE:
             newState = { ...state, schedule: action.schedule }

@@ -1,4 +1,4 @@
-import { generateSchedule2, scheduleService } from '@/services/scheduleService'
+import { generateSchedule2, scheduleService } from '@/services/schedule.service'
 import { ADD_TASK_TO_AI_SCHEDULE, REORDER_GOALS, RESET_SCHEDULE, SET_SCHEDULE } from '../reducers/schedule.reducer'
 import { store } from '../store'
 import { userService } from '@/services/user.service'
@@ -59,53 +59,66 @@ async function saveScheduleToDB(schedule) {
     return await scheduleService.insertScheduleToDB(schedule)
 }
 
-function formatSchedule(schedule, preferences, routines, goals, user) {
-    if (!schedule) return
+function formatSchedule(scheduleInput, preferences, routines, goals, user) {
+    if (!scheduleInput) return
     const now = new Date()
     const timestamp = now.getTime()
-    
+
+    // Normalize to array of tasks (support array or { schedule: Task[] })
+    const tasks = Array.isArray(scheduleInput) ? scheduleInput : scheduleInput?.schedule
+
+    if (!Array.isArray(tasks)) {
+       throw 'An error occured'
+    }
+
     // Add unique IDs to each task in the schedule - shorter and unique only to this schedule
-    const scheduleWithIds = schedule.map((task, index) => {
+    const scheduleWithIds = tasks.map((task, index) => {
         // Create a shorter ID using just index and a small random component
         const uniqueId = `t${index}_${Math.random().toString(36).substring(2, 6)}`
         return { ...task, id: uniqueId }
     })
-    
-    return { 
-        name: 'Daily Schedule', 
-        schedule: scheduleWithIds, 
-        createdAt: timestamp, 
-        updatedAt: timestamp, 
+
+    return {
+        name: 'Daily Schedule',
+        schedule: scheduleWithIds,
+        createdAt: timestamp,
+        updatedAt: timestamp,
         preferences,
-        routines, 
-        goals, creator: { id: user?._id, name: user?.name }, 
+        routines,
+        goals, 
+        creator: { id: user?._id, name: user?.name },
         chat: []
     }
 }
 
 export async function createSchedule(parameters) {
-    var { preferences, routines, goals } = parameters;
+    var { preferences, routines, goals, googleEvents } = parameters;
 
     const user = store.getState().userModule.user
-    const scheduleStarter = createScheduleStarter(preferences, routines)
-    const aiScheduleTasks = await generateSchedule2({scheduleStarter, goals, intensity: preferences.intensity})
-    // console.log("🚀 ~ createSchedule ~ aiResponse:", aiScheduleTasks)
-    const completeSchedule = formatSchedule(aiScheduleTasks, preferences, routines, goals, user)
-    const completeScheduleWithId = await saveScheduleToDB(completeSchedule);
+    const scheduleStarter = createScheduleStarter(preferences, routines, googleEvents)
+    console.log("🚀 ~ createSchedule ~ scheduleStarter:", scheduleStarter)
+    const aiResponse = await generateSchedule2({ schedule: scheduleStarter, goals, intensity: preferences.intensity })
+    console.log("🚀 ~ createSchedule ~ aiResponse:", aiResponse)
+    const aiTasks = Array.isArray(aiResponse) ? aiResponse : aiResponse?.schedule
+    const completeSchedule = formatSchedule(aiTasks, preferences, routines, goals, user)
+    const completeScheduleWithId = await saveScheduleToDB(completeSchedule)
+    await addScheduleToUser(completeScheduleWithId)
+    appendScheduleToUserState(completeScheduleWithId)
     console.log("🚀 ~ createSchedule ~ completeSchedule:", completeSchedule)
     return completeScheduleWithId
 }
 
-function formatTask({summary, start, end, type}) {
+function formatTask({ summary, start, end, category }) {
+    let endTime = end
     if (!end) {
-        const end = addDurationToTime(start, 30)
+        endTime = addDurationToTime(start, 30)
         console.log("🚀 ~ formatTask ~ end:", end)
     }
     return {
         summary,
         start,
-        end,
-        category: type
+        end: endTime,
+        category
     }
 
 }
@@ -127,19 +140,22 @@ function addDurationToTime(time, duration) {
     return `${pad(endH)}:${pad(endM)}`
 }
 
-export function createScheduleStarter(preferences, routines) {
+export function createScheduleStarter(preferences, routines, googleEvents) {
+    console.log("🚀 ~ createScheduleStarter ~ routines:", routines)
     const { wakeup, sleep } = preferences
     let schedule
 
     const now = new Date()
     const timestamp = now.getTime()
 
-    const wakeupTask = formatTask({summary: "Wake up", start: wakeup, end: addDurationToTime(wakeup, 110), type: "break"})
-    const sleepTask = formatTask({summary: "Sleep", start: addDurationToTime(sleep, -15), end: sleep, type: "break"})
+    const wakeupTask = formatTask({ summary: "Wake up", start: wakeup, end: addDurationToTime(wakeup, 15), category: "break" })
+    const sleepTask = formatTask({ summary: "Sleep", start: addDurationToTime(sleep, -15), end: sleep, category: "break" })
 
     if (routines.length > 0) {
-        const routineTasks = routines.map(routine => formatTask({summary: routine.name, start: routine.startTime,  end: routine.endTime, type: "routine"}))
-        schedule = [wakeupTask, ...routineTasks, sleepTask]
+        const routineTasks = routines.map(routine => formatTask({ summary: routine.name, start: routine.startTime, end: routine.endTime, category: "routine" }))
+        console.log("🚀 ~ createScheduleStarter ~ routineTasks:", routineTasks)
+        const googleTasks = googleEvents.map(task => formatTask({ ...task, category: "routine" }))
+        schedule = [wakeupTask, ...routineTasks, ...googleTasks, sleepTask]
     } else {
         schedule = [wakeupTask, sleepTask]
     }

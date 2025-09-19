@@ -14,3 +14,4 @@ export function formatTime(time) {
   const hour12 = hour % 12 || 12;
   return `${hour12}:${minutes ?? '00'} ${ampm}`;
 }
+

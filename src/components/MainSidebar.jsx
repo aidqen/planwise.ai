@@ -11,12 +11,10 @@ import { CalendarDays, CirclePlus, Ellipsis, LogOut, LogOutIcon, Mail, Repeat2 }
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ToggleSidebarBtn } from "./ToggleSidebarBtn";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { signOut } from "next-auth/react";
-import { LightModeToggle } from "./LightModeToggle";
 import { TooltipTool } from "./TooltipTool";
 import { AnimatedThemeToggler } from "./magicui/animated-theme-toggler";
+import { useTheme } from "next-themes";
 
 export function SidebarDemo() {
     const dispatch = useDispatch()
@@ -24,6 +22,7 @@ export function SidebarDemo() {
     const open = useSelector(state => state.systemModule.isSidebarOpen)
     const user = useSelector(state => state.userModule.user)
     const pathname = usePathname()
+    const { resolvedTheme, setTheme } = useTheme()
     const [isVisible, setIsVisible] = useState(true)
 
     useEffect(() => {
@@ -33,6 +32,21 @@ export function SidebarDemo() {
             setIsVisible(true)
         }
     }, [pathname, isVisible])
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return
+
+        const storedTheme = window.localStorage.getItem('theme')
+        if (storedTheme) {
+            setTheme(storedTheme)
+        }
+    }, [setTheme])
+
+    useEffect(() => {
+        if (typeof window === 'undefined' || !resolvedTheme) return
+
+        window.localStorage.setItem('theme', resolvedTheme)
+    }, [resolvedTheme])
     // const [open, setOpen] = useState(false);
     const links = [
         {

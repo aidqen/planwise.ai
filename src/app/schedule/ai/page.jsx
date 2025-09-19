@@ -2,21 +2,21 @@
 
 // import { useSelector } from 'react-redux'
 import { useEffect, useMemo, useState } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { ScheduleStructure } from '../components/ScheduleStructure'
-import { SaveToCalendarBtn } from '../components/SaveToCalendarBtn'
-import { AddScheduleDialog } from '../components/AddScheduleDialog'
-import { TaskDialog } from '../components/TaskDialog'
-import { scheduleService } from '@/services/scheduleService'
-import { TaskList } from '../components/TaskList'
-import { ScheduleSidebar } from '../components/ScheduleSidebar/ScheduleSidebar'
-import { Loading } from '../components/Loading'
-import { DesktopActions } from '../components/DesktopActions'
+import { ScheduleStructure } from './components/ScheduleStructure'
+import { SaveToCalendarBtn } from './components/SaveToCalendarBtn'
+import { AddScheduleDialog } from './components/AddScheduleDialog'
+import { TaskDialog } from './components/TaskDialog'
+import { scheduleService } from '@/services/schedule.service'
+import { TaskList } from './components/TaskList'
+import { ScheduleSidebar } from './components/ScheduleSidebar/ScheduleSidebar'
+import { Loading } from './components/Loading'
+import { DesktopActions } from './components/DesktopActions'
 import { getMinutesFromMidnight } from '@/services/util.service'
 import { Button } from '@/components/ui/button'
-import { EditableTitle } from '../components/EditableTitle'
-import { ScheduleActionButtons } from '../components/ScheduleActionButtons'
+import { EditableTitle } from './components/EditableTitle'
+import { ScheduleActionButtons } from './components/ScheduleActionButtons'
 import { useToast } from "@/components/hooks/use-toast"
 import { deleteSchedule, updateSchedule } from '@/store/actions/schedule.actions'
 import { updateScheduleInUser } from '@/store/actions/user.actions'
@@ -32,7 +32,7 @@ const DEFAULT_SCHEDULE = {
 
 export default function DailySchedule() {
   // const dispatch = useDispatch()
-  const params = useParams()
+  const searchParams = useSearchParams()
   const router = useRouter()
 
   const [calendarDialogOpen, setCalendarDialogOpen] = useState(false)
@@ -47,23 +47,24 @@ export default function DailySchedule() {
   const wakeupMinutes = getMinutesFromMidnight(wakeupTime)
   const { toast } = useToast();
 
-  const isNew = useMemo(() => params?.id === 'new', [params?.id])
+  const isNew = useMemo(() => searchParams?.get('new') === 'true', [searchParams])
+  const scheduleId = useMemo(() => searchParams?.get('id') || null, [searchParams])
 
   useEffect(() => {
-    if (params?.id) {
-      onFetchSchedule()
+    if (scheduleId) {
+      onFetchSchedule(scheduleId)
     }
-  }, [params?.id])
+  }, [scheduleId])
 
-  const onFetchSchedule = async () => {
-    console.log("🚀 ~ file: page.jsx:54 ~ params?.id:", params?.id)
+  const onFetchSchedule = async (id) => {
+    console.log('Fetching schedule by id from query:', id)
     try {
-      if (!params?.id === 'new') setIsLoading(true)
-      if (params?.id === 'loading' || params?.id === 'new') {
+      if (id !== 'new') setIsLoading(true)
+      if (id === 'loading' || id === 'new') {
         return
       }
 
-      const fetchedSchedule = await scheduleService.getScheduleById(params.id)
+      const fetchedSchedule = await scheduleService.getScheduleById(id)
       // dispatch({type: SET_SCHEDULE, schedule: fetchedSchedule })
       setSchedule(fetchedSchedule || DEFAULT_SCHEDULE)
     } catch (error) {

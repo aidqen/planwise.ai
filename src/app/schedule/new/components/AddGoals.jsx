@@ -93,16 +93,9 @@ export function AddGoals() {
       />
 
       <div className="space-y-3">
-        <div className="flex justify-between items-center">
-          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          <h4 className="text-sm font-medium text-black dark:text-white">
             Your Goals {goals.length > 0 && `(${goals.length})`}
           </h4>
-          {goals.length > 0 && (
-            <p className="text-xs italic text-gray-500 dark:text-gray-400">
-              Drag to reorder
-            </p>
-          )}
-        </div>
 
         {goals.length > 0 ? (
           <GoalList

@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { scheduleService } from "@/services/scheduleService";
+import { scheduleService } from "@/services/schedule.service";
 import { makeId } from "@/services/util.service";
 import { TOGGLE_SCHEDULE_SIDEBAR } from "@/store/reducers/system.reducer";
 import { useChat } from "@ai-sdk/react";

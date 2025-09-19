@@ -1,5 +1,5 @@
 'use client'
-import { scheduleService } from '@/services/scheduleService'
+import { scheduleService } from '@/services/schedule.service'
 import { createSchedule, scheduleBoilerplate } from '@/store/actions/schedule.actions'
 import { motion } from 'framer-motion'
 import { PlusCircle, CalendarDays, Sparkles } from 'lucide-react'

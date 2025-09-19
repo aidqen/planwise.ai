@@ -15,6 +15,7 @@ export async function completeScheduleGenFlow({ goals, schedule, intensity, revi
         } else {
             const { taskSuggestions } = await suggestTasks(goals)
             AISchedule = await generateSchedule(schedule, intensity, taskSuggestions)
+            console.log("🚀 ~ completeScheduleGenFlow ~ AISchedule:", AISchedule)
             return { schedule: AISchedule, taskSuggestions }
         }
     } catch (e) {
@@ -110,8 +111,17 @@ export async function generateSchedule(schedule, intensity, taskSuggestions) {
         prompt: experimentalScheduleBuildPrompt(schedule, intensity, taskSuggestions),
         schema: TaskListSchema
     });
+    console.log("🚀 ~ generateSchedule ~ object:", object)
 
     return object.taskList;
+}
+
+export async function evaluateAndFeedback(schedule) {
+    const { object } = await generateObject({
+        model: mainModel,
+        prompt: '',
+        schema: ''
+    })
 }
 
 async function improveSchedule(schedule, review) {

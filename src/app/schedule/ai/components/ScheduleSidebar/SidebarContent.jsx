@@ -37,7 +37,7 @@ export function SidebarContent({
                 <CardDescription className="mt-0 text-sm text-gray-600 font-regular dark:text-gray-400">
                     {activeView === "chat" ? "Ask AI to modify your schedule" : "View your preferences and tasks"}
                 </CardDescription> */}
-                <div className="grid grid-cols-2 gap-1 p-1.5 mt-2 rounded-lg backdrop-blur-sm bg-gray-100/80 dark:bg-gray-800/80">
+                {/* <div className="grid grid-cols-2 gap-1 p-1.5 mt-2 rounded-lg backdrop-blur-sm bg-gray-100/80 dark:bg-gray-800/80">
                     {views.map(view => (
                         <button
                             key={view.id}
@@ -52,17 +52,17 @@ export function SidebarContent({
                             {view.label}
                         </button>
                     ))}
-                </div>
+                </div> */}
             </CardHeader>
             <CardContent className="flex-1 p-0 min-h-0">
-                {activeView === "details" ? (
+                {/* {activeView === "details" ? (
                     <ScheduleDetails
                         schedule={schedule}
                         openSection={openSection}
                         toggleSection={toggleSection}
                         onSaveSchedule={onSaveSchedule}
                     />
-                ) : (
+                ) : ( */}
                     <AIChat 
                         chat={schedule?.chat} 
                         schedule={schedule} 
@@ -71,7 +71,7 @@ export function SidebarContent({
                         isLoading={isLoading}
                         setSchedule={setSchedule}
                     />
-                )}
+                {/* )} */}
             </CardContent>
         </div>
     );

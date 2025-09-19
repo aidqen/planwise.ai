@@ -38,6 +38,7 @@ export const MessageBubble = memo(function MessageBubble({ message, speed = 5 })
   const textParts = message?.parts ? message.parts.filter(part => part.type === 'text') : [];
 
   const messageContent = textParts.map(part => part.text).join('');
+  const hasText = typeof messageContent === 'string' && messageContent.length >= 1;
 
   useEffect(() => {
     if (isUser) {
@@ -89,6 +90,8 @@ export const MessageBubble = memo(function MessageBubble({ message, speed = 5 })
   }, []);
 
   const contentToDisplay = isUser ? messageContent : displayedContent;
+
+  if (!hasText) return null;
 
   return (
     <AnimatePresence>

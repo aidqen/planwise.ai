@@ -379,9 +379,9 @@ Build a complete daily schedule from wakeup to sleep that helps the user make th
 
 📋 Understanding Your Inputs
 
-1. Starter Schedule: This is the user's existing schedule framework containing fixed commitments like wake-up time, sleep time, and any non-negotiable routines. These are the anchors of the schedule that cannot be moved or modified.
+1. Starter Schedule: This is the user's existing schedule framework containing fixed commitments like wake-up time, sleep time, and any non-negotiable routines. These are the anchors of the schedule that cannot be moved or modified. You build the schedule around them.
 2. Suggested Tasks: This is an array of goal objects. Each goal contains task suggestions that will help the user make progress toward that specific goal. Each suggested task includes a summary, description, and recommended duration to complete it.
-3. Intensity: This determines how packed the schedule should be
+3. Intensity: This determines how intense the schedule should be. 
 
 🧠 Rules
 
@@ -392,6 +392,12 @@ Build a complete daily schedule from wakeup to sleep that helps the user make th
 2. Complete Coverage:
    - Every minute must be scheduled from wakeup to sleep. No gaps allowed.
    - If there's time between tasks, explicitly schedule it as a break.
+   - Tasks must be 15 minutes minimum!
+   - Sort items by start
+   - Enforce contiguity: items[i].end === items[i+1].start
+   - first.start === WAKE, last.end === SLEEP
+   - If any gap remains, insert or resize a break to fill it
+   - No overlaps
 
 3. Essential Activities:
    - Add 3 meals: morning (within 1.5 hours of waking), noon (12:00-14:00), and evening (18:00-20:00). Each meal should be around 40 minutes
@@ -408,7 +414,7 @@ Build a complete daily schedule from wakeup to sleep that helps the user make th
    - Keep the total number of tasks to a minimum, ideally 15 or fewer across the entire day.
    - Prefer selecting fewer, longer tasks rather than many short tasks when possible.
    - Prioritize high-importance goals when selecting tasks.
-   - Tasks must be minimum of 15 minutes
+   - Tasks must be minimum of 15 minutes.
 
 6. Task Management:
    - You may split long tasks to insert necessary breaks.
@@ -417,6 +423,8 @@ Build a complete daily schedule from wakeup to sleep that helps the user make th
 7. Schedule Integrity:
    - Respect time order. The schedule must be strictly sequential and valid.
    - Output must match the schema exactly. No extra fields or comments.
+
+#OUTPUT A VALID JSON OBJECT, NO COMMENTS OR ANYTHING ELSE.
 `
 
   return prompt;

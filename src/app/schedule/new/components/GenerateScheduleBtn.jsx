@@ -11,11 +11,11 @@ export function GenerateScheduleBtn() {
   const router = useRouter()
 
   async function onGenerateAiSchedule() {
-    router.replace('/schedule/ai/loading')
+    router.replace('/schedule/ai?new=false')
     // const schedule = await generateAiSchedule(multistepForm)
     const schedule = await createSchedule(multistepForm)
     console.log("🚀 ~ onGenerateAiSchedule ~ schedule:", schedule)
-    router.replace(`/schedule/ai/${schedule._id}`)
+    router.replace(`/schedule/ai?id=${schedule._id}`)
   }
 
   return (

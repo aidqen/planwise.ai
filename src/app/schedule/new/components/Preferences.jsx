@@ -33,7 +33,7 @@ export function Preferences() {
       title="Daily Schedule Preferences"
       description="Set your daily preferences to help us generate a schedule which fits you."
     >
-        <div className="grid grid-cols-2 gap-8 w-full max-w-xl">
+        <div className="grid grid-cols-2 gap-6 md:gap-16 w-full max-w-xl">
           {timeTypes.map(timeType => {
             const isWakeUp = timeType === 'Wake Up'
             const value = isWakeUp ? preferences.wakeup : preferences.sleep
@@ -48,9 +48,9 @@ export function Preferences() {
             return (
               <div
                 key={timeType}
-                className="flex flex-col gap-2 justify-start items-start"
+                className="flex flex-col gap-1 md:gap-3 justify-start items-start"
               >
-                <label className="text-base font-normal max-sm:text-sm text-black/80 dark:text-white/80">{timeType}</label>
+                <label className="text-base font-normal max-sm:text-sm text-black dark:text-white">{timeType}</label>
                 <TimePicker
                   startHour={isWakeUp ? 4 : 19}
                   endHour={isWakeUp ? 13 : 4}
@@ -63,7 +63,7 @@ export function Preferences() {
           })}
         </div>
 
-        <div className="pt-4 w-full max-w-xl">
+        <div className="py-4 px-0.5 w-full max-w-xl">
           <ScheduleIntensity />
         </div>
     </FormWrapper>
