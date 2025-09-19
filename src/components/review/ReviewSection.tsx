@@ -10,8 +10,11 @@ type Props = {
 
 export function ReviewSection({ title, icon, children }: Props) {
   return (
-    <div className="p-4 bg-white rounded-xl border border-gray-100 shadow-sm md:p-5 dark:bg-gray-800/50 dark:border-gray-700/50">
-      <h3 className="flex gap-2 items-center mb-5 text-base font-medium text-gray-900 dark:text-gray-100 md:text-lg">
+    <div 
+    className="p-0  rounded-xl shadow-sm md:p-0"
+    // className="p-4  rounded-xl shadow-sm md:p-5 bg-white border border-gray-100 dark:bg-gray-800/50 dark:border-gray-700/50"
+    >
+      <h3 className="flex gap-2 items-center mb-3 text-base font-medium text-gray-900 dark:text-gray-100 md:text-lg">
         {icon}
         {title}
       </h3>

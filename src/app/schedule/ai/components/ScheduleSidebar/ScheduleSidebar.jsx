@@ -31,7 +31,7 @@ export function ScheduleSidebar({ schedule, setSchedule, onScheduleEdit, setIsLo
         <>
             {/* Desktop Sidebar */}
             {!isMobile && (
-                <Card className="flex flex-col overflow-hidden relative h-screen pt-4 md:pt-16 max-h-screen bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm transition-all duration-200 border-r border-gray-200 xl:w-[25em] md:w-[20em] lg:w-[22em]  dark:border-gray-800">
+                <Card className="flex flex-col overflow-hidden relative h-screen pt-4 md:pt-16 max-h-screen bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-0 transition-all duration-200 xl:w-[30em] md:w-[20em] lg:w-[28em]  dark:border-gray-800">
                     <SidebarContent
                         schedule={schedule}
                         setSchedule={setSchedule}

@@ -15,7 +15,7 @@ export default function ReviewStep({ }) {
       title="Review Your Schedule"
       description="Check your preferences, goals, and routines before generating your schedule."
     >
-        <div className="space-y-4 overflow-y-auto max-h-[65vh] sm:max-h-[55vh] py-3 scrollbar-hidden scrollbar">
+        <div className="space-y-6 overflow-y-auto max-h-[65vh] sm:max-h-[55vh] py-3 scrollbar-hidden scrollbar">
           {/* Preferences Section */}
           <ReviewSection
             title="Preferences"

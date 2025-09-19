@@ -12,6 +12,8 @@ import { ToolCallIndication } from "./ToolCallIndication";
 import { MessageBubble } from "./MessageBubble";
 import { StickToBottom, useStickToBottomContext } from 'use-stick-to-bottom';
 import { ScrollToBottomButton } from './ScrollToBottomButton';
+import { AnimatedSkeleton as Skeleton } from '@/components/ui/AnimatedSkeleton'
+import { SkeletonList } from '@/components/ui/SkeletonList'
 
 export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading, setIsLoading }) {
     console.log("🚀 ~ AIChat ~ schedule:", schedule.schedule)
@@ -121,6 +123,7 @@ export function AIChat({ chat, schedule, setSchedule, onScheduleEdit, isLoading,
                         >
                             Chat with AI about your scheduling needs
                         </div>
+
                     ) : (
                         <div className="flex flex-col gap-3 py-4">
                             {messages?.map((msg) => (

@@ -38,7 +38,7 @@ export default function DailySchedule() {
   const [calendarDialogOpen, setCalendarDialogOpen] = useState(false)
   const [selectedTask, setSelectedTask] = useState(null)
   const [isCreateTask, setIsCreateTask] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [editedSchedule, setEditedSchedule] = useState(null)
   const [showOriginal, setShowOriginal] = useState(false)
   const [schedule, setSchedule] = useState(DEFAULT_SCHEDULE)
@@ -47,7 +47,7 @@ export default function DailySchedule() {
   const wakeupMinutes = getMinutesFromMidnight(wakeupTime)
   const { toast } = useToast();
 
-  const isForm = useMemo(() => params?.id === 'form', [params?.id])
+  const isNew = useMemo(() => params?.id === 'new', [params?.id])
 
   useEffect(() => {
     if (params?.id) {
@@ -58,8 +58,10 @@ export default function DailySchedule() {
   const onFetchSchedule = async () => {
     console.log("🚀 ~ file: page.jsx:54 ~ params?.id:", params?.id)
     try {
-      setIsLoading(true)
-      if (params?.id === 'loading' || params?.id === 'form') return
+      if (!params?.id === 'new') setIsLoading(true)
+      if (params?.id === 'loading' || params?.id === 'new') {
+        return
+      }
 
       const fetchedSchedule = await scheduleService.getScheduleById(params.id)
       // dispatch({type: SET_SCHEDULE, schedule: fetchedSchedule })
@@ -167,7 +169,7 @@ export default function DailySchedule() {
 
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] pt-16 md:pt-0 overflow-y-hidden justify-between w-full">
+    <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] pt-16 md:pt-0 overflow-y-hidden justify-between items-center w-full">
       <ScheduleSidebar
         schedule={schedule}
         setIsLoading={setIsLoading}
@@ -177,11 +179,11 @@ export default function DailySchedule() {
         isEditedSchedule={!!editedSchedule}
         onSaveSchedule={onSaveSchedule}
       />
-      <MultiStepForm />
+      {isNew && <MultiStepForm />}
       {(isLoading || !schedule?.schedule?.length) ? (
         <Loading />
       ) : (
-        <Card className="overflow-y-auto relative w-full bg-transparent border-none md:pt-16 scrollbar">
+        <Card className="overflow-y-auto relative mx-auto w-[95%] h-[95%] bg-transparent border-none md:pt-16 scrollbar rounded-2xl">
           <div className="mx-auto ps-8 w-full md:w-[90%] relative">
             <CardHeader className="pt-0 pe-1.5">
               <div className="flex justify-between items-center">

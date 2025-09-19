@@ -31,12 +31,12 @@ export function SidebarContent({
     return (
         <div className="flex flex-col h-full">
             <CardHeader className="flex-shrink-0 flex flex-col gap-1.5 pt-0 pb-4 sticky top-0 z-[20] bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
-                <CardTitle className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                {/* <CardTitle className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                     Schedule Details
                 </CardTitle>
                 <CardDescription className="mt-0 text-sm text-gray-600 font-regular dark:text-gray-400">
                     {activeView === "chat" ? "Ask AI to modify your schedule" : "View your preferences and tasks"}
-                </CardDescription>
+                </CardDescription> */}
                 <div className="grid grid-cols-2 gap-1 p-1.5 mt-2 rounded-lg backdrop-blur-sm bg-gray-100/80 dark:bg-gray-800/80">
                     {views.map(view => (
                         <button
