@@ -7,6 +7,9 @@
     --font-poppins: 'Poppins', 'Rubik', sans-serif;
     --font-rubik: 'Rubik', sans-serif;
   }
+  .theme {
+    --animate-shine: shine var(--duration) infinite linear;
+  }
 }
 
 /* @import "react-day-picker/dist/style.css"; */
@@ -208,5 +211,31 @@ body {
   }
   &:hover svg.chevron {
     transform: translateX(5px);
+  }
+}
+
+@theme inline {
+  @keyframes shine {
+  0% {
+    background-position: 0% 0%;
+    }
+  50% {
+    background-position: 100% 100%;
+    }
+  to {
+    background-position: 0% 0%;
+    }
+  }
+}
+
+
+
+@theme {
+  --animate-shine: shine var(--duration) linear infinite;
+
+  @keyframes shine {
+    0%   { background-position: 0% 0%; }
+    50%  { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
   }
 }

@@ -141,7 +141,7 @@ export const PromptInputActionAddAttachments = ({
         e.preventDefault();
         attachments.openFileDialog();
       }}>
-      <ImageIcon className="mr-2 size-4" /> {label}
+      <ImageIcon className="mr-1 size-4" /> {label}
     </DropdownMenuItem>
   );
 };

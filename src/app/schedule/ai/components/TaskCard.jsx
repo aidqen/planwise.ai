@@ -3,6 +3,7 @@ import { Clock, Coffee, Repeat, Target, Utensils } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { TaskHoverPanel } from "./TaskHoverPanel";
+import { ShineBorder } from '../../../../components/ui/shine-border'
 
 export function TaskCard({ task, wakeupMinutes, parseTimeToMinutes, handleTaskClick, columnIndex, totalColumns }) {
   const [isDescVisible, setIsDescVisible] = useState(false);

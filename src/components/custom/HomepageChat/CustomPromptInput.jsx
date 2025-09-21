@@ -17,9 +17,12 @@ import {
     usePromptInputAttachments,
 } from '@/components/ai-elements/prompt-input';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
-import { IconBrandGoogle } from '@tabler/icons-react';
 import { Button } from '@/components/ui/button';
 import { ArrowUp } from 'lucide-react';
+import { ShineBorder } from '@/components/ui/shine-border'
+import { BorderBeam } from '@/components/magicui/border-beam'
+import { useTheme } from 'next-themes';
+
 
 
 
@@ -32,12 +35,13 @@ function AttachmentsLogger() {
     return null;
 }
 
-export function HomepagePromptInput({
+export function CustomPromptInput({
     input,
     setInput,
     placeholder = 'Ask Planwise AI...',
     //   onSubmit,
 }) {
+    const {resolvedTheme, setTheme} = useTheme()
     const [typedPlaceholder, setTypedPlaceholder] = useState('');
 
     useEffect(() => {
@@ -55,6 +59,8 @@ export function HomepagePromptInput({
         return () => window.clearInterval(id);
     }, [placeholder]);
 
+    const lightModeBorder = resolvedTheme === 'dark' ? '#222124' : 'white'
+
     return (
         <PromptInput
             onSubmit={(message) => {
@@ -62,7 +68,7 @@ export function HomepagePromptInput({
                 // if (message.text) setInput('');
             }}
             globalDrop={true}
-            className="mt-4 relative shadow-[0_0_7px_1px_rgba(0,0,0,0.1)] w-full border-0"
+            className="mt-4 relative overflow-hidden dark:bg-[#222124] shadow-[0_0_7px_1px_rgba(0,0,0,0.1)] w-full border-0"
         >
             <PromptInputBody>
                 <AttachmentsLogger />
@@ -81,18 +87,43 @@ export function HomepagePromptInput({
             <PromptInputToolbar className="border-0 px-3 py-2">
                 <PromptInputTools className="">
                     <PromptInputActionMenu className="">
-                        <PromptInputActionMenuTrigger />
-                        <PromptInputActionMenuContent className="rounded-2xl">
-                            <PromptInputActionAddAttachments className="rounded-2xl" label="Add Image" />
+                        <PromptInputActionMenuTrigger className="dark:text-white focus-visible:ring-offset-0 focus-visible:ring-0" />
+                        <PromptInputActionMenuContent className="rounded-2xl dark:bg-stone-800 dark:border-stone-700/60">
+                            <PromptInputActionAddAttachments className="rounded-2xl dark:hover:bg-[#292929]  dark:text-white" label="Add Image" />
+                            <DropdownMenuItem>
+                                <img src="/google-icon-logo-svgrepo-com.svg" alt="Google" className="h-5 w-5 mr-1" />
+                                Fetch Google Events
+                            </DropdownMenuItem>
                         </PromptInputActionMenuContent>
                     </PromptInputActionMenu>
                 </PromptInputTools>
 
                 <Button className="w-[28px] h-[28px] p-0 bg-gradient-to-br from-sky-300 via-indigo-400 to-violet-600 text-white">
-                    <ArrowUp className='h-max'/>
+                    <ArrowUp className='h-max' />
                 </Button>
                 {/* <PromptInputSubmit disabled={false} status="ready" /> */}
             </PromptInputToolbar>
+            <ShineBorder
+                className="opacity-80"
+                borderWidth={1.5}
+                duration={60}
+                // shineColor={[
+                //     'rgba(56,189,248,0.12)',
+                //     'rgba(129,140,248,0.18)',
+                //     'rgba(192,132,252,0.22)'
+                // ]}
+
+                shineColor={[
+                    // 'white',
+                    '#7c3aed',
+                    // lightModeBorder,
+                    '#7dd3fc',
+                    // lightModeBorder,
+                    // lightModeBorder,
+                    // 'white',
+                ]}
+            />
         </PromptInput>
+
     );
 }

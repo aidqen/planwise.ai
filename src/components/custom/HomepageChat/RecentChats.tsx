@@ -29,10 +29,10 @@ export function RecentChats({ showRecentChats }: { showRecentChats: boolean }) {
                             initial={{ y: '50%', opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ type: 'spring', bounce: 0, damping: 15, mass: 1, stiffness: 100, delay: 0.5, duration: '100ms' }}
-                            className="recent-chats-header flex flex-row items-center gap-0.5 text-sm font-semibold">
-                            <IconMessageCircle className="w-5 h-5 text-gray-600" />
+                            className="recent-chats-header flex flex-row items-center gap-0.5 text-sm font-semibold text-black dark:text-white">
+                            <IconMessageCircle className="w-5 h-5 text-stone-500 dark:text-stone-300" />
                             Your Recent Chats
-                            <ChevronRight className="chevron w-[18px] h-[18px] mt-[1px] text-gray-600" />
+                            <ChevronRight className="chevron size-4 mt-[1px] text-stone-500 dark:text-stone-300" />
                         </motion.h3>
                     </div>
                     <div
@@ -44,10 +44,10 @@ export function RecentChats({ showRecentChats }: { showRecentChats: boolean }) {
                                 animate={{ y: 0, opacity: 1 }}
                                 transition={{ type: 'spring', stiffness: 100, damping: 15, mass: 1, delay: 0.4 + 0.1 * -index, duration: '150ms' }}
                                 key={index}
-                                className="flex flex-col gap-3 bg-gray-50 hover:bg-gray-100 transition-colors p-3 border border-gray-200 rounded-2xl cursor-pointer">
-                                <IconMessageCircle style={{ transform: 'rotateY(180deg)' }} className="w-5 h-5 text-gray-600" />
-                                <h4 className="text-sm font-semibold">{schedule.name}</h4>
-                                <span className="text-[13px] text-gray-500">{formatRelativeTime(schedule.updatedAt)}</span>
+                                className="flex flex-col gap-3 bg-stone-50 dark:bg-[#222124] dark:hover:bg-[#292929] hover:bg-stone-100 transition-colors p-3 border dark:border-stone-700/60 border-stone-300 rounded-2xl cursor-pointer">
+                                <IconMessageCircle style={{ transform: 'rotateY(180deg)' }} className="w-5 h-5 text-stone-600 dark:text-stone-300" />
+                                <h4 className="text-sm text-black dark:text-white font-semibold">{schedule.name}</h4>
+                                <span className="text-[13px] text-stone-500 dark:text-stone-300">{formatRelativeTime(schedule.updatedAt)}</span>
                             </motion.div>
                         ))}
                     </div>

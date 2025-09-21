@@ -79,7 +79,7 @@ export function Routines({ }) {
   return (
     <FormWrapper
       title="Set Your Daily Routines"
-      description="Add your unchangeable activities to help us create a schedule that doesn't interfere with your existing commitments."
+      description="Add your unchangeable routines for today."
     >
       <RoutineSearchInput
         routines={routines}

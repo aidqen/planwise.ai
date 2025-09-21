@@ -33,7 +33,7 @@ export function SidebarDemo() {
             setTheme(storedTheme)
         }
     }, [setTheme])
-    
+
     useEffect(() => {
         if (pathname.includes('auth')) {
             setIsVisible(false)
@@ -106,7 +106,7 @@ export function SidebarDemo() {
     return (
         (<div
             className={cn(
-                "overflow-hidden flex-1 pt-16 max-w-max h-screen bg-[#f3f4f6] dark:bg-gray-900 text-gray-900 dark:text-gray-100 border max-sm:fixed z-[20] border-neutral-200 dark:border-gray-800 border-l-0 border-y-0 border-r",
+                "overflow-hidden flex-1 pt-16 max-w-max h-screen dark:bg-[#222124] bg-[#f3f4f6]  text-gray-900 dark:text-gray-100 border max-sm:fixed z-[20] border-neutral-200 dark:border-gray-800 border-l-0 border-y-0 border-r",
                 open ? 'max-sm:max-w-full' : 'max-sm:max-w-0',
                 isVisible ? 'flex' : 'hidden'
             )}>
