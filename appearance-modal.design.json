@@ -1,0 +1,358 @@
+{
+  "meta": {
+    "name": "Appearance-Modal-Style",
+    "version": "1.0.0",
+    "created": "2025-09-19T23:37:09",
+    "description": "Design tokens, component specs, structure, and behavior for the Appearance modal."
+  },
+  "primitives": {
+    "fontFamilies": {
+      "sans": "Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial"
+    },
+    "fontWeights": {
+      "regular": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700
+    },
+    "fontSizes": {
+      "xs": 12,
+      "sm": 14,
+      "md": 16,
+      "lg": 18,
+      "xl": 20,
+      "display": 28
+    },
+    "lineHeights": {
+      "tight": 1.2,
+      "normal": 1.5
+    },
+    "colors": {
+      "white": "#FFFFFF",
+      "black": "#111827",
+      "neutral-25": "#FCFCFD",
+      "neutral-50": "#F9FAFB",
+      "neutral-100": "#F3F4F6",
+      "neutral-200": "#E5E7EB",
+      "neutral-300": "#D1D5DB",
+      "neutral-400": "#9CA3AF",
+      "neutral-500": "#6B7280",
+      "neutral-700": "#374151",
+      "accent-blue": "#6366F1",
+      "accent-purple": "#8B5CF6",
+      "success": "#10B981",
+      "overlay-rgba": "9,10,12",
+      "shadow-rgba": "0,0,0"
+    },
+    "spacing": {
+      "0": 0,
+      "1": 4,
+      "2": 8,
+      "3": 12,
+      "4": 16,
+      "5": 20,
+      "6": 24,
+      "7": 28,
+      "8": 32,
+      "10": 40
+    },
+    "radii": {
+      "sm": 8,
+      "md": 12,
+      "lg": 16,
+      "xl": 20,
+      "twoXL": 24,
+      "pill": 9999
+    },
+    "shadows": {
+      "overlay": "0 0 0 1px rgba(0,0,0,0.02)",
+      "sm": "0 1px 2px rgba(0,0,0,0.06)",
+      "md": "0 6px 24px rgba(0,0,0,0.12)",
+      "lg": "0 16px 40px rgba(0,0,0,0.16)"
+    },
+    "borders": {
+      "hairline": "1px solid #E5E7EB",
+      "subtle": "1px solid rgba(17,24,39,0.06)"
+    }
+  },
+  "semantic": {
+    "modal": {
+      "backdrop": "rgba({colors.overlay-rgba},0.48)",
+      "surface": "{colors.white}",
+      "textPrimary": "{colors.black}",
+      "textSecondary": "{colors.neutral-500}",
+      "border": "{colors.neutral-200}",
+      "tileBg": "{colors.neutral-50}",
+      "tileBorder": "{colors.neutral-200}",
+      "tileRing": "linear-gradient(135deg,{colors.accent-blue}, {colors.accent-purple})",
+      "primaryBtnBg": "{colors.black}",
+      "primaryBtnText": "{colors.white}",
+      "secondaryBtnBg": "{colors.neutral-100}",
+      "secondaryBtnText": "{colors.black}",
+      "switchTrackOff": "{colors.neutral-200}",
+      "switchTrackOn": "{colors.black}",
+      "switchThumb": "{colors.white}",
+      "divider": "rgba(0,0,0,0.06)"
+    },
+    "dark": {
+      "surface": "#0F1422",
+      "textPrimary": "#E5E7EB",
+      "textSecondary": "#9CA3AF",
+      "border": "rgba(255,255,255,0.08)",
+      "tileBg": "rgba(255,255,255,0.03)",
+      "switchTrackOn": "#E5E7EB",
+      "primaryBtnBg": "#E5E7EB",
+      "primaryBtnText": "#0B0F1A"
+    }
+  },
+  "motion": {
+    "overlayEnterMs": 150,
+    "overlayExitMs": 120,
+    "modalEnterMs": 180,
+    "modalExitMs": 140,
+    "easing": "cubic-bezier(0.2,0.8,0.2,1)",
+    "spring": {
+      "stiffness": 320,
+      "damping": 28,
+      "mass": 1.0
+    }
+  },
+  "components": {
+    "Modal": {
+      "role": "dialog",
+      "ariaLabel": "Appearance",
+      "width": {
+        "sm": 640,
+        "md": 760,
+        "lg": 880
+      },
+      "maxHeightVh": 84,
+      "borderRadius": "{radii.xl}",
+      "background": "{modal.surface}",
+      "border": "{borders.hairline}",
+      "shadow": "{shadows.lg}",
+      "padding": {
+        "x": 24,
+        "y": 20
+      },
+      "sections": [
+        "Header",
+        "ThemeChooser",
+        "OptionsList",
+        "Footer"
+      ]
+    },
+    "Header": {
+      "title": {
+        "textStyle": {
+          "family": "{fontFamilies.sans}",
+          "size": "{fontSizes.lg}",
+          "weight": "{fontWeights.semibold}"
+        },
+        "color": "{modal.textPrimary}",
+        "align": "left"
+      },
+      "closeButton": {
+        "visible": false,
+        "size": 28,
+        "radius": "{radii.pill}",
+        "icon": "X",
+        "color": "{colors.neutral-500}",
+        "hoverBg": "{colors.neutral-100}"
+      }
+    },
+    "ThemeChooser": {
+      "layout": {
+        "gap": 16,
+        "tileWidth": 216,
+        "tileHeight": 140,
+        "justify": "space-between"
+      },
+      "tile": {
+        "background": "{modal.tileBg}",
+        "border": "{borders.hairline}",
+        "radius": 14,
+        "padding": 8,
+        "shadow": "{shadows.sm}",
+        "preview": {
+          "headerHeight": 16,
+          "sidebarWidth": 44,
+          "rowHeight": 12,
+          "rowGap": 6,
+          "mutedBlock": "{colors.neutral-200}"
+        },
+        "selectedRing": {
+          "width": 2,
+          "outerGlow": "0 0 0 3px rgba(99,102,241,0.25)",
+          "style": "{modal.tileRing}"
+        },
+        "focusRing": "0 0 0 3px rgba(99,102,241,0.35)"
+      },
+      "labels": [
+        {
+          "key": "system",
+          "text": "System preference",
+          "caption": "Follows OS theme"
+        },
+        {
+          "key": "light",
+          "text": "Light mode",
+          "caption": "Always light"
+        },
+        {
+          "key": "dark",
+          "text": "Dark",
+          "caption": "Always dark"
+        }
+      ]
+    },
+    "OptionsList": {
+      "items": [
+        {
+          "id": "background",
+          "type": "switch",
+          "label": "Background",
+          "description": "Customize your background",
+          "disabled": true,
+          "control": {
+            "width": 44,
+            "height": 24,
+            "thumb": 18
+          }
+        },
+        {
+          "id": "chatColor",
+          "type": "switch",
+          "label": "Chat Color",
+          "description": "Customize your chat",
+          "disabled": true,
+          "control": {
+            "width": 44,
+            "height": 24,
+            "thumb": 18
+          }
+        }
+      ],
+      "itemLayout": {
+        "rowPaddingY": 12,
+        "rowGap": 8,
+        "divider": "{modal.divider}"
+      },
+      "labelStyle": {
+        "size": "{fontSizes.md}",
+        "weight": "{fontWeights.medium}"
+      },
+      "descriptionStyle": {
+        "size": "{fontSizes.sm}",
+        "color": "{modal.textSecondary}"
+      }
+    },
+    "Footer": {
+      "align": "right",
+      "gap": 12,
+      "paddingTop": 12,
+      "buttons": {
+        "secondary": {
+          "label": "Cancel",
+          "bg": "{modal.secondaryBtnBg}",
+          "text": "{modal.secondaryBtnText}",
+          "radius": "{radii.md}",
+          "paddingX": 14,
+          "height": 36,
+          "border": "{borders.subtle}"
+        },
+        "primary": {
+          "label": "Save changes",
+          "bg": "{modal.primaryBtnBg}",
+          "text": "{modal.primaryBtnText}",
+          "radius": "{radii.md}",
+          "paddingX": 16,
+          "height": 36
+        }
+      }
+    },
+    "Switch": {
+      "track": {
+        "width": 44,
+        "height": 24,
+        "radius": 999,
+        "bgOff": "{modal.switchTrackOff}",
+        "bgOn": "{modal.switchTrackOn}",
+        "shadow": "inset 0 1px 1px rgba(0,0,0,0.06)"
+      },
+      "thumb": {
+        "size": 18,
+        "bg": "{modal.switchThumb}",
+        "radius": 999,
+        "shadow": "0 1px 2px rgba(0,0,0,0.20)"
+      },
+      "spacing": {
+        "inner": 3
+      }
+    },
+    "Radio": {
+      "size": 18,
+      "ringColor": "{colors.accent-blue}",
+      "dotColor": "{colors.black}",
+      "labelStyle": {
+        "size": "{fontSizes.sm}",
+        "color": "{modal.textSecondary}"
+      }
+    }
+  },
+  "structure": {
+    "modalLayout": {
+      "stackGap": 16,
+      "header": {
+        "height": "auto"
+      },
+      "themeChooser": {
+        "columns": 3,
+        "gap": 16
+      },
+      "options": {
+        "gap": 8
+      },
+      "footer": {
+        "align": "end"
+      }
+    }
+  },
+  "state": {
+    "themeMode": {
+      "type": "enum",
+      "values": [
+        "system",
+        "light",
+        "dark"
+      ],
+      "default": "system"
+    },
+    "backgroundEnabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "chatColorEnabled": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "behavior": {
+    "open": "Click Appearance opens modal. Fade-in overlay and scale+fade modal.",
+    "close": "Esc key, overlay click, Cancel button, or Save changes then success.",
+    "focusManagement": "Trap focus within modal. On open, focus first interactive tile. Restore prior focus on close.",
+    "keyboard": {
+      "tiles": "ArrowLeft/Right moves selection. Enter/Space selects tile.",
+      "switch": "Space toggles when enabled.",
+      "buttons": "Enter on primary executes save; Esc cancels."
+    },
+    "selectionRing": "The selected theme tile shows a 2px gradient stroke and 3px soft glow.",
+    "persistence": "On Save, write { themeMode, backgroundEnabled, chatColorEnabled } to localStorage and user profile.",
+    "systemPreference": "If themeMode='system', bind to window.matchMedia('(prefers-color-scheme: dark)') and update on change.",
+    "a11y": {
+      "roles": "role=dialog, aria-modal=true, aria-labelledby points to the Header title id.",
+      "announcements": "Use polite live region to announce 'Appearance settings saved'.",
+      "contrast": "Ensure text color contrast ratio >= 4.5:1 against surface."
+    }
+  }
+}

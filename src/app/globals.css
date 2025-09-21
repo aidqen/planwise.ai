@@ -22,11 +22,12 @@
   font-family: var(--font-poppins);
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   max-height: 100%;
-  overflow:hidden;
+  overflow: hidden;
 }
 
 body {
@@ -81,27 +82,33 @@ body {
 
 /* Hide scrollbar when not scrolling */
 .scrollbar-hidden::-webkit-scrollbar {
-  width: 0.3em; /* Increase width to accommodate margin */
+  width: 0.3em;
+  /* Increase width to accommodate margin */
 }
 
 .scrollbar-hidden::-webkit-scrollbar-track {
   /* background: transparent; */
-  margin-right: 1rem; /* Add margin to the right of the track */
+  margin-right: 1rem;
+  /* Add margin to the right of the track */
 }
 
 .scrollbar-hidden::-webkit-scrollbar-thumb {
   /* background-color: transparent; Start with transparent background */
   border-radius: 0.25rem;
-  transition: background-color 0.3s ease; /* Smooth transition for background color */
-  margin-right: 1rem; /* Add margin to the right of the thumb */
+  transition: background-color 0.3s ease;
+  /* Smooth transition for background color */
+  margin-right: 1rem;
+  /* Add margin to the right of the thumb */
 }
 
 .scrollbar-hidden:hover::-webkit-scrollbar-thumb {
-  background-color: #888; /* Change to your desired color */
+  background-color: #888;
+  /* Change to your desired color */
 }
 
 .scrollbar-hidden::-webkit-scrollbar-thumb:hover {
-  background-color: #555; /* Darker color on thumb hover */
+  background-color: #555;
+  /* Darker color on thumb hover */
 }
 
 @layer base {
@@ -116,6 +123,7 @@ body {
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
   .dark {
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
@@ -125,8 +133,8 @@ body {
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-    --background: hsl(240,4%,4.9%);
-    --background-lighter: hsl(210,6.67%,5.88%);
+    --background: hsl(240, 4%, 4.9%);
+    --background-lighter: hsl(210, 6.67%, 5.88%);
   }
 }
 
@@ -134,6 +142,7 @@ body {
   0% {
     background-position: 0% 50%;
   }
+
   100% {
     background-position: 100% 50%;
   }
@@ -151,25 +160,33 @@ body {
   background: radial-gradient(118.75% 118.75% at 50% 50%, #4B5563 0%, rgba(75, 85, 99, 0) 100%);
 }
 
-::view-transition-old(root), ::view-transition-new(root) {
-    animation: none;
-    mix-blend-mode: normal;
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }
 
 /* Skeleton shimmer effect */
 @keyframes shimmer {
-  100% { transform: translateX(100%); }
+  100% {
+    transform: translateX(100%);
+  }
 }
+
 .skeleton-shimmer {
   position: absolute;
   inset: 0;
   transform: translateX(-100%);
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
   animation: shimmer 1.6s infinite;
   pointer-events: none;
 }
+
 @media (prefers-reduced-motion: reduce) {
-  .skeleton-shimmer { animation: none; display: none; }
+  .skeleton-shimmer {
+    animation: none;
+    display: none;
+  }
 }
 
 /* Local pulse animation for skeleton placeholders */
@@ -178,6 +195,18 @@ body {
     opacity: .6;
   }
 }
+
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.recent-chats-header {
+  cursor:pointer;
+
+  svg {
+    transition: transform 0.1s;
+  }
+  &:hover svg.chevron {
+    transform: translateX(5px);
+  }
 }

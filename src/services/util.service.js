@@ -78,3 +78,47 @@ export function getMinutesFromMidnight(time) {
   const [hours, minutes] = time?.split(':').map(Number)
   return hours * 60 + minutes
 }
+
+export function formatRelativeTime(timestamp) {
+  const now = new Date();
+  const past = new Date(timestamp);
+  const diffInMs = now - past;
+  
+  // Convert to different time units
+  const diffInSeconds = Math.floor(diffInMs / 1000);
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  const diffInDays = Math.floor(diffInHours / 24);
+  const diffInWeeks = Math.floor(diffInDays / 7);
+  const diffInMonths = Math.floor(diffInDays / 30);
+  const diffInYears = Math.floor(diffInDays / 365);
+  
+  // Last 24 hours
+  if (diffInHours < 24) {
+    if (diffInHours === 0) {
+      if (diffInMinutes === 0) {
+        return 'Just now';
+      }
+      return `${diffInMinutes} minute${diffInMinutes === 1 ? '' : 's'} ago`;
+    }
+    return `${diffInHours} hour${diffInHours === 1 ? '' : 's'} ago`;
+  }
+  
+  // More than 24 hours but less than 1 week
+  if (diffInDays < 7) {
+    return `${diffInDays} day${diffInDays === 1 ? '' : 's'} ago`;
+  }
+  
+  // More than 1 week but less than 1 month
+  if (diffInWeeks < 4) {
+    return `${diffInWeeks} week${diffInWeeks === 1 ? '' : 's'} ago`;
+  }
+  
+  // More than 1 month but less than 1 year
+  if (diffInMonths < 12) {
+    return `${diffInMonths} month${diffInMonths === 1 ? '' : 's'} ago`;
+  }
+  
+  // More than 1 year
+  return `${diffInYears} year${diffInYears === 1 ? '' : 's'} ago`;
+}

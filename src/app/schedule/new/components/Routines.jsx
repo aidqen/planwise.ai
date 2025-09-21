@@ -17,14 +17,8 @@ export function Routines({ }) {
   const dispatch = useDispatch()
   const multiStepForm = useSelector(state => state.scheduleModule.multiStepForm)
   const user = useSelector(state => state.userModule.user)
-  console.log("🚀 ~ file: Routines.jsx:17 ~ user:", user)
   const routines = multiStepForm.routines
   console.log("🚀 ~ file: Routines.jsx:19 ~ routines:", routines)
-  const [newRoutine, setNewRoutine] = useState({
-    name: '',
-    startTime: '',
-    endTime: '',
-  })
 
   // function addRoutine() {
   //   if (newRoutine.name && newRoutine.startTime && newRoutine.endTime) {

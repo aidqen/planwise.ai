@@ -22,16 +22,8 @@ export function SidebarDemo() {
     const open = useSelector(state => state.systemModule.isSidebarOpen)
     const user = useSelector(state => state.userModule.user)
     const pathname = usePathname()
-    const { resolvedTheme, setTheme } = useTheme()
     const [isVisible, setIsVisible] = useState(true)
-
-    useEffect(() => {
-        if (pathname.includes('auth')) {
-            setIsVisible(false)
-        } else {
-            setIsVisible(true)
-        }
-    }, [pathname, isVisible])
+    const { resolvedTheme, setTheme } = useTheme()
 
     useEffect(() => {
         if (typeof window === 'undefined') return
@@ -41,6 +33,15 @@ export function SidebarDemo() {
             setTheme(storedTheme)
         }
     }, [setTheme])
+    
+    useEffect(() => {
+        if (pathname.includes('auth')) {
+            setIsVisible(false)
+        } else {
+            setIsVisible(true)
+        }
+    }, [pathname, isVisible])
+
 
     useEffect(() => {
         if (typeof window === 'undefined' || !resolvedTheme) return

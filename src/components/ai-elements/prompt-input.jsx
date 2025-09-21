@@ -83,7 +83,8 @@ export function PromptInputAttachment({
         onClick={() => attachments.remove(data.id)}
         size="icon"
         type="button"
-        variant="outline">
+        variant="outline"
+      >
         <XIcon className="h-3 w-3" />
       </Button>
     </div>
@@ -353,7 +354,7 @@ export const PromptInput = ({
         type="file" />
       <form
         className={cn(
-          "w-full divide-y overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-950",
+          "w-full  overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-950",
           className
         )}
         onSubmit={handleSubmit}
@@ -406,7 +407,7 @@ export const PromptInputTextarea = ({
         // Caret + selection for better visibility in dark mode
         "caret-blue-600 selection:bg-blue-200/50 dark:caret-blue-400 dark:selection:bg-blue-400/20",
         "max-h-48 min-h-16",
-        "focus-visible:ring-0 focus-visible:outline-none",
+        "focus-visible:ring-0 focus-visible:outline-none focus-visible:ring-offset-0",
         className
       )}
       name="message"
@@ -455,7 +456,7 @@ export const PromptInputButton = ({
       className={cn(
         "shrink-0 gap-1.5 rounded-lg",
         variant === "ghost" && "text-neutral-500 dark:text-neutral-400",
-        newSize === "default" && "px-3",
+        "w-[24px] h-[28px] p-0",
         className
       )}
       size={newSize}
